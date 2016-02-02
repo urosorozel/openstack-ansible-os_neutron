@@ -218,6 +218,10 @@ neutron_l3: "{% if 'router' in neutron_plugin_base or 'neutron.services.l3_route
 #TODO(odyssey4me): Remove the class path from this conditional in the Newton cycle
 neutron_metering: "{% if 'metering' in neutron_plugin_base or 'neutron.services.metering.metering_plugin.MeteringPlugin' in neutron_plugin_base %}True{% else %}False{% endif %}"
 
+## Neutron FWaaS
+# Please add the 'firewall' to the neutron_plugin_base list
+neutron_fwaas: "{% if 'firewall' in neutron_plugin_base %}True{% else %}False{% endif %}"
+
 ## Drivers
 neutron_driver_network_scheduler: neutron.scheduler.dhcp_agent_scheduler.WeightScheduler
 neutron_driver_router_scheduler: neutron.scheduler.l3_agent_scheduler.LeastRoutersScheduler
@@ -390,6 +394,7 @@ neutron_pip_packages:
   - keystonemiddleware
   - PyMySQL
   - neutron
+  - neutron_fwaas
   - neutron_lbaas
   - pycrypto
   - python-glanceclient

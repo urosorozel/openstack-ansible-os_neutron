@@ -166,6 +166,12 @@ service_provider = LOADBALANCERV2:Haproxy:neutron_lbaas.drivers.haproxy.plugin_d
 
 {% endif %}
 
+{% if neutron_fwaas | bool and neutron_plugin_type != 'plumgrid' %}
+[fwaas]
+enabled = true
+driver = neutron.services.firewall.drivers.linux.iptables_fwaas.IptablesFwaasDriver
+{% endif %}
+
 # Agent
 [agent]
 polling_interval = {{ neutron_agent_polling_interval|default(5) }}
