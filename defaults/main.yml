@@ -336,11 +336,12 @@ neutron_apt_packages:
   - conntrack
   - dnsmasq-base
   - dnsmasq-utils
+  - ebtables
   - ipset
   - iputils-arping
   - keepalived
   - libpq-dev
-  - ebtables
+  - radvd
 
 neutron_lbaas_apt_packages:
   - haproxy
