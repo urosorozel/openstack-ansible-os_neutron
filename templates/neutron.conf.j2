@@ -95,7 +95,7 @@ rpc_response_timeout = {{ neutron_rpc_response_timeout }}
 
 [nova]
 auth_plugin = {{ nova_keystone_auth_plugin }}
-auth_url = {{ keystone_service_adminuri }}
+auth_url = {{ keystone_service_adminurl }}
 region_name = {{ nova_service_region }}
 project_domain_id = {{ nova_service_project_domain_id }}
 user_domain_id = {{ nova_service_user_domain_id }}
