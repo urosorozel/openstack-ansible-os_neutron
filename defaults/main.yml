@@ -23,6 +23,25 @@ verbose: True
 ## APT Cache options
 cache_timeout: 600
 
+neutron_git_repo: https://git.openstack.org/openstack/neutron
+neutron_git_install_branch: master
+
+neutron_fwaas_git_repo: https://git.openstack.org/openstack/neutron-fwaas
+neutron_fwaas_git_install_branch: master
+
+neutron_lbaas_git_repo: https://git.openstack.org/openstack/neutron-lbaas
+neutron_lbaas_git_install_branch: master
+
+neutron_vpnaas_git_repo: https://git.openstack.org/openstack/neutron-vpnaas
+neutron_vpnaas_git_install_branch: master
+
+neutron_developer_mode: false
+neutron_developer_constraints:
+  - "git+{{ neutron_git_repo }}@{{ neutron_git_install_branch }}#egg=neutron"
+  - "git+{{ neutron_fwaas_git_repo }}@{{ neutron_fwaas_git_install_branch }}#egg=neutron-fwaas"
+  - "git+{{ neutron_lbaas_git_repo }}@{{ neutron_lbaas_git_install_branch }}#egg=neutron-lbaas"
+  - "git+{{ neutron_vpnaas_git_repo }}@{{ neutron_vpnaas_git_install_branch }}#egg=neutron-vpnaas"
+
 # Name of the virtual env to deploy into
 neutron_venv_tag: untagged
 neutron_venv_bin: "/openstack/venvs/neutron-{{ neutron_venv_tag }}/bin"

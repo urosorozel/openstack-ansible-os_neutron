@@ -72,6 +72,28 @@
     - neutron-install
     - neutron-apt-packages
 
+- name: Create developer mode constraint file
+  copy:
+    dest: "/opt/developer-pip-constraints.txt"
+    content: |
+      {% for item in neutron_developer_constraints %}
+      {{ item }}
+      {% endfor %}
+  when:
+    - neutron_developer_mode | bool
+  tags:
+    - neutron-install
+    - neutron-pip-packages
+
+- name: Set constraint file fact for developer mode
+  set_fact:
+    pip_install_options: "{{ pip_install_options|default('') }} --constraint /opt/developer-pip-constraints.txt"
+  when:
+    - neutron_developer_mode | bool
+  tags:
+    - neutron-install
+    - neutron-pip-packages
+
 - name: Install requires pip packages
   pip:
     name: "{{ item }}"
@@ -90,7 +112,9 @@
   stat:
     path: "/var/cache/{{ neutron_venv_download_url | basename }}"
     get_md5: False
-  when: neutron_venv_enabled | bool
+  when:
+    - not neutron_developer_mode | bool
+    - neutron_venv_enabled | bool
   register: local_venv_stat
   tags:
     - neutron-install
@@ -100,7 +124,9 @@
   uri:
     url: "{{ neutron_venv_download_url | replace('tgz', 'checksum') }}"
     return_content: True
-  when: neutron_venv_enabled | bool
+  when:
+    - not neutron_developer_mode | bool
+    - neutron_venv_enabled | bool
   register: remote_venv_checksum
   tags:
     - neutron-install
@@ -119,6 +145,7 @@
   ignore_errors: true
   register: get_venv
   when:
+    - not neutron_developer_mode | bool
     - neutron_venv_enabled | bool
     - (local_venv_stat.stat.exists == False or
         {{ local_venv_stat.stat.checksum is defined and local_venv_stat.stat.checksum != remote_venv_checksum.content | trim }})
@@ -150,6 +177,7 @@
     path: "{{ neutron_venv_bin | dirname }}"
     state: directory
   when:
+    - not neutron_developer_mode | bool
     - neutron_venv_enabled | bool
     - neutron_get_venv | changed
   tags:
@@ -162,6 +190,7 @@
     dest: "{{ neutron_venv_bin | dirname }}"
     copy: "no"
   when:
+    - not neutron_developer_mode | bool
     - neutron_venv_enabled | bool
     - neutron_get_venv | changed
   notify: Restart neutron services
@@ -173,6 +202,7 @@
   command: >
     virtualenv-tools --update-path=auto {{ neutron_venv_bin | dirname }}
   when:
+    - not neutron_developer_mode | bool
     - neutron_venv_enabled | bool
     - neutron_get_venv | success
   tags:
@@ -193,7 +223,7 @@
   with_items: neutron_pip_packages
   when:
     - neutron_venv_enabled | bool
-    - neutron_get_venv | failed
+    - neutron_get_venv | failed or neutron_developer_mode | bool
   notify: Restart neutron services
   tags:
     - neutron-install
@@ -209,9 +239,10 @@
   retries: 5
   delay: 2
   with_items: neutron_pip_packages
-  when: not neutron_venv_enabled | bool
+  when:
+    - not neutron_developer_mode | bool
+    - not neutron_venv_enabled | bool
   notify: Restart neutron services
   tags:
     - neutron-install
     - neutron-pip-packages
-
