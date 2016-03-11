@@ -10,12 +10,8 @@ debug = {{ debug | bool }}
 # seconds between attempts.
 periodic_interval = 10
 
-# LBaas requires an interface driver be set. Choose the one that best
-# matches your plugin.
-# Examples:
-# interface_driver = neutron.agent.linux.interface.OVSInterfaceDriver
-# interface_driver = neutron.agent.linux.interface.BridgeInterfaceDriver
-interface_driver = {{ neutron_driver_interface }}
+# LBaas requires an interface driver be set.
+interface_driver = {{ neutron_plugins[neutron_plugin_type].driver_interface }}
 
 # Use veth for an OVS interface or not.
 # Support kernels with limited namespace support

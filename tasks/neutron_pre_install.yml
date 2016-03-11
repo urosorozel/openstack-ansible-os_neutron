@@ -43,7 +43,7 @@
     - { path: "/openstack", owner: "root", group: "root" }
     - { path: "/etc/neutron" }
     - { path: "/etc/neutron/plugins" }
-    - { path: "/etc/neutron/plugins/{{ neutron_plugin_type }}" }
+    - { path: "/etc/neutron/plugins/{{ neutron_plugin_type.split('.')[0] }}" }
     - { path: "/etc/neutron/rootwrap.d", owner: "root", group: "root" }
     - { path: "/etc/sudoers.d", mode: "0750", owner: "root", group: "root" }
     - { path: "/var/cache/neutron" }

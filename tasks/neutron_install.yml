@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+#TODO(michaelgugino): Break out tasks into yum/apt install steps as
+#required.
 #TODO(evrardjp): Replace the next 2 tasks by a standard apt with cache
 #when https://github.com/ansible/ansible-modules-core/pull/1517 is merged
 #in 1.9.x or we move to 2.0 (if tested working)
@@ -30,7 +32,7 @@
   tags:
     - neutron-apt-packages
 
-- name: Install apt packages
+- name: Install neutron apt dependencies
   apt:
     pkg: "{{ item }}"
     state: latest

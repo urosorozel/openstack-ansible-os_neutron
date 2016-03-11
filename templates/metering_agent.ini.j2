@@ -7,7 +7,7 @@ debug = {{ debug }}
 
 # Drivers
 driver = {{ neutron_driver_metering }}
-interface_driver = {{ neutron_driver_interface }}
+interface_driver = {{ neutron_plugins[neutron_plugin_type].driver_interface }}
 
 # Intervals
 measure_interval = 30
