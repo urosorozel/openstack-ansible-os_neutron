@@ -1,0 +1,128 @@
+---
+# Copyright 2015, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Deploy neutron
+  hosts: neutron_all
+  user: root
+  gather_facts: true
+  pre_tasks:
+    - name: Ensure rabbitmq vhost
+      rabbitmq_vhost:
+        name: "{{ neutron_rabbitmq_vhost }}"
+        state: "present"
+      delegate_to: "10.100.100.2"
+      when: inventory_hostname == groups['neutron_all'][0]
+      tags:
+        - neutron-rabbitmq
+        - neutron-rabbitmq-vhost
+    - name: Ensure rabbitmq user
+      rabbitmq_user:
+        user: "{{ neutron_rabbitmq_userid }}"
+        password: "{{ neutron_rabbitmq_password }}"
+        vhost: "{{ neutron_rabbitmq_vhost }}"
+        configure_priv: ".*"
+        read_priv: ".*"
+        write_priv: ".*"
+        state: "present"
+      delegate_to: "10.100.100.2"
+      when: inventory_hostname == groups['neutron_all'][0]
+      tags:
+        - neutron-rabbitmq
+        - neutron-rabbitmq-user
+    - name: Create DB for service
+      mysql_db:
+        login_user: "root"
+        login_password: "secrete"
+        login_host: "localhost"
+        name: "{{ neutron_galera_database }}"
+        state: "present"
+      delegate_to: "10.100.100.2"
+      when: inventory_hostname == groups['neutron_all'][0]
+      tags:
+        - mysql-db-setup
+    - name: Grant access to the DB for the service
+      mysql_user:
+        login_user: "root"
+        login_password: "secrete"
+        login_host: "localhost"
+        name: "{{ neutron_galera_database }}"
+        password: "{{ neutron_container_mysql_password }}"
+        host: "{{ item }}"
+        state: "present"
+        priv: "{{ neutron_galera_database }}.*:ALL"
+      with_items:
+        - "localhost"
+        - "%"
+      delegate_to: "10.100.100.2"
+      when: inventory_hostname == groups['neutron_all'][0]
+      tags:
+        - mysql-db-setup
+  roles:
+    - role: "{{ rolename | basename }}"
+  vars:
+    external_lb_vip_address: 10.100.100.3
+    internal_lb_vip_address: 10.100.100.3
+    neutron_galera_address: 10.100.100.2
+    neutron_galera_database: neutron
+    galera_root_password: secrete
+    galera_client_drop_config_file: false
+    neutron_rabbitmq_password: secrete
+    neutron_rabbitmq_userid: neutron
+    neutron_rabbitmq_vhost: /neutron
+    rabbitmq_servers: 10.100.100.2
+    rabbitmq_use_ssl: true
+    rabbitmq_port: 5671
+    keystone_admin_user_name: admin
+    keystone_admin_tenant_name: admin
+    keystone_auth_admin_password: SuperSecretePassword
+    keystone_service_adminuri_insecure: false
+    keystone_service_internaluri_insecure: false
+    keystone_service_internaluri: "http://{{ internal_lb_vip_address }}:5000"
+    keystone_service_internalurl: "{{ keystone_service_internaluri }}/v3"
+    keystone_service_adminuri: "http://{{ internal_lb_vip_address }}:35357"
+    keystone_service_adminurl: "{{ keystone_service_adminuri }}/v3"
+    keystone_service_region: RegionOne
+    nova_keystone_auth_plugin: password
+    nova_metadata_port: 8775
+    nova_metadata_proxy_secret: secrete
+    nova_service_adminurl: "http://{{ internal_lb_vip_address }}:8774"
+    nova_service_password: secrete
+    nova_service_project_domain_id: default
+    nova_service_project_name: service
+    nova_service_region: RegionOne
+    nova_service_user_domain_id: default
+    nova_service_user_name: nova
+    neutron_venv_tag: testing
+    #TODO(jmccrory): Remove when requirements_git_install_branch is bumped in openstack-ansible
+    # Pinned eventlet version in current SHA is is no longer available on PyPi
+    # https://review.openstack.org/#/c/277912/
+    neutron_requirements_git_install_branch: 1a6867129b19c1a34c8fe694d9062eca427507fe
+    neutron_developer_mode: true
+    neutron_provider_networks:
+      network_flat_networks: "flat"
+      network_mappings: "flat:eth12,vlan:eth11"
+      network_types: "vxlan,flat,vlan"
+      network_vlan_ranges: "vlan:1:1,vlan:1024:1025"
+      network_vxlan_ranges: "1:1000"
+    neutron_ha_vrrp_auth_password: secrete
+    neutron_service_password: secrete
+    neutron_container_mysql_password: SuperSecrete
+    neutron_management_address: "{{ internal_lb_vip_address }}"
+    openrc_os_password: "{{ keystone_auth_admin_password }}"
+    openrc_os_domain_name: Default
+    memcached_servers: 127.0.0.1
+    memcached_encryption_key: secrete
+    debug: true
+    verbose: true
