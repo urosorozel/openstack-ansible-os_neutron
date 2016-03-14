@@ -85,11 +85,26 @@
     - neutron-install
     - neutron-pip-packages
 
-- name: Set constraint file fact for developer mode
-  set_fact:
-    pip_install_options: "{{ pip_install_options|default('') }} --constraint /opt/developer-pip-constraints.txt"
+- name: Clone requirements git repository
+  git:
+    repo: "{{ neutron_requirements_git_repo }}"
+    dest: "/opt/requirements"
+    clone: yes
+    update: yes
+    version: "{{ neutron_requirements_git_install_branch }}"
   when:
     - neutron_developer_mode | bool
+  tags:
+    - neutron-install
+    - neutron-pip-packages
+
+- name: Add constraints to pip_install_options fact for developer mode
+  set_fact:
+    pip_install_options: "{{ pip_install_options|default('') }} --constraint /opt/developer-pip-constraints.txt --constraint /opt/requirements/upper-constraints.txt"
+  when:
+    - neutron_developer_mode | bool
+    - "'/opt/developer-pip-constraints.txt' not in pip_install_options|default('')"
+    - "'/opt/requirements/upper-constraints.txt' not in pip_install_options|default('')"
   tags:
     - neutron-install
     - neutron-pip-packages
