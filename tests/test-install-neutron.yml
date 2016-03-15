@@ -18,6 +18,28 @@
   user: root
   gather_facts: true
   pre_tasks:
+    - name: Use the unconfined aa profile
+      lxc_container:
+        name: "{{ container_name }}"
+        container_config:
+          - "lxc.aa_profile=unconfined"
+      delegate_to: "{{ physical_host }}"
+    - name: Neutron extra lxc config
+      lxc_container:
+        name: "{{ container_name }}"
+        container_command: |
+          [[ ! -d "/lib/modules" ]] && mkdir -p "/lib/modules"
+        container_config:
+          - "lxc.cgroup.devices.allow=a *:* rmw"
+          - "lxc.mount.entry=/lib/modules lib/modules none bind 0 0"
+      delegate_to: "{{ physical_host }}"
+    - name: Wait for ssh to be available
+      local_action:
+        module: wait_for
+        port: "{{ ansible_ssh_port | default('22') }}"
+        host: "{{ ansible_ssh_host | default(inventory_hostname) }}"
+        search_regex: OpenSSH
+        delay: 1
     - name: Ensure rabbitmq vhost
       rabbitmq_vhost:
         name: "{{ neutron_rabbitmq_vhost }}"
@@ -112,7 +134,7 @@
     neutron_developer_mode: true
     neutron_provider_networks:
       network_flat_networks: "flat"
-      network_mappings: "flat:eth12,vlan:eth11"
+      network_mappings: "flat:{{ ansible_default_ipv4.interface }}"
       network_types: "vxlan,flat,vlan"
       network_vlan_ranges: "vlan:1:1,vlan:1024:1025"
       network_vxlan_ranges: "1:1000"
