@@ -71,6 +71,8 @@
         - mysql-db-setup
   roles:
     - role: "{{ rolename | basename }}"
+  post_tasks:
+    - include: test-neutron-functional.yml
   vars:
     external_lb_vip_address: 10.100.100.3
     internal_lb_vip_address: 10.100.100.3
@@ -120,6 +122,7 @@
     neutron_service_password: secrete
     neutron_container_mysql_password: SuperSecrete
     neutron_management_address: "{{ internal_lb_vip_address }}"
+    openrc_os_auth_url: "http://127.0.0.1:5000/v3"
     openrc_os_password: "{{ keystone_auth_admin_password }}"
     openrc_os_domain_name: Default
     memcached_servers: 127.0.0.1
