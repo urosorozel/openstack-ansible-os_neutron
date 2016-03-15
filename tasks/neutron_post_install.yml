@@ -121,23 +121,11 @@
   tags:
     - neutron_config
 
-- name: Drop iptables checksum fix
-  copy:
-    src: "post-up-checksum-rules"
-    dest: "/etc/network/if-up.d/post-up-checksum-rules"
-    owner: "root"
-    group: "root"
-    mode: "0755"
-  when: >
-    inventory_hostname in groups[neutron_services['neutron-linuxbridge-agent']['group']]
-  tags:
-    - neutron-config
-    - neutron-checksum-fix
-
-- name: Run iptables checksum fix
-  command: /etc/network/if-up.d/post-up-checksum-rules
-  when: >
-    inventory_hostname in groups[neutron_services['neutron-linuxbridge-agent']['group']]
+#TODO(jmccrory): Remove this task prior to Newton release
+- name: Remove iptables checksum fix script
+  file:
+    path: /etc/network/if-up.d/post-up-checksum-rules
+    state: absent
   tags:
     - neutron-config
     - neutron-checksum-fix
