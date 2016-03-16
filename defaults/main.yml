@@ -97,13 +97,16 @@ neutron_rabbitmq_vhost: /neutron
 neutron_plugin_core: "{{ neutron_plugins[neutron_plugin_type].plugin_core }}"
 # Other plugins can be added to the system by simply extending the list `neutron_plugin_base`.
 # neutron_plugin_base:
-#   - neutron.services.l3_router.l3_router_plugin.L3RouterPlugin
-#   - neutron.services.metering.metering_plugin.MeteringPlugin
-#   - neutron_lbaas.services.loadbalancer.plugin.LoadBalancerPluginv2
-#   - neutron.services.vpn.plugin.VPNDriverPlugin
+#   - router
+#   - firewall
+#   - lbaas
+#   - lbaasv2
+#   - vpnaas
+#   - metering
+#   - qos
 neutron_plugin_base:
-  - neutron.services.l3_router.l3_router_plugin.L3RouterPlugin
-  - neutron.services.metering.metering_plugin.MeteringPlugin
+  - router
+  - metering
 neutron_plugin_loaded_base: "{% for plugin in neutron_plugin_base %}{{ plugin }}{% if not loop.last %},{% endif %}{% endfor %}"
 
 # Neutron Plugins
@@ -199,18 +202,21 @@ neutron_services:
 # See documentation section titled "Configuring the Network Load Balacing
 # Service (Optional)" for more details.
 #
-# To enable LBaaS v1, add LoadBalancerPlugin to neutron_plugin_base list.
-# To enable LBaaS v2, add LoadBalancerPluginv2 to neutron_plugin_base list
-neutron_lbaas: "{% if 'neutron_lbaas.services.loadbalancer.plugin.LoadBalancerPlugin' in neutron_plugin_base %}True{% else %}False{% endif %}"
-neutron_lbaasv2: "{% if 'neutron_lbaas.services.loadbalancer.plugin.LoadBalancerPluginv2' in neutron_plugin_base %}True{% else %}False{% endif %}"
+# To enable LBaaS v1, add 'lbaas' to neutron_plugin_base list.
+# To enable LBaaS v2, add 'lbaasv2' to neutron_plugin_base list
+# TODO(odyssey4me): Remove the classpath from this conditional in the Newton cycle.
+neutron_lbaas: "{% if 'lbaas' in neutron_plugin_base or 'neutron_lbaas.services.loadbalancer.plugin.LoadBalancerPlugin' in neutron_plugin_base %}True{% else %}False{% endif %}"
+neutron_lbaasv2: "{% if 'lbaasv2' in neutron_plugin_base or 'neutron_lbaas.services.loadbalancer.plugin.LoadBalancerPluginv2' in neutron_plugin_base %}True{% else %}False{% endif %}"
 
 ## Neutron L3
-## Please add the L3RouterPlugin to the neutron_plugin_base list
-neutron_l3: "{% if 'neutron.services.l3_router.l3_router_plugin.L3RouterPlugin' in neutron_plugin_base %}True{% else %}False{% endif %}"
+## Please add 'router' to the neutron_plugin_base list
+#TODO(odyssey4me): Remove the class path from this conditional in the Newton cycle
+neutron_l3: "{% if 'router' in neutron_plugin_base or 'neutron.services.l3_router.l3_router_plugin.L3RouterPlugin' in neutron_plugin_base %}True{% else %}False{% endif %}"
 
 ## Neutron Metering
-# Please add the MeteringPlugin to the neutron_plugin_base list
-neutron_metering: "{% if 'neutron.services.metering.metering_plugin.MeteringPlugin' in neutron_plugin_base %}True{% else %}False{% endif %}"
+# Please add 'metering' to the neutron_plugin_base list
+#TODO(odyssey4me): Remove the class path from this conditional in the Newton cycle
+neutron_metering: "{% if 'metering' in neutron_plugin_base or 'neutron.services.metering.metering_plugin.MeteringPlugin' in neutron_plugin_base %}True{% else %}False{% endif %}"
 
 ## Drivers
 neutron_driver_network_scheduler: neutron.scheduler.dhcp_agent_scheduler.WeightScheduler
