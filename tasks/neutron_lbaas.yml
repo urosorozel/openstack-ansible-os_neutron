@@ -20,17 +20,17 @@
 #
 # These tasks will ensure that the correct agent is the only one running.
 
-- name: Check if LBaaS agent v1 upstart script exists when v2 is in neutron_plugins_base
+- name: Check if LBaaS agent v1 upstart script exists when v2 is in neutron_plugin_base
   stat: path=/etc/init/neutron-lbaas-agent.conf
   register: neutron_lbaas_upstart
   when: neutron_lbaasv2 | bool
 
-- name: Check if LBaaS agent v2 upstart script exists when v1 is in neutron_plugins_base
+- name: Check if LBaaS agent v2 upstart script exists when v1 is in neutron_plugin_base
   stat: path=/etc/init/neutron-lbaasv2-agent.conf
   register: neutron_lbaasv2_upstart
   when: neutron_lbaas | bool
 
-- name: Ensure LBaaS v1 agent is stopped when v2 is in neutron_plugins_base
+- name: Ensure LBaaS v1 agent is stopped when v2 is in neutron_plugin_base
   service:
     name: neutron-lbaas-agent
     enabled: no
@@ -39,11 +39,11 @@
     - neutron_lbaasv2 | bool
     - neutron_lbaas_upstart.stat.exists
 
-- name: Ensure LBaaS v2 agent is stopped when v1 is in neutron_plugins_base
+- name: Ensure LBaaS v2 agent is stopped when v1 is in neutron_plugin_base
   service:
     name: neutron-lbaasv2-agent
     enabled: no
     state: stopped
-  when: 
+  when:
     - neutron_lbaas | bool
     - neutron_lbaasv2_upstart.stat.exists
