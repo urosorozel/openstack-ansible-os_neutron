@@ -19,7 +19,7 @@ vlan_transparent = False
 
 # Plugins
 core_plugin = {{ neutron_plugin_core }}
-{% if neutron_plugin_type != 'plumgrid' %}
+{% if (neutron_plugin_type != 'plumgrid' and neutron_plugin_type != 'nuage') %}
 service_plugins = {{ neutron_plugin_loaded_base }}
 {% endif %}
 

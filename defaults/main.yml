@@ -121,6 +121,10 @@ neutron_plugins:
     plugin_core: networking_plumgrid.neutron.plugins.plugin.NeutronPluginPLUMgridV2
     plugin_ini: plugins/plumgrid/plumgrid.ini
     plugin_conf_ini_overrides: "{{ neutron_plumgrid_conf_ini_overrides }}"
+  nuage:
+    plugin_core: neutron.plugins.nuage.plugin.NuagePlugin
+    plugin_ini: plugins/nuage/nuage.ini
+    plugin_conf_ini_overrides: "{{ neutron_nuage_conf_ini_overrides }}"
 
 neutron_services:
  neutron-dhcp-agent:
@@ -407,11 +411,17 @@ neutron_pip_packages:
 neutron_optional_plumgrid_pip_packages:
   - networking-plumgrid==2015.2.1.1
 
+neutron_proprietary_nuage_pip_packages:
+  - nuage-openstack-neutron
+  - nuage-openstack-neutronclient
+  - nuagenetlib
+
 ## Tunable overrides
 neutron_neutron_conf_overrides: {}
 neutron_ml2_conf_ini_overrides: {}
 neutron_plumgrid_conf_ini_overrides: {}
 neutron_plumlib_ini_overrides: {}
+neutron_nuage_conf_ini_overrides: {}
 neutron_dhcp_agent_ini_overrides: {}
 neutron_api_paste_ini_overrides: {}
 neutron_rootwrap_conf_overrides: {}
