@@ -134,6 +134,11 @@
   include: plumgrid_config.yml
   when: neutron_plugin_type == 'plumgrid'
 
+- name: Setup Nuage neutron config
+  include: nuage_neutron_config.yml
+  when:
+    - neutron_plugin_type == 'nuage'
+
 - name: Get neutron command path
   command: which neutron
   register: neutron_command_path
