@@ -107,10 +107,8 @@
     nova_service_user_domain_id: default
     nova_service_user_name: nova
     neutron_venv_tag: testing
-    #TODO(jmccrory): Remove when requirements_git_install_branch is bumped in openstack-ansible
-    # Pinned eventlet version in current SHA is is no longer available on PyPi
-    # https://review.openstack.org/#/c/277912/
-    neutron_requirements_git_install_branch: 1a6867129b19c1a34c8fe694d9062eca427507fe
+    neutron_git_install_branch: stable/mitaka
+    neutron_requirements_git_install_branch: f8cf7eba898a1424549c730d6692ec4e9573c0ed # HEAD of "master" as of 23.03.2016
     neutron_developer_mode: true
     neutron_provider_networks:
       network_flat_networks: "flat"
