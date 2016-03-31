@@ -60,7 +60,6 @@
     virtualenv: "{{ neutron_venv_bin | dirname }}"
     virtualenv_site_packages: "no"
     extra_args: "--isolated"
-  when: install_packages|failed
   register: install_packages_fall_back
   until: install_packages_fall_back|success
   retries: 5
@@ -68,6 +67,7 @@
   with_items:
     - "{{ neutron_optional_plumgrid_pip_packages }}"
   when:
+    - install_packages | failed
     - neutron_venv_enabled | bool
     - inventory_hostname in groups[neutron_services['neutron-server']['group']]
   tags:
@@ -98,7 +98,6 @@
     name: "{{ item }}"
     state: present
     extra_args: "--isolated"
-  when: install_packages|failed
   register: install_packages_fall_back
   until: install_packages_fall_back|success
   retries: 5
@@ -106,6 +105,7 @@
   with_items:
     - "{{ neutron_optional_plumgrid_pip_packages }}"
   when:
+    - install_packages | failed
     - not neutron_venv_enabled | bool
     - inventory_hostname in groups[neutron_services['neutron-server']['group']]
   tags:
