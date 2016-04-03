@@ -24,19 +24,19 @@ verbose: True
 cache_timeout: 600
 
 neutron_git_repo: https://git.openstack.org/openstack/neutron
-neutron_git_install_branch: stable/mitaka
+neutron_git_install_branch: master
 
 neutron_fwaas_git_repo: https://git.openstack.org/openstack/neutron-fwaas
-neutron_fwaas_git_install_branch: stable/mitaka
+neutron_fwaas_git_install_branch: master
 
 neutron_lbaas_git_repo: https://git.openstack.org/openstack/neutron-lbaas
-neutron_lbaas_git_install_branch: stable/mitaka
+neutron_lbaas_git_install_branch: master
 
 neutron_vpnaas_git_repo: https://git.openstack.org/openstack/neutron-vpnaas
-neutron_vpnaas_git_install_branch: stable/mitaka
+neutron_vpnaas_git_install_branch: master
 
 neutron_requirements_git_repo: https://git.openstack.org/openstack/requirements
-neutron_requirements_git_install_branch: stable/mitaka
+neutron_requirements_git_install_branch: master
 
 neutron_developer_mode: false
 neutron_developer_constraints:
