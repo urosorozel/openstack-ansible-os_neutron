@@ -27,6 +27,15 @@
     url: "http://localhost:9696"
     status_code: 200
 
+- name: Ensure that the DHCP agent is alive
+  shell: |
+    . /root/openrc
+    neutron agent-list | grep DHCP
+  register: neutron_dhcp_agent
+  until: neutron_dhcp_agent.stdout.find(':-)') != -1
+  retries: 5
+  delay: 10
+
 - name: Create test network
   neutron:
     command: create_network
@@ -46,8 +55,22 @@
     . /root/openrc
     neutron port-create --name test-port test-network
   register: neutron_port_create
+  until: neutron_port_create.rc == 0
+  retries: 5
+  delay: 10
 
-- name: Ensure neutron port was created successfully
-  assert:
-    that:
-      - neutron_port_create.rc == 0
+- name: Check for dhcp network namespace
+  shell: |
+    ip netns | grep "^qdhcp"
+  register: dhcp_namespace
+  until: dhcp_namespace.rc == 0
+  retries: 5
+  delay: 10
+
+- name: Check for iptables checksum rule
+  shell: |
+    ip netns exec {{ dhcp_namespace.stdout }} iptables -C neutron-dhcp-age-POSTROUTING -t mangle -p udp --dport 68 -j CHECKSUM --checksum-fill
+  register: checksum_rule
+  until : checksum_rule.rc == 0
+  retries: 5
+  delay: 10
