@@ -121,6 +121,6 @@
     service_home: "{{ neutron_system_home_folder }}"
   when:
     - inventory_hostname in groups[neutron_services['neutron-lbaasv2-agent']['group']]
-    - neutron_services['neutron-lbaas-agent'].service_en | bool
+    - neutron_services['neutron-lbaasv2-agent'].service_en | bool
   tags:
     - upstart-init
