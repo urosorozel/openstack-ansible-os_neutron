@@ -5,7 +5,8 @@
 type_drivers = {{ neutron_ml2_drivers_type }}
 tenant_network_types = {{ neutron_provider_networks.network_types }}
 mechanism_drivers = {{ neutron_ml2_mechanism_drivers }}
-extension_drivers = port_security
+extension_drivers = port_security{% if 'qos' in neutron_plugin_base %},qos{% endif %}
+
 path_mtu = 0
 segment_mtu = 0
 
