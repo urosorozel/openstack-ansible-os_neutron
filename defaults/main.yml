@@ -195,6 +195,16 @@ neutron_services:
    config_options: --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/lbaas_agent.ini
    config_overrides: "{{ neutron_lbaas_agent_ini_overrides }}"
    config_type: "ini"
+ neutron-vpnaas-agent:
+   group: neutron_l3_agent
+   service_name: neutron-vpnaas-agent
+   service_en: "{{ neutron_vpnaas }}"
+   service_conf: vpnaas_agent.ini
+   service_group: neutron_agent
+   service_rootwrap: rootwrap.d/vpnaas.filters
+   config_options: --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/vpnaas_agent.ini
+   config_overrides: "{{ neutron_vpnaas_agent_ini_overrides }}"
+   config_type: "ini"
  neutron-server:
    group: neutron_server
    service_name: neutron-server
@@ -226,6 +236,10 @@ neutron_metering: "{% if 'metering' in neutron_plugin_base or 'neutron.services.
 # Please add the 'firewall' to the neutron_plugin_base list
 neutron_fwaas: "{% if 'firewall' in neutron_plugin_base %}True{% else %}False{% endif %}"
 
+## Neutron VPNaaS
+# Please add the 'vpnaas' to the neutron_plugin_base list
+neutron_vpnaas: "{% if 'vpnaas' in neutron_plugin_base %}True{% else %}False{% endif %}"
+
 ## Drivers
 neutron_driver_network_scheduler: neutron.scheduler.dhcp_agent_scheduler.WeightScheduler
 neutron_driver_router_scheduler: neutron.scheduler.l3_agent_scheduler.LeastRoutersScheduler
@@ -235,6 +249,7 @@ neutron_driver_metering: neutron.services.metering.drivers.iptables.iptables_dri
 neutron_driver_dhcp: neutron.agent.linux.dhcp.Dnsmasq
 neutron_driver_quota: neutron.db.quota.driver.DbQuotaDriver
 neutron_driver_firewall: neutron.agent.linux.iptables_firewall.IptablesFirewallDriver
+neutron_driver_vpnaas: neutron.services.vpn.device_drivers.ipsec.OpenSwanDriver
 
 ## Quotas
 neutron_default_quota: -1
@@ -382,6 +397,9 @@ neutron_apt_packages:
 neutron_lbaas_apt_packages:
   - haproxy
 
+neutron_vpnaas_apt_packages:
+  - openswan
+
 neutron_apt_remove_packages:
   - conntrackd
 
@@ -400,6 +418,7 @@ neutron_pip_packages:
   - neutron
   - neutron_fwaas
   - neutron_lbaas
+  - neutron_vpnaas
   - pycrypto
   - python-glanceclient
   - python-keystoneclient
@@ -432,3 +451,4 @@ neutron_metadata_agent_ini_overrides: {}
 neutron_metering_agent_ini_overrides: {}
 neutron_linuxbridge_agent_ini_overrides: {}
 neutron_lbaas_agent_ini_overrides: {}
+neutron_vpnaas_agent_ini_overrides: {}
