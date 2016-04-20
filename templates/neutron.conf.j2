@@ -164,7 +164,7 @@ service_provider = LOADBALANCER:Haproxy:neutron_lbaas.services.loadbalancer.driv
 service_provider = LOADBALANCERV2:Haproxy:neutron_lbaas.drivers.haproxy.plugin_driver.HaproxyOnHostPluginDriver:default
 {% endif %}
 {% if neutron_vpnaas| bool %}
-service_provider = VPN:openswan:neutron.services.vpn.service_drivers.ipsec.IPsecVPNDriver:default
+service_provider = VPN:openswan:neutron_vpnaas.services.vpn.service_drivers.ipsec.IPsecVPNDriver:default
 {% endif %}
 
 {% endif %}
