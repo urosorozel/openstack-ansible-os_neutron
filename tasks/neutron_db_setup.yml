@@ -41,7 +41,7 @@
 
 - name: Get neutron migrations facts
   neutron_migrations_facts:
-    release: mitaka
+    release: newton
     library_path: "{{ neutron_lib_dir }}"
     bin_path: "{{ neutron_bin }}"
   when: neutron_plugin_type == 'ml2'
