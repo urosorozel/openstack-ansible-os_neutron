@@ -18,6 +18,6 @@
     name: "{{ item.value.service_name }}"
     state: restarted
     pattern: "{{ item.value.service_name }}"
-  with_dict: neutron_services
+  with_dict: "{{ neutron_services }}"
   failed_when: false
   when: item.value.service_en | bool

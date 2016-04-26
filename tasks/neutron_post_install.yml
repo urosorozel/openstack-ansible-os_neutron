@@ -75,7 +75,7 @@
     mode: "0644"
     config_overrides: "{{ item.value.config_overrides }}"
     config_type: "{{ item.value.config_type }}"
-  with_dict: neutron_services
+  with_dict: "{{ neutron_services }}"
   notify:
     - Restart neutron services
   when:
@@ -112,7 +112,7 @@
     dest: "/etc/neutron/{{ item.value.service_rootwrap }}"
     owner: "root"
     group: "root"
-  with_dict: neutron_services
+  with_dict: "{{ neutron_services }}"
   when:
       - item.value.service_en | bool
       - item.value.service_rootwrap is defined
