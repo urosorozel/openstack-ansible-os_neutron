@@ -344,7 +344,6 @@ neutron_l3_ha_net_cidr: 169.254.192.0/18
 
 # DHCP AGENT CONFIG
 neutron_dhcp_config:
-  dhcp-option-force: "26,1450"
   log-facility: "/var/log/neutron/neutron-dnsmasq.log"
 
 # Types of networks supported by the ml2 plugin
