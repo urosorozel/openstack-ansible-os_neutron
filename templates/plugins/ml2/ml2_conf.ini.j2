@@ -7,9 +7,6 @@ tenant_network_types = {{ neutron_provider_networks.network_types }}
 mechanism_drivers = {{ neutron_plugins[neutron_plugin_type].mechanisms }}
 extension_drivers = port_security{% if 'qos' in neutron_plugin_base %},qos{% endif %}
 
-path_mtu = 0
-segment_mtu = 0
-
 {% if neutron_provider_networks.network_flat_networks is defined %}
 
 # ML2 flat networks
