@@ -170,7 +170,7 @@ service_provider = VPN:openswan:neutron_vpnaas.services.vpn.service_drivers.ipse
 {% if neutron_fwaas | bool and neutron_plugin_type != 'plumgrid' %}
 [fwaas]
 enabled = true
-driver = neutron.services.firewall.drivers.linux.iptables_fwaas.IptablesFwaasDriver
+driver = neutron_fwaas.services.firewall.drivers.linux.iptables_fwaas.IptablesFwaasDriver
 {% endif %}
 
 # Agent
