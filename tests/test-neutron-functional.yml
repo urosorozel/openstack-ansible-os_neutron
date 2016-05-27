@@ -69,7 +69,7 @@
 
 - name: Check for iptables checksum rule
   shell: |
-    ip netns exec {{ dhcp_namespace.stdout }} iptables -C neutron-dhcp-age-POSTROUTING -t mangle -p udp --dport 68 -j CHECKSUM --checksum-fill
+    ip netns exec {{ dhcp_namespace.stdout.split(' ')[0] }} iptables -C neutron-dhcp-age-POSTROUTING -t mangle -p udp --dport 68 -j CHECKSUM --checksum-fill
   register: checksum_rule
   until : checksum_rule.rc == 0
   retries: 5

@@ -36,10 +36,7 @@
 - include: neutron_post_install.yml
 
 # neutron system services
-- include: neutron_upstart_init.yml
-  when:
-    - ansible_distribution | lower == 'ubuntu'
-    - ansible_distribution_version | version_compare('16.04', '<')
+- include: neutron_init.yml
 
 - include: neutron_lbaas.yml
 

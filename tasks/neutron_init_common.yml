@@ -1,5 +1,5 @@
 ---
-# Copyright 2014, Rackspace US, Inc.
+# Copyright 2016, Rackspace US, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,26 +13,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Place the init script
-  template:
-    src: "neutron-upstart-init.j2"
-    dest: "/etc/init/{{ program_name }}.conf"
-    mode: "0644"
-    owner: "root"
-    group: "root"
-  notify:
-    - Restart neutron services
+- include: neutron_init_upstart.yml
+  when:
+    - ansible_distribution | lower == 'ubuntu'
+    - ansible_distribution_version | version_compare('16.04', '<')
   tags:
-    - upstart-init
     - neutron-init
 
-- name: Reload init scripts
-  shell: |
-    initctl reload-configuration
-  notify:
-    - Restart neutron services
+- include: neutron_init_systemd.yml
+  when:
+    - ansible_distribution | lower == 'ubuntu'
+    - ansible_distribution_version | version_compare('16.04', '>=')
   tags:
-    - upstart-init
     - neutron-init
 
 - name: Load service

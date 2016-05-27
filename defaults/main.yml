@@ -416,6 +416,9 @@ neutron_apt_packages:
   - libpq-dev
   - radvd
 
+neutron_lxb_apt_packages:
+  - bridge-utils
+
 neutron_lbaas_apt_packages:
   - haproxy
 
