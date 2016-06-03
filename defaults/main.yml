@@ -405,29 +405,6 @@ neutron_service_in_ldap: false
 # neutron_local_ip is used for the VXLAN local tunnel endpoint
 neutron_local_ip: 127.0.0.1
 
-neutron_apt_packages:
-  - conntrack
-  - dnsmasq-base
-  - dnsmasq-utils
-  - ebtables
-  - ipset
-  - iputils-arping
-  - keepalived
-  - libpq-dev
-  - radvd
-
-neutron_lxb_apt_packages:
-  - bridge-utils
-
-neutron_lbaas_apt_packages:
-  - haproxy
-
-neutron_vpnaas_apt_packages:
-  - openswan
-
-neutron_apt_remove_packages:
-  - conntrackd
-
 # neutron packages that must be installed before anything else
 neutron_requires_pip_packages:
   - virtualenv

@@ -14,16 +14,12 @@
 # limitations under the License.
 
 - include: neutron_init_upstart.yml
-  when:
-    - ansible_distribution | lower == 'ubuntu'
-    - ansible_distribution_version | version_compare('16.04', '<')
+  when: pid1_name == "init"
   tags:
     - neutron-init
 
 - include: neutron_init_systemd.yml
-  when:
-    - ansible_distribution | lower == 'ubuntu'
-    - ansible_distribution_version | version_compare('16.04', '>=')
+  when: pid1_name == "systemd"
   tags:
     - neutron-init
 

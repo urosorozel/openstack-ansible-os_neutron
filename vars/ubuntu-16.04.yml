@@ -35,8 +35,25 @@ neutron_apt_dependencies:
   - libpq-dev
   - radvd
 
+neutron_apt_packages:
+  - conntrack
+  - dnsmasq-base
+  - dnsmasq-utils
+  - ebtables
+  - ipset
+  - iputils-arping
+  - keepalived
+  - libpq-dev
+  - radvd
+
+neutron_lxb_apt_packages:
+  - bridge-utils
+
 neutron_lbaas_apt_packages:
   - haproxy
+
+neutron_vpnaas_apt_packages:
+  - openswan
 
 neutron_apt_remove_packages:
   - conntrackd
