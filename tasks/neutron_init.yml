@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: neutron_upstart_common_init.yml
+- include: neutron_init_common.yml
   vars:
     program_name: "{{ neutron_services['neutron-server'].service_name }}"
     program_config_options: "{{ neutron_services['neutron-server'].config_options }}"
@@ -27,7 +27,7 @@
   tags:
     - upstart-init
 
-- include: neutron_upstart_common_init.yml
+- include: neutron_init_common.yml
   vars:
     program_name: "{{ neutron_services['neutron-dhcp-agent'].service_name }}"
     program_config_options: "{{ neutron_services['neutron-dhcp-agent'].config_options }}"
@@ -41,7 +41,7 @@
   tags:
     - upstart-init
 
-- include: neutron_upstart_common_init.yml
+- include: neutron_init_common.yml
   vars:
     program_name: "{{ neutron_services['neutron-l3-agent'].service_name }}"
     program_config_options: "{{ neutron_services['neutron-l3-agent'].config_options }}"
@@ -55,7 +55,7 @@
   tags:
     - upstart-init
 
-- include: neutron_upstart_common_init.yml
+- include: neutron_init_common.yml
   vars:
     program_name: "{{ neutron_services['neutron-linuxbridge-agent'].service_name }}"
     program_config_options: "{{ neutron_services['neutron-linuxbridge-agent'].config_options }}"
@@ -69,7 +69,7 @@
   tags:
     - upstart-init
 
-- include: neutron_upstart_common_init.yml
+- include: neutron_init_common.yml
   vars:
     program_name: "{{ neutron_services['neutron-openvswitch-agent'].service_name }}"
     program_config_options: "{{ neutron_services['neutron-openvswitch-agent'].config_options }}"
@@ -84,7 +84,7 @@
   tags:
     - upstart-init
 
-- include: neutron_upstart_common_init.yml
+- include: neutron_init_common.yml
   vars:
     program_name: "{{ neutron_services['neutron-metadata-agent'].service_name }}"
     program_config_options: "{{ neutron_services['neutron-metadata-agent'].config_options }}"
@@ -98,7 +98,7 @@
   tags:
     - upstart-init
 
-- include: neutron_upstart_common_init.yml
+- include: neutron_init_common.yml
   vars:
     program_name: "{{ neutron_services['neutron-metering-agent'].service_name }}"
     program_config_options: "{{ neutron_services['neutron-metering-agent'].config_options }}"
@@ -112,7 +112,7 @@
   tags:
     - upstart-init
 
-- include: neutron_upstart_common_init.yml
+- include: neutron_init_common.yml
   vars:
     program_name: "{{ neutron_services['neutron-lbaas-agent'].service_name }}"
     program_config_options: "{{ neutron_services['neutron-lbaas-agent'].config_options }}"
@@ -126,7 +126,7 @@
   tags:
     - upstart-init
 
-- include: neutron_upstart_common_init.yml
+- include: neutron_init_common.yml
   vars:
     program_name: "{{ neutron_services['neutron-lbaasv2-agent'].service_name }}"
     program_config_options: "{{ neutron_services['neutron-lbaasv2-agent'].config_options }}"
@@ -140,7 +140,7 @@
   tags:
     - upstart-init
 
-- include: neutron_upstart_common_init.yml
+- include: neutron_init_common.yml
   vars:
     program_name: "{{ neutron_services['neutron-vpnaas-agent'].service_name }}"
     program_config_options: "{{ neutron_services['neutron-vpnaas-agent'].config_options }}"
