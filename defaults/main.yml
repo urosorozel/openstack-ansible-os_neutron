@@ -410,6 +410,13 @@ neutron_vpnaas_apt_packages:
 neutron_apt_remove_packages:
   - conntrackd
 
+# When running in an AIO, we need to implement an iptables rule in any
+# neutron_agent containers to that ensure instances can communicate with
+# the neutron metadata service. This is necessary because in an AIO
+# environment there are no physical interfaces involved in instance ->
+# metadata requests, and this results in the checksums being incorrect.
+neutron_metadata_checksum_fix: False
+
 # neutron packages that must be installed before anything else
 neutron_requires_pip_packages:
   - virtualenv
