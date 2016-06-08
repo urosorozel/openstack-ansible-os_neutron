@@ -156,3 +156,26 @@
   tags:
     - sudoers
     - neutron-sudoers
+
+- name: Drop metadata iptables checksum fix
+  copy:
+    src: "post-up-metadata-checksum"
+    dest: "/etc/network/if-up.d/post-up-metadata-checksum"
+    owner: "root"
+    group: "root"
+    mode: "0755"
+  when:
+    - neutron_metadata_checksum_fix | bool
+    - inventory_hostname in groups[neutron_services['neutron-linuxbridge-agent']['group']]
+  tags:
+    - neutron-config
+    - neutron-checksum-fix
+
+- name: Run metadata iptables checksum fix
+  command: /etc/network/if-up.d/post-up-metadata-checksum
+  when:
+    - neutron_metadata_checksum_fix | bool
+    - inventory_hostname in groups[neutron_services['neutron-linuxbridge-agent']['group']]
+  tags:
+    - neutron-config
+    - neutron-checksum-fix
