@@ -72,7 +72,7 @@
   until: install_packages|success
   retries: 5
   delay: 2
-  with_items: neutron_requires_pip_packages
+  with_items: "{{ neutron_requires_pip_packages }}"
   tags:
     - neutron-install
     - neutron-pip-packages
