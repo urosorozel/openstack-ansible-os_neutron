@@ -5,7 +5,7 @@
 local_ip = {{ neutron_local_ip }}
 enable_tunneling = True
 {% if neutron_provider_networks.network_mappings is defined %}
-physical_interface_mappings = {{ neutron_provider_networks.network_mappings }}
+bridge_mappings = {{ neutron_provider_networks.network_mappings }}
 {% endif %}
 
 [agent]
