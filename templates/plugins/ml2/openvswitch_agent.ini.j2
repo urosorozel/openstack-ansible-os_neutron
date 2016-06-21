@@ -3,7 +3,6 @@
 # Linux bridge agent physical interface mappings
 [ovs]
 local_ip = {{ neutron_local_ip }}
-enable_tunneling = True
 {% if neutron_provider_networks.network_mappings is defined %}
 bridge_mappings = {{ neutron_provider_networks.network_mappings }}
 {% endif %}
