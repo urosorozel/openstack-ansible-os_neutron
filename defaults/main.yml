@@ -114,7 +114,7 @@ neutron_plugins:
     driver_interface: neutron.agent.linux.interface.BridgeInterfaceDriver
     drivers_type: "{{ neutron_ml2_drivers_type }}"
     l2_population: "{{ neutron_l2_population }}"
-    mechanisms: "linuxbridge,l2population"
+    mechanisms: "linuxbridge{% if neutron_l2_population | bool %},l2population{% endif %}"
     plugin_conf_ini_overrides: "{{ neutron_ml2_conf_ini_overrides }}"
     plugin_core: neutron.plugins.ml2.plugin.Ml2Plugin
     plugin_ini: plugins/ml2/ml2_conf.ini
@@ -123,7 +123,7 @@ neutron_plugins:
     driver_interface: neutron.agent.linux.interface.OVSInterfaceDriver
     drivers_type: "{{ neutron_ml2_drivers_type }}"
     l2_population: "{{ neutron_l2_population }}"
-    mechanisms: "openvswitch,l2population"
+    mechanisms: "openvswitch{% if neutron_l2_population | bool %},l2population{% endif %}"
     plugin_conf_ini_overrides: "{{ neutron_ml2_conf_ini_overrides }}"
     plugin_core: neutron.plugins.ml2.plugin.Ml2Plugin
     plugin_ini: plugins/ml2/ml2_conf.ini
@@ -344,8 +344,16 @@ neutron_l3_ha_net_cidr: 169.254.192.0/18
 neutron_dhcp_config:
   log-facility: "/var/log/neutron/neutron-dnsmasq.log"
 
-# Types of networks supported by the ml2 plugin
+_neutron_non_tunnel_types:
+  - flat
+  - vlan
+  - local
+
+# ml2 network type drivers to load
 neutron_ml2_drivers_type: "flat,vlan,vxlan,local"
+
+# Tunnel network types used by the OVS agent
+neutron_tunnel_types: "{{ neutron_ml2_drivers_type.split(',') | difference(_neutron_non_tunnel_types) | join(',') }}"
 
 # Enable or disable L2 Population.
 neutron_l2_population: "False"

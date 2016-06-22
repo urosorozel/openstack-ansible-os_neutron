@@ -2,15 +2,16 @@
 
 # Linux bridge agent physical interface mappings
 [ovs]
+{% if neutron_tunnel_types | length > 0 %}
 local_ip = {{ neutron_local_ip }}
+{% endif %}
 {% if neutron_provider_networks.network_mappings is defined %}
 bridge_mappings = {{ neutron_provider_networks.network_mappings }}
 {% endif %}
 
 [agent]
 l2_population = {{ neutron_plugins[neutron_plugin_type].l2_population }}
-tunnel_types = gre,vxlan
-
+tunnel_types = {{ neutron_tunnel_types }}
 
 # Security groups
 [securitygroup]
