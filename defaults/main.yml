@@ -360,7 +360,7 @@ neutron_l2_population: "False"
 neutron_overlay_network: {}
 
 ## The neutron multicast group address. This should be set as a host variable if used.
-## This defaults to an empty string
+## This defaults to the multicast address "239.1.1.1"
 # neutron_vxlan_group: 239.1.1.100
 neutron_vxlan_group: "239.1.1.1"
 
