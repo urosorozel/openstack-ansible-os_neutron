@@ -64,13 +64,3 @@
     cron_file: "neutron-ha-tool"
   tags:
     - neutron-ha-tool
-
-- name: Remove old cronjobs if found.
-  file:
-    path: "{{ item }}"
-    state: "absent"
-  with_items:
-    - /etc/cron.d/replicate_dhcp
-    - /etc/cron.d/l3_agent_migrate
-  tags:
-    - neutron-ha-tool

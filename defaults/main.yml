@@ -229,6 +229,10 @@ neutron_lbaasv2: "{% if 'lbaasv2' in neutron_plugin_base or 'neutron_lbaas.servi
 #TODO(odyssey4me): Remove the class path from this conditional in the Newton cycle
 neutron_l3: "{% if 'router' in neutron_plugin_base or 'neutron.services.l3_router.l3_router_plugin.L3RouterPlugin' in neutron_plugin_base %}True{% else %}False{% endif %}"
 
+# Set this option to "true" to enable legacy neutron L3HA tool support
+# TODO(cloudnull): Remove this in the Ocata cycle
+neutron_legacy_ha_tool_enabled: false
+
 ## Neutron Metering
 # Please add 'metering' to the neutron_plugin_base list
 #TODO(odyssey4me): Remove the class path from this conditional in the Newton cycle

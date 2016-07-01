@@ -55,8 +55,9 @@
     inventory_hostname == groups['neutron_all'][0]
 
 - include: neutron_l3_ha.yml
-  when: >
-    inventory_hostname in groups[neutron_services['neutron-l3-agent']['group']]
+  when:
+    - inventory_hostname in groups[neutron_services['neutron-l3-agent']['group']]
+    - neutron_legacy_ha_tool_enabled | bool
 
 - name: Flush handlers
   meta: flush_handlers
