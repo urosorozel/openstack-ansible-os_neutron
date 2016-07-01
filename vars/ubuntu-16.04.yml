@@ -13,9 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# This has to be reworked because openvswitch packages are not part of the UCA now
-# current version is included in mainstream xenial.
-ovs_apt_repo: 'deb http://ubuntu-cloud.archive.canonical.com/ubuntu xenial-updates/newton main'
+uca_openstack_release: newton
+uca_apt_repo_url: "http://ubuntu-cloud.archive.canonical.com/ubuntu"
+uca_repo_dist: "{{ ansible_lsb.codename }}-updates/{{ uca_openstack_release }}"
+uca_repo: "deb {{ uca_apt_repo_url }} {{ uca_repo_dist }} main"
 
 ovs_apt_packages:
   - openvswitch-common

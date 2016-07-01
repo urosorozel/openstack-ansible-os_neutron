@@ -13,20 +13,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Add Ubuntu Cloud Archive Keyring package
+- name: Add Ubuntu Cloud Archive keyring
   apt:
     pkg: ubuntu-cloud-keyring
-  register: add_keys
+    state: latest
+  register: add_uca_keys
 
-- name: Enable OVS repo
+- name: Add Ubuntu Cloud Archive Repository
   apt_repository:
-    repo: "{{ ovs_apt_repo }}"
+    repo: "{{ uca_repo }}"
     state: present
+  register: add_uca_repo
 
-- name: Update apt after OVS repo
+- name: Update apt cache after repo addition
   apt:
     update_cache: yes
-  when: add_keys.changed
+  when: add_uca_keys | changed or
+        add_uca_repo | changed
 
 - name: Install apt packages
   apt:
