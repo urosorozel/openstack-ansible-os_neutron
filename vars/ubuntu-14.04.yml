@@ -27,17 +27,6 @@ ovs_apt_packages:
 ## APT Cache options
 cache_timeout: 600
 
-neutron_apt_dependencies:
-  - conntrack
-  - dnsmasq-base
-  - dnsmasq-utils
-  - ebtables
-  - ipset
-  - iputils-arping
-  - keepalived
-  - libpq-dev
-  - radvd
-
 neutron_apt_packages:
   - conntrack
   - dnsmasq-base
