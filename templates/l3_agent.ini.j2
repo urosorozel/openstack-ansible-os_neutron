@@ -13,8 +13,7 @@ gateway_external_network_id = {{ neutron_gateway_external_network_id }}
 # Drivers
 interface_driver = {{ neutron_plugins[neutron_plugin_type].driver_interface }}
 
-# Agent mode (legacy only)
-agent_mode = {{ neutron_agent_mode }}
+agent_mode = {{ neutron_plugins[neutron_plugin_type].l3_agent_mode }}
 
 # Conventional failover
 allow_automatic_l3agent_failover = True
