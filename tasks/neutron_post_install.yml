@@ -130,22 +130,6 @@
   when:
     - neutron_plugin_type == 'nuage'
 
-- name: Get neutron command path
-  command: which neutron
-  register: neutron_command_path
-  when:
-    - not neutron_venv_enabled | bool
-  tags:
-    - neutron-command-bin
-
-- name: Set neutron command path
-  set_fact:
-    neutron_bin: "{{ neutron_command_path.stdout | dirname }}"
-  when:
-    - not neutron_venv_enabled | bool
-  tags:
-    - neutron-command-bin
-
 - name: Drop sudoers file
   template:
     src: "sudoers.j2"

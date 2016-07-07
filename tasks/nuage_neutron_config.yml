@@ -12,33 +12,17 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-- name: Install nuage neutron pip packages (venv)
+- name: Install nuage neutron pip packages
   pip:
     name: "{{ item }}"
     state: latest
-    virtualenv: "{{ neutron_venv_bin | dirname }}"
+    virtualenv: "{{ neutron_bin | dirname }}"
     virtualenv_site_packages: "no"
   retries: 5
   delay: 2
   with_items:
     - "{{ neutron_proprietary_nuage_pip_packages }}"
   when:
-    - neutron_venv_enabled | bool
-    - inventory_hostname in groups[neutron_services['neutron-server']['group']]
-  tags:
-    - neutron-install
-    - neutron-pip-packages
-
-- name: Install nuage neutron pip packages (no venv)
-  pip:
-    name: "{{ item }}"
-    state: latest
-  retries: 5
-  delay: 2
-  with_items:
-    - "{{ neutron_proprietary_nuage_pip_packages }}"
-  when:
-    - not neutron_venv_enabled | bool
     - inventory_hostname in groups[neutron_services['neutron-server']['group']]
   tags:
     - neutron-install

@@ -40,25 +40,12 @@ neutron_developer_constraints:
 
 # Name of the virtual env to deploy into
 neutron_venv_tag: untagged
-neutron_venv_bin: "/openstack/venvs/neutron-{{ neutron_venv_tag }}/bin"
-
-# Set this to enable or disable installing in a venv
-neutron_venv_enabled: true
-
-# The bin path defaults to the venv path however if installation in a
-#  venv is disabled the bin path will be dynamically set based on the
-#  system path used when the installing.
-neutron_bin: "{{ neutron_venv_bin }}"
+neutron_bin: "/openstack/venvs/neutron-{{ neutron_venv_tag }}/bin"
 
 neutron_venv_download_url: http://127.0.0.1/venvs/untagged/ubuntu/neutron.tgz
 
 # Set the lib dir path to that of the local python path where neutron is installed.
-#  This is used for role access to the db migrations.
-#  Example:
-#  neutron_lib_dir: "/usr/local/lib/python2.7/dist-packages/"
-neutron_venv_lib_dir: "{{ neutron_bin | dirname }}/lib/python2.7/site-packages/"
-neutron_non_venv_lib_dir: "/usr/local/lib/python2.7/dist-packages/"
-neutron_lib_dir: "{{ (neutron_venv_enabled | bool) | ternary(neutron_venv_lib_dir, neutron_non_venv_lib_dir) }}"
+neutron_lib_dir: "{{ neutron_bin | dirname }}/lib/python2.7/site-packages/"
 
 # Enable/Disable Ceilometer
 neutron_ceilometer_enabled: False

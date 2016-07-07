@@ -54,17 +54,6 @@
   tags:
     - neutron-dirs
 
-- name: Create neutron venv dir
-  file:
-    path: "{{ item.path }}"
-    state: directory
-  with_items:
-    - { path: "/openstack/venvs" }
-    - { path: "{{ neutron_venv_bin }}" }
-  when: neutron_venv_enabled | bool
-  tags:
-    - neutron-dirs
-
 - name: Test for log directory or link
   shell: |
     if [ -h "/var/log/neutron"  ]; then
