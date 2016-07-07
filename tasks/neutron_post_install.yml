@@ -13,6 +13,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+- name: Get neutron command path
+  command: which neutron
+  register: neutron_command_path
+  when:
+    - not neutron_venv_enabled | bool
+  tags:
+    - neutron-command-bin
+
+- name: Set neutron command path
+  set_fact:
+    neutron_bin: "{{ neutron_command_path.stdout | dirname }}"
+  when:
+    - not neutron_venv_enabled | bool
+  tags:
+    - neutron-command-bin
+
 - name: Copy neutron config
   config_template:
     src: "{{ item.src }}"
@@ -138,22 +154,6 @@
   include: nuage_neutron_config.yml
   when:
     - neutron_plugin_type == 'nuage'
-
-- name: Get neutron command path
-  command: which neutron
-  register: neutron_command_path
-  when:
-    - not neutron_venv_enabled | bool
-  tags:
-    - neutron-command-bin
-
-- name: Set neutron command path
-  set_fact:
-    neutron_bin: "{{ neutron_command_path.stdout | dirname }}"
-  when:
-    - not neutron_venv_enabled | bool
-  tags:
-    - neutron-command-bin
 
 - name: Drop sudoers file
   template:
