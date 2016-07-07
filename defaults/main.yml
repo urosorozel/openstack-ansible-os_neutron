@@ -358,15 +358,6 @@ neutron_tunnel_types: "{{ neutron_ml2_drivers_type.split(',') | difference(_neut
 # Enable or disable L2 Population.
 neutron_l2_population: "False"
 
-## Set this to configure overlay networks. The default is set as an empty hash.
-# neutron_overlay_network:
-#   address: "172.29.241.248"
-#   bridge: "br-vxlan"
-#   interface: "eth10"
-#   netmask: "255.255.252.0"
-#   type: "veth"
-neutron_overlay_network: {}
-
 ## The neutron multicast group address. This should be set as a host variable if used.
 ## This defaults to the multicast address "239.1.1.1"
 # neutron_vxlan_group: 239.1.1.100
