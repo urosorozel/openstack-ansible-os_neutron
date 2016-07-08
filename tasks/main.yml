@@ -79,6 +79,10 @@
 - include: neutron_init.yml
   tags:
     - neutron-install
+- include: calico_init.yml
+  when: neutron_plugin_type == 'ml2.calico'
+  tags:
+    - neutron-install
 
 - include: neutron_db_setup.yml
   when:

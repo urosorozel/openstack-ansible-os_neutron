@@ -62,6 +62,10 @@
   when: >
       neutron_services['neutron-dhcp-agent']['group'] in group_names
 
+- name: Setup Calico config
+  include: calico_config.yml
+  when: neutron_plugin_type == 'ml2.calico'
+
 - name: Generate neutron agent only Config
   config_template:
     src: "{{ item.value.service_conf }}.j2"

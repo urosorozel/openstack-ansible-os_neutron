@@ -35,3 +35,10 @@ dependencies:
   - apt_package_pinning
   - galera_client
   - openstack_openrc
+  - role: etcd
+    etcd_install_type: proxy
+    when:
+      - neutron_services['calico-dhcp-agent']['group'] in group_names
+        or neutron_services['calico-felix']['group'] in group_names
+        or neutron_services['neutron-server']['group'] in group_names
+      - neutron_plugin_type == 'ml2.calico'

@@ -8,6 +8,7 @@ Neutron role for OpenStack-Ansible
    configure-network-services.rst
    app-nuage.rst
    app-plumgrid.rst
+   app-calico.rst
 
 :tags: openstack, neutron, cloud, ansible
 :category: \*nix

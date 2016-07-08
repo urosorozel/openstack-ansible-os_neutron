@@ -35,12 +35,20 @@ neutron_vpnaas_git_install_branch: master
 neutron_requirements_git_repo: https://git.openstack.org/openstack/requirements
 neutron_requirements_git_install_branch: master
 
+calico_git_repo: https://github.com/projectcalico/calico
+calico_git_install_branch: master
+
+networking_calico_git_repo: https://git.openstack.org/openstack/networking-calico
+networking_calico_git_install_branch: master
+
 neutron_developer_mode: false
 neutron_developer_constraints:
   - "git+{{ neutron_git_repo }}@{{ neutron_git_install_branch }}#egg=neutron"
   - "git+{{ neutron_fwaas_git_repo }}@{{ neutron_fwaas_git_install_branch }}#egg=neutron-fwaas"
   - "git+{{ neutron_lbaas_git_repo }}@{{ neutron_lbaas_git_install_branch }}#egg=neutron-lbaas"
   - "git+{{ neutron_vpnaas_git_repo }}@{{ neutron_vpnaas_git_install_branch }}#egg=neutron-vpnaas"
+  - "git+{{ calico_git_repo }}@{{ calico_git_install_branch }}#egg=calico"
+  - "git+{{ networking_calico_git_repo }}@{{ networking_calico_git_install_branch }}#egg=networking-calico"
 
 # Name of the virtual env to deploy into
 neutron_venv_tag: untagged
@@ -144,6 +152,12 @@ neutron_plugins:
     plugin_conf_ini_overrides: "{{ neutron_ml2_conf_ini_overrides }}"
     plugin_core: neutron.plugins.ml2.plugin.Ml2Plugin
     plugin_ini: plugins/ml2/ml2_conf.ini
+  ml2.calico:
+    drivers_type: "flat, local"
+    mechanisms: "calico"
+    plugin_conf_ini_overrides: "{{ neutron_ml2_conf_ini_overrides }}"
+    plugin_core: neutron.plugins.ml2.plugin.Ml2Plugin
+    plugin_ini: plugins/ml2/ml2_conf.ini
   plumgrid:
     plugin_conf_ini_overrides: "{{ neutron_plumgrid_conf_ini_overrides }}"
     plugin_core: networking_plumgrid.neutron.plugins.plugin.NeutronPluginPLUMgridV2
@@ -237,6 +251,23 @@ neutron_services:
    service_name: neutron-server
    service_en: True
    config_options: "--config-file {{ neutron_conf_dir }}/neutron.conf --config-file {{ neutron_conf_dir }}/{{ neutron_plugins[neutron_plugin_type].plugin_ini }} --log-file=/var/log/neutron/neutron-server.log"
+ calico-felix:
+   group: neutron_calico_dhcp_agent
+   service_name: calico-felix
+   service_en: "{{ neutron_plugin_type == 'ml2.calico' }}"
+   service_conf_path: /etc/calico
+   service_conf: felix.cfg
+   config_options: --config-file /etc/calico/felix.cfg
+   config_overrides: "{{ neutron_calico_dhcp_agent_ini_overrides }}"
+   config_type: "ini"
+ calico-dhcp-agent:
+   group: neutron_calico_dhcp_agent
+   service_name: calico-dhcp-agent
+   service_en: "{{ neutron_plugin_type == 'ml2.calico' }}"
+   service_rootwrap: rootwrap.d/dhcp.filters
+   config_options: "--config-file {{ neutron_conf_dir }}/neutron.conf"
+   config_overrides: "{{ neutron_calico_felix_ini_overrides }}"
+   config_type: "ini"
 
 ## Neutron DHCP Agent
 neutron_dhcp: "{% if neutron_plugin_type.split('.')[0] == 'ml2' %}True{% else %}False{% endif %}"
@@ -453,6 +484,11 @@ neutron_pip_packages:
   - python-novaclient
   - repoze.lru
 
+neutron_optional_calico_pip_packages:
+  - calico
+  - networking-calico
+  - python-etcd
+
 neutron_proprietary_nuage_pip_packages:
   - nuage-openstack-neutron
   - nuage-openstack-neutronclient
@@ -482,3 +518,5 @@ neutron_linuxbridge_agent_ini_overrides: {}
 neutron_lbaas_agent_ini_overrides: {}
 neutron_vpnaas_agent_ini_overrides: {}
 neutron_openvswitch_agent_ini_overrides: {}
+neutron_calico_dhcp_agent_ini_overrides: {}
+neutron_calico_felix_ini_overrides: {}
