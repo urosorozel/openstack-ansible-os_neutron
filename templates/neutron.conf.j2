@@ -180,12 +180,12 @@ root_helper = sudo {{ neutron_bin }}/neutron-rootwrap /etc/neutron/rootwrap.conf
 
 # Messaging service
 [oslo_messaging_rabbit]
-rabbit_port = {{ rabbitmq_port }}
+rabbit_port = {{ neutron_rabbitmq_port }}
 rabbit_userid = {{ neutron_rabbitmq_userid }}
 rabbit_password = {{ neutron_rabbitmq_password }}
 rabbit_virtual_host = {{ neutron_rabbitmq_vhost }}
-rabbit_hosts = {{ rabbitmq_servers }}
-rabbit_use_ssl = {{ rabbitmq_use_ssl }}
+rabbit_hosts = {{ neutron_rabbitmq_servers }}
+rabbit_use_ssl = {{ neutron_rabbitmq_use_ssl }}
 
 # Concurrency (locking mechanisms)
 [oslo_concurrency]

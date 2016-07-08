@@ -43,6 +43,9 @@ neutron_provider_networks:
 neutron_rabbitmq_password: secrete
 neutron_rabbitmq_userid: neutron
 neutron_rabbitmq_vhost: /neutron
+neutron_rabbitmq_port: 5671
+neutron_rabbitmq_servers: 10.100.100.2
+neutron_rabbitmq_use_ssl: true
 neutron_requirements_git_install_branch: master
 neutron_service_password: secrete
 neutron_venv_tag: testing
