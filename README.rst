@@ -18,3 +18,13 @@ This role will install the following:
         - { role: "os_neutron", tags: [ "os-neutron" ] }
       vars:
         neutron_galera_address: "{{ internal_lb_vip_address }}"
+
+Tags
+====
+
+This role supports two tags: ``neutron-install`` and ``neutron-config``
+
+The ``neutron-install`` tag can be used to install and upgrade.
+
+The ``neutron-config`` tag can be used to maintain configuration of the
+service.

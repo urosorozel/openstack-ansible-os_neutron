@@ -20,8 +20,6 @@
     group: "{{ neutron_system_group_name }}"
     config_overrides: "{{ neutron_plumlib_ini_overrides }}"
     config_type: "ini"
-  tags:
-    - neutron_config
 
 - name: Place pgrc file
   template:
@@ -29,8 +27,6 @@
     dest: /etc/neutron/plugins/plumgrid/pgrc
     owner: "{{ neutron_system_user_name }}"
     group: "{{ neutron_system_group_name }}"
-  tags:
-    - neutron_config
 
 - name: Install plumgrid pip packages
   pip:
@@ -48,9 +44,6 @@
     - "{{ neutron_optional_plumgrid_pip_packages }}"
   when:
     - inventory_hostname in groups[neutron_services['neutron-server']['group']]
-  tags:
-    - neutron-install
-    - neutron-pip-packages
 
 - name: Install plumgrid pip packages fall back
   pip:
@@ -68,6 +61,3 @@
   when:
     - install_packages | failed
     - inventory_hostname in groups[neutron_services['neutron-server']['group']]
-  tags:
-    - neutron-install
-    - neutron-pip-packages

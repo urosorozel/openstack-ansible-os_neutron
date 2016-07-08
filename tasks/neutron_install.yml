@@ -16,8 +16,6 @@
 - include: neutron_install-apt.yml
   when:
     - ansible_pkg_mgr == 'apt'
-  tags:
-    - install-apt
 
 - name: Create developer mode constraint file
   copy:
@@ -28,9 +26,6 @@
       {% endfor %}
   when:
     - neutron_developer_mode | bool
-  tags:
-    - neutron-install
-    - neutron-pip-packages
 
 - name: Clone requirements git repository
   git:
@@ -41,27 +36,18 @@
     version: "{{ neutron_requirements_git_install_branch }}"
   when:
     - neutron_developer_mode | bool
-  tags:
-    - neutron-install
-    - neutron-pip-packages
 
 - name: Add constraints to pip_install_options fact for developer mode
   set_fact:
     pip_install_options_fact: "{{ pip_install_options|default('') }} --constraint /opt/developer-pip-constraints.txt --constraint /opt/requirements/upper-constraints.txt"
   when:
     - neutron_developer_mode | bool
-  tags:
-    - neutron-install
-    - neutron-pip-packages
 
 - name: Set pip_install_options_fact when not in developer mode
   set_fact:
     pip_install_options_fact: "{{ pip_install_options|default('') }}"
   when:
     - not neutron_developer_mode | bool
-  tags:
-    - neutron-install
-    - neutron-pip-packages
 
 - name: Install requires pip packages
   pip:
@@ -73,9 +59,6 @@
   retries: 5
   delay: 2
   with_items: "{{ neutron_requires_pip_packages }}"
-  tags:
-    - neutron-install
-    - neutron-pip-packages
 
 - name: Get local venv checksum
   stat:
@@ -84,9 +67,6 @@
   when:
     - not neutron_developer_mode | bool
   register: local_venv_stat
-  tags:
-    - neutron-install
-    - neutron-pip-packages
 
 - name: Get remote venv checksum
   uri:
@@ -95,9 +75,6 @@
   when:
     - not neutron_developer_mode | bool
   register: remote_venv_checksum
-  tags:
-    - neutron-install
-    - neutron-pip-packages
 
 # TODO: When project moves to ansible 2 we can pass this a sha256sum which will:
 #       a) allow us to remove force: yes
@@ -115,16 +92,10 @@
     - not neutron_developer_mode | bool
     - (local_venv_stat.stat.exists == False or
         {{ local_venv_stat.stat.checksum is defined and local_venv_stat.stat.checksum != remote_venv_checksum.content | trim }})
-  tags:
-    - neutron-install
-    - neutron-pip-packages
 
 - name: Set neutron get_venv fact
   set_fact:
     neutron_get_venv: "{{ get_venv }}"
-  tags:
-    - neutron-install
-    - neutron-pip-packages
 
 - name: Remove existing venv
   file:
@@ -132,9 +103,6 @@
     state: absent
   when:
     - neutron_get_venv | changed
-  tags:
-    - neutron-install
-    - neutron-pip-packages
 
 - name: Create neutron venv dir
   file:
@@ -143,9 +111,6 @@
   register: neutron_venv_dir
   when:
     - not neutron_developer_mode | bool
-  tags:
-    - neutron-install
-    - neutron-pip-packages
 
 - name: Unarchive pre-built venv
   unarchive:
@@ -156,9 +121,6 @@
     - not neutron_developer_mode | bool
     - neutron_get_venv | changed or neutron_venv_dir | changed
   notify: Restart neutron services
-  tags:
-    - neutron-install
-    - neutron-pip-packages
 
 - name: Install pip packages
   pip:
@@ -175,9 +137,6 @@
   when:
     - neutron_get_venv | failed or neutron_developer_mode | bool
   notify: Restart neutron services
-  tags:
-    - neutron-install
-    - neutron-pip-packages
 
 - name: Update virtualenv path
   command: >
@@ -185,6 +144,3 @@
   when:
     - not neutron_developer_mode | bool
     - neutron_get_venv | success
-  tags:
-    - neutron-install
-    - neutron-pip-packages

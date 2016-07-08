@@ -15,13 +15,9 @@
 
 - include: neutron_init_upstart.yml
   when: pid1_name == "init"
-  tags:
-    - neutron-init
 
 - include: neutron_init_systemd.yml
   when: pid1_name == "systemd"
-  tags:
-    - neutron-init
 
 - name: Load service
   service:
@@ -29,6 +25,3 @@
    enabled: "yes"
   notify:
     - Restart neutron services
-  tags:
-    - upstart-init
-    - neutron-init

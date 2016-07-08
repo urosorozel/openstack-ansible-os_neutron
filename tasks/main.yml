@@ -37,22 +37,42 @@
     - always
 
 - include: neutron_check.yml
+  tags:
+    - always
+
 - include: neutron_pre_install.yml
+  tags:
+    - neutron-install
+
 - include: neutron_install.yml
+  tags:
+    - neutron-install
+
 - include: neutron_post_install.yml
+  tags:
+    - neutron-install
+    - neutron-config
 
 # neutron system services
 - include: neutron_init.yml
+  tags:
+    - neutron-install
 
 - include: neutron_lbaas.yml
+  tags:
+    - neutron-install
 
 - include: neutron_db_setup.yml
   when: >
     inventory_hostname == groups[neutron_services['neutron-server']['group']][0]
+  tags:
+    - neutron-install
 
 - include: neutron_service_setup.yml
   when: >
     inventory_hostname == groups['neutron_all'][0]
+  tags:
+    - neutron-install
 
 - include: neutron_l3_ha.yml
   when:
