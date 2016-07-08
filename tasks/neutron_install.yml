@@ -184,6 +184,7 @@
     virtualenv-tools --update-path=auto {{ neutron_bin | dirname }}
   when:
     - not neutron_developer_mode | bool
+    - neutron_get_venv | success
   tags:
     - neutron-install
     - neutron-pip-packages
