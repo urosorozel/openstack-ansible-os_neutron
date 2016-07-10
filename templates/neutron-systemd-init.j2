@@ -11,9 +11,9 @@ User={{ system_user }}
 Group={{ system_group }}
 
 {% if program_override is defined %}
-ExecStart={{ program_override }} {{ program_config_options|default('') }} --log-file=/var/log/neutron/{{ program_name }}.log
+ExecStart={{ program_override }} {{ program_config_options|default('') }}
 {% else %}
-ExecStart={{ neutron_bin }}/{{ program_name }} {{ program_config_options|default('') }} --log-file=/var/log/neutron/{{ program_name }}.log
+ExecStart={{ neutron_bin }}/{{ program_name }} {{ program_config_options|default('') }}
 {% endif %}
 
 # Give a reasonable amount of time for the server to start up/shut down

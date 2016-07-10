@@ -129,7 +129,7 @@ neutron_services:
    service_en: "{{ neutron_dhcp | bool }}"
    service_conf: dhcp_agent.ini
    service_rootwrap: rootwrap.d/dhcp.filters
-   config_options: --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/dhcp_agent.ini
+   config_options: --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/dhcp_agent.ini --log-file=/var/log/neutron/neutron-dhcp-agent.log
    config_overrides: "{{ neutron_dhcp_agent_ini_overrides }}"
    config_type: "ini"
  neutron-openvswitch-agent:
@@ -138,7 +138,7 @@ neutron_services:
    service_en: "{{ neutron_plugin_type == 'ml2.ovs' }}"
    service_conf: plugins/ml2/openvswitch_agent.ini
    service_rootwrap: rootwrap.d/openvswitch-plugin.filters
-   config_options: --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/plugins/ml2/ml2_conf.ini --config-file /etc/neutron/plugins/ml2/openvswitch_agent.ini
+   config_options: --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/plugins/ml2/ml2_conf.ini --config-file /etc/neutron/plugins/ml2/openvswitch_agent.ini --log-file=/var/log/neutron/neutron-openvswitch-agent.log
    config_overrides: "{{ neutron_openvswitch_agent_ini_overrides }}"
    config_type: "ini"
  neutron-linuxbridge-agent:
@@ -147,7 +147,7 @@ neutron_services:
    service_en: "{{ neutron_plugin_type == 'ml2.lxb' }}"
    service_conf: plugins/ml2/linuxbridge_agent.ini
    service_rootwrap: rootwrap.d/linuxbridge-plugin.filters
-   config_options: --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/plugins/ml2/ml2_conf.ini --config-file /etc/neutron/plugins/ml2/linuxbridge_agent.ini
+   config_options: --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/plugins/ml2/ml2_conf.ini --config-file /etc/neutron/plugins/ml2/linuxbridge_agent.ini --log-file=/var/log/neutron/neutron-linuxbridge-agent.log
    config_overrides: "{{ neutron_linuxbridge_agent_ini_overrides }}"
    config_type: "ini"
  neutron-metadata-agent:
@@ -155,7 +155,7 @@ neutron_services:
    service_name: neutron-metadata-agent
    service_en: "{{ neutron_metadata | bool }}"
    service_conf: metadata_agent.ini
-   config_options: --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/metadata_agent.ini
+   config_options: --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/metadata_agent.ini --log-file=/var/log/neutron/neutron-metadata-agent.log
    config_overrides: "{{ neutron_metadata_agent_ini_overrides }}"
    config_type: "ini"
  neutron-metering-agent:
@@ -163,7 +163,7 @@ neutron_services:
    service_name: neutron-metering-agent
    service_en: "{{ neutron_metering | bool }}"
    service_conf: metering_agent.ini
-   config_options: --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/metering_agent.ini
+   config_options: --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/metering_agent.ini --log-file=/var/log/neutron/neutron-metering-agent.log
    config_overrides: "{{ neutron_metering_agent_ini_overrides }}"
    config_type: "ini"
  neutron-l3-agent:
@@ -172,7 +172,7 @@ neutron_services:
    service_en: "{{ neutron_l3 | bool }}"
    service_conf: l3_agent.ini
    service_rootwrap: rootwrap.d/l3.filters
-   config_options: --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/l3_agent.ini
+   config_options: --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/l3_agent.ini --log-file=/var/log/neutron/neutron-l3-agent.log
    config_overrides: "{{ neutron_l3_agent_ini_overrides }}"
    config_type: "ini"
  neutron-lbaas-agent:
@@ -181,7 +181,7 @@ neutron_services:
    service_en: "{{ neutron_lbaas | bool }}"
    service_conf: lbaas_agent.ini
    service_rootwrap: rootwrap.d/lbaas-haproxy.filters
-   config_options: --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/lbaas_agent.ini
+   config_options: --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/lbaas_agent.ini --log-file=/var/log/neutron/neutron-lbaas-agent.log
    config_overrides: "{{ neutron_lbaas_agent_ini_overrides }}"
    config_type: "ini"
  neutron-lbaasv2-agent:
@@ -190,7 +190,7 @@ neutron_services:
    service_en: "{{ neutron_lbaasv2 | bool }}"
    service_conf: lbaas_agent.ini
    service_rootwrap: rootwrap.d/lbaas-haproxy.filters
-   config_options: --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/lbaas_agent.ini
+   config_options: --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/lbaas_agent.ini --log-file=/var/log/neutron/neutron-lbaasv2-agent.log
    config_overrides: "{{ neutron_lbaas_agent_ini_overrides }}"
    config_type: "ini"
  neutron-vpnaas-agent:
@@ -199,14 +199,14 @@ neutron_services:
    service_en: "{{ neutron_vpnaas | bool }}"
    service_conf: vpnaas_agent.ini
    service_rootwrap: rootwrap.d/vpnaas.filters
-   config_options: --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/vpnaas_agent.ini
+   config_options: --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/vpnaas_agent.ini --log-file=/var/log/neutron/neutron-vpn-agent.log
    config_overrides: "{{ neutron_vpnaas_agent_ini_overrides }}"
    config_type: "ini"
  neutron-server:
    group: neutron_server
    service_name: neutron-server
    service_en: True
-   config_options: "--config-file /etc/neutron/neutron.conf --config-file /etc/neutron/{{ neutron_plugins[neutron_plugin_type].plugin_ini }}"
+   config_options: "--config-file /etc/neutron/neutron.conf --config-file /etc/neutron/{{ neutron_plugins[neutron_plugin_type].plugin_ini }} --log-file=/var/log/neutron/neutron-server.log"
 
 ## Neutron DHCP Agent
 neutron_dhcp: "{% if neutron_plugin_type.split('.')[0] == 'ml2' %}True{% else %}False{% endif %}"
