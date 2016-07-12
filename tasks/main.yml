@@ -36,6 +36,32 @@
   tags:
     - always
 
+- name: Get CPU info content and store as var
+  shell: cat /proc/cpuinfo
+  register: cpuinfo_contents
+  changed_when: false
+  failed_when: false
+  tags:
+    - always
+
+- name: Set neutron target platform type
+  set_fact:
+    neutron_os_type: "powervm"
+  when:
+    - cpuinfo_contents.stdout.find('pSeries') != -1
+    - ansible_architecture == 'ppc64le'
+  tags:
+    - always
+
+- include: neutron_ml2_ovs_powervm.yml
+  when:
+    - neutron_os_type is defined
+    - neutron_os_type == 'powervm'
+    - neutron_plugin_type == 'ml2.ovs'
+    - "{{ ansible_distribution_version | version_compare('16.04','>=') }}"
+  tags:
+    - neutron-config
+
 - include: neutron_check.yml
   tags:
     - always
