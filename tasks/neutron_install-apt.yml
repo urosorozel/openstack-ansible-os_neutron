@@ -34,16 +34,12 @@
   stat:
     path: /var/cache/apt
   register: apt_cache_stat
-  tags:
-    - neutron-apt-packages
 
 - name: Update apt if needed
   apt:
     update_cache: yes
   when: ("ansible_date_time.epoch|float - apt_cache_stat.stat.mtime > {{cache_timeout}}" or
         add_uca_keys | changed or add_uca_repo | changed)
-  tags:
-    - neutron-apt-packages
 
 - name: Install neutron apt dependencies
   apt:
@@ -54,9 +50,6 @@
   retries: 5
   delay: 2
   with_items: "{{ neutron_apt_packages }}"
-  tags:
-    - neutron-install
-    - neutron-apt-packages
 
 - name: Install apt packages for lxb
   apt:
@@ -71,9 +64,6 @@
     - inventory_hostname in groups[neutron_services['neutron-linuxbridge-agent']['group']]
     - neutron_services['neutron-linuxbridge-agent']['group'] in group_names
     - neutron_services['neutron-linuxbridge-agent'].service_en | bool
-  tags:
-    - neutron-install
-    - neutron-apt-packages
 
 - name: Install apt packages for ovs
   apt:
@@ -88,9 +78,6 @@
     - inventory_hostname in groups[neutron_services['neutron-openvswitch-agent']['group']]
     - neutron_services['neutron-openvswitch-agent']['group'] in group_names
     - neutron_services['neutron-openvswitch-agent'].service_en | bool
-  tags:
-    - neutron-install
-    - neutron-apt-packages
 
 - name: Install apt packages for LBaaS
   apt:
@@ -104,9 +91,6 @@
   when:
     - inventory_hostname in groups[neutron_services['neutron-lbaas-agent']['group']]
     - neutron_lbaas | bool or neutron_lbaasv2 | bool
-  tags:
-    - neutron-install
-    - neutron-apt-packages
 
 - name: Install apt packages for VPNaaS
   apt:
@@ -120,9 +104,6 @@
   when:
     - inventory_hostname in groups[neutron_services['neutron-vpnaas-agent']['group']]
     - neutron_vpnaas | bool
-  tags:
-    - neutron-install
-    - neutron-apt-packages
 
 - name: remove specific apt packages
   apt:
@@ -133,6 +114,3 @@
   retries: 5
   delay: 2
   with_items: "{{ neutron_apt_remove_packages }}"
-  tags:
-    - neutron-install
-    - neutron-apt-packages

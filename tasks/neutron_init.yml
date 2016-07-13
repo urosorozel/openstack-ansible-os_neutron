@@ -24,8 +24,6 @@
   when:
     - inventory_hostname in groups[neutron_services['neutron-server']['group']]
     - neutron_services['neutron-server'].service_en | bool
-  tags:
-    - upstart-init
 
 - include: neutron_init_common.yml
   vars:
@@ -38,8 +36,6 @@
   when:
     - inventory_hostname in groups[neutron_services['neutron-dhcp-agent']['group']]
     - neutron_services['neutron-dhcp-agent'].service_en | bool
-  tags:
-    - upstart-init
 
 - include: neutron_init_common.yml
   vars:
@@ -52,8 +48,6 @@
   when:
     - inventory_hostname in groups[neutron_services['neutron-l3-agent']['group']]
     - neutron_services['neutron-l3-agent'].service_en | bool
-  tags:
-    - upstart-init
 
 - include: neutron_init_common.yml
   vars:
@@ -66,8 +60,6 @@
   when:
     - inventory_hostname in groups[neutron_services['neutron-linuxbridge-agent']['group']]
     - neutron_services['neutron-linuxbridge-agent'].service_en | bool
-  tags:
-    - upstart-init
 
 - include: neutron_init_common.yml
   vars:
@@ -81,8 +73,6 @@
     - neutron_services['neutron-openvswitch-agent']['group'] in group_names
     - inventory_hostname in groups[neutron_services['neutron-openvswitch-agent']['group']]
     - neutron_services['neutron-openvswitch-agent'].service_en | bool
-  tags:
-    - upstart-init
 
 - include: neutron_init_common.yml
   vars:
@@ -95,8 +85,6 @@
   when:
     - inventory_hostname in groups[neutron_services['neutron-metadata-agent']['group']]
     - neutron_services['neutron-metadata-agent'].service_en | bool
-  tags:
-    - upstart-init
 
 - include: neutron_init_common.yml
   vars:
@@ -109,8 +97,6 @@
   when:
     - inventory_hostname in groups[neutron_services['neutron-metering-agent']['group']]
     - neutron_services['neutron-metering-agent'].service_en | bool
-  tags:
-    - upstart-init
 
 - include: neutron_init_common.yml
   vars:
@@ -123,8 +109,6 @@
   when:
     - inventory_hostname in groups[neutron_services['neutron-lbaas-agent']['group']]
     - neutron_services['neutron-lbaas-agent'].service_en | bool
-  tags:
-    - upstart-init
 
 - include: neutron_init_common.yml
   vars:
@@ -137,8 +121,6 @@
   when:
     - inventory_hostname in groups[neutron_services['neutron-lbaasv2-agent']['group']]
     - neutron_services['neutron-lbaasv2-agent'].service_en | bool
-  tags:
-    - upstart-init
 
 - include: neutron_init_common.yml
   vars:
@@ -151,5 +133,3 @@
   when:
     - inventory_hostname in groups[neutron_services['neutron-vpnaas-agent']['group']]
     - neutron_services['neutron-vpnaas-agent'].service_en | bool
-  tags:
-    - upstart-init

@@ -24,6 +24,3 @@
     - "{{ neutron_proprietary_nuage_pip_packages }}"
   when:
     - inventory_hostname in groups[neutron_services['neutron-server']['group']]
-  tags:
-    - neutron-install
-    - neutron-pip-packages

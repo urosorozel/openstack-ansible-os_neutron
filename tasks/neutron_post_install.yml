@@ -47,8 +47,6 @@
       config_type: "json"
   notify:
     - Restart neutron services
-  tags:
-    - neutron-config
 
 - name: Generate neutron dnsmasq Config
   config_template:
@@ -63,8 +61,6 @@
     - Restart neutron services
   when: >
       inventory_hostname in groups[neutron_services['neutron-dhcp-agent']['group']]
-  tags:
-    - neutron-config
 
 - name: Generate neutron agent only Config
   config_template:
@@ -82,8 +78,6 @@
        - item.value.service_en | bool
        - item.value.service_conf is defined
        - inventory_hostname in groups[item.value.group]
-  tags:
-    - neutron-config
 
 - name: Drop neutron rootwrap filters
   copy:
@@ -103,8 +97,6 @@
     - { src: "rootwrap.d/vpnaas.filters", dest: "/etc/neutron/rootwrap.d/vpnaas.filters" }
   notify:
     - Restart neutron services
-  tags:
-    - neutron-config
 
 - name: Drop neutron agent rootwrap filters
   copy:
@@ -118,8 +110,6 @@
       - item.value.service_rootwrap is defined
   notify:
     - Restart neutron services
-  tags:
-    - neutron_config
 
 - name: Setup PLUMgrid config
   include: plumgrid_config.yml
@@ -137,9 +127,6 @@
     mode: "0440"
     owner: "root"
     group: "root"
-  tags:
-    - sudoers
-    - neutron-sudoers
 
 - name: Drop metadata iptables checksum fix
   copy:
@@ -151,15 +138,9 @@
   when:
     - neutron_metadata_checksum_fix | bool
     - inventory_hostname in groups[neutron_services['neutron-linuxbridge-agent']['group']]
-  tags:
-    - neutron-config
-    - neutron-checksum-fix
 
 - name: Run metadata iptables checksum fix
   command: /etc/network/if-up.d/post-up-metadata-checksum
   when:
     - neutron_metadata_checksum_fix | bool
     - inventory_hostname in groups[neutron_services['neutron-linuxbridge-agent']['group']]
-  tags:
-    - neutron-config
-    - neutron-checksum-fix
