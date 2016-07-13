@@ -120,14 +120,6 @@
   when:
     - neutron_plugin_type == 'nuage'
 
-- name: Drop sudoers file
-  template:
-    src: "sudoers.j2"
-    dest: "/etc/sudoers.d/{{ neutron_system_user_name }}_sudoers"
-    mode: "0440"
-    owner: "root"
-    group: "root"
-
 - name: Drop metadata iptables checksum fix
   copy:
     src: "post-up-metadata-checksum"
