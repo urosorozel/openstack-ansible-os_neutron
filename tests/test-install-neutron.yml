@@ -106,6 +106,10 @@
       set_fact:
         uca_apt_repo_url: "{{ ubuntu_repo_url.stdout | netorigin }}/ubuntu-cloud-archive"
       when: nodepool.stat.exists | bool
+    - name: Include OVS testing vars
+      include_vars: ovs_test_vars.yml
+      when:
+        - groups['neutron_openvswitch_agent'] | length > 0
   roles:
     - role: "{{ rolename | basename }}"
   post_tasks:

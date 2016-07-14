@@ -32,7 +32,12 @@
         lxc_container_cache_files:
           - { src: '/etc/pip.conf', dest: '/etc/pip.conf' }
       when: nodepool.stat.exists | bool
+    - name: Include OVS testing vars
+      include_vars: ovs_test_vars.yml
+      when:
+        - groups['neutron_openvswitch_agent'] | length > 0
   roles:
+    - role: "openstack_hosts"
     - role: "lxc_hosts"
       lxc_net_address: 10.100.100.1
       lxc_net_dhcp_range: 10.100.100.8,10.100.100.253

@@ -1,7 +1,10 @@
 [all]
-localhost ansible_connection=local ansible_become=True
+localhost ansible_connection=local ansible_ssh_host=127.0.0.1 ansible_become=True
 infra1 ansible_host=10.100.100.2 ansible_become=True ansible_user=root
 openstack1 ansible_host=10.100.100.3 ansible_become=True ansible_user=root
+
+[physical_host]
+localhost
 
 [all_containers]
 infra1
@@ -50,6 +53,7 @@ openstack1
 neutron_agent
 neutron_dhcp_agent
 neutron_linuxbridge_agent
+neutron_openvswitch_agent
 neutron_metering_agent
 neutron_l3_agent
 neutron_lbaas_agent
