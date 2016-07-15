@@ -61,7 +61,6 @@
   delay: 2
   with_items: "{{ neutron_lxb_apt_packages }}"
   when:
-    - inventory_hostname in groups[neutron_services['neutron-linuxbridge-agent']['group']]
     - neutron_services['neutron-linuxbridge-agent']['group'] in group_names
     - neutron_services['neutron-linuxbridge-agent'].service_en | bool
 
@@ -75,7 +74,6 @@
   delay: 2
   with_items: "{{ ovs_apt_packages }}"
   when:
-    - inventory_hostname in groups[neutron_services['neutron-openvswitch-agent']['group']]
     - neutron_services['neutron-openvswitch-agent']['group'] in group_names
     - neutron_services['neutron-openvswitch-agent'].service_en | bool
 
@@ -89,7 +87,7 @@
   delay: 2
   with_items: "{{ neutron_lbaas_apt_packages }}"
   when:
-    - inventory_hostname in groups[neutron_services['neutron-lbaas-agent']['group']]
+    - neutron_services['neutron-lbaas-agent']['group'] in group_names
     - neutron_lbaas | bool or neutron_lbaasv2 | bool
 
 - name: Install apt packages for VPNaaS
@@ -102,7 +100,7 @@
   delay: 2
   with_items: "{{ neutron_vpnaas_apt_packages }}"
   when:
-    - inventory_hostname in groups[neutron_services['neutron-vpnaas-agent']['group']]
+    - neutron_services['neutron-vpnaas-agent']['group'] in group_names
     - neutron_vpnaas | bool
 
 - name: remove specific apt packages

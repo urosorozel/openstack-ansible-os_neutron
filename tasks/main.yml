@@ -63,20 +63,22 @@
     - neutron-install
 
 - include: neutron_db_setup.yml
-  when: >
-    inventory_hostname == groups[neutron_services['neutron-server']['group']][0]
+  when:
+    - neutron_services['neutron-server']['group'] in group_names
+    - inventory_hostname == groups[neutron_services['neutron-server']['group']][0]
   tags:
     - neutron-install
 
 - include: neutron_service_setup.yml
-  when: >
-    inventory_hostname == groups['neutron_all'][0]
+  when:
+    - "'neutron_all' in group_names"
+    - inventory_hostname == groups['neutron_all'][0]
   tags:
     - neutron-install
 
 - include: neutron_l3_ha.yml
   when:
-    - inventory_hostname in groups[neutron_services['neutron-l3-agent']['group']]
+    - neutron_services['neutron-l3-agent']['group'] in group_names
     - neutron_legacy_ha_tool_enabled | bool
 
 - name: Flush handlers

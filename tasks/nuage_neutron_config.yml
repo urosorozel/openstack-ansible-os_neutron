@@ -23,4 +23,4 @@
   with_items:
     - "{{ neutron_proprietary_nuage_pip_packages }}"
   when:
-    - inventory_hostname in groups[neutron_services['neutron-server']['group']]
+    - neutron_services['neutron-server']['group'] in group_names
