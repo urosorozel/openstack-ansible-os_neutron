@@ -60,7 +60,7 @@
   notify:
     - Restart neutron services
   when: >
-      inventory_hostname in groups[neutron_services['neutron-dhcp-agent']['group']]
+      neutron_services['neutron-dhcp-agent']['group'] in group_names
 
 - name: Generate neutron agent only Config
   config_template:
@@ -77,7 +77,7 @@
   when:
        - item.value.service_en | bool
        - item.value.service_conf is defined
-       - inventory_hostname in groups[item.value.group]
+       - item.value.group in group_names
 
 - name: Drop neutron rootwrap filters
   copy:
@@ -129,10 +129,10 @@
     mode: "0755"
   when:
     - neutron_metadata_checksum_fix | bool
-    - inventory_hostname in groups[neutron_services['neutron-linuxbridge-agent']['group']]
+    - neutron_services['neutron-linuxbridge-agent']['group'] in group_names
 
 - name: Run metadata iptables checksum fix
   command: /etc/network/if-up.d/post-up-metadata-checksum
   when:
     - neutron_metadata_checksum_fix | bool
-    - inventory_hostname in groups[neutron_services['neutron-linuxbridge-agent']['group']]
+    - neutron_services['neutron-linuxbridge-agent']['group'] in group_names

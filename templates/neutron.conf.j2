@@ -9,7 +9,7 @@ debug = {{ debug }}
 fatal_deprecations = {{ neutron_fatal_deprecations }}
 log_file = /var/log/neutron/neutron.log
 
-{% if inventory_hostname in groups[neutron_services['neutron-server']['group']] %}
+{% if neutron_services['neutron-server']['group'] in group_names %}
 
 # General, only applies to neutron server host group
 allow_overlapping_ips = True

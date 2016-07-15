@@ -43,7 +43,7 @@
   with_items:
     - "{{ neutron_optional_plumgrid_pip_packages }}"
   when:
-    - inventory_hostname in groups[neutron_services['neutron-server']['group']]
+    - neutron_services['neutron-server']['group'] in group_names
 
 - name: Install plumgrid pip packages fall back
   pip:
@@ -60,4 +60,4 @@
     - "{{ neutron_optional_plumgrid_pip_packages }}"
   when:
     - install_packages | failed
-    - inventory_hostname in groups[neutron_services['neutron-server']['group']]
+    - neutron_services['neutron-server']['group'] in group_names
