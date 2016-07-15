@@ -33,7 +33,9 @@
 - name: Run ns-metadata-proxy process cleanup
   shell: |
     for ns_pid in $(pgrep neutron-ns-meta); do
-      (echo $(readlink -f "/proc/$ns_pid/exe") | grep -qv "{{ neutron_venv_tag }}") && \
+      echo $(readlink -f "/proc/$ns_pid/exe") | grep -qv "{{ neutron_venv_tag }}"
+      if [ $? -eq 0 ]; then
         (echo "old metadata proxy pid found running clean up on $ns_pid"; kill -9 "$ns_pid")
+      fi
     done
   when: neutron_services['neutron-metadata-agent'].service_en | bool
