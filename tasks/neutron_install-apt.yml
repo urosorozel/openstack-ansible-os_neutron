@@ -18,14 +18,14 @@
     pkg: ubuntu-cloud-keyring
     state: latest
   register: add_uca_keys
-  when: neutron_use_uca | bool
+  when: neutron_uca_enable | bool
 
 - name: Add Ubuntu Cloud Archive Repository
   apt_repository:
     repo: "{{ uca_repo }}"
     state: present
   register: add_uca_repo
-  when: neutron_use_uca | bool
+  when: neutron_uca_enable | bool
 
 #TODO(evrardjp): Replace the next 2 tasks by a standard apt with cache
 #when https://github.com/ansible/ansible-modules-core/pull/1517 is merged

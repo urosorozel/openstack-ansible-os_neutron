@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# Ubuntu Cloud Archive variables
 uca_openstack_release: newton
-uca_apt_repo_url: "http://ubuntu-cloud.archive.canonical.com/ubuntu"
 uca_repo_dist: "{{ ansible_lsb.codename }}-updates/{{ uca_openstack_release }}"
 uca_repo: "deb {{ uca_apt_repo_url }} {{ uca_repo_dist }} main"
 

@@ -1,6 +1,4 @@
 ---
-other:
-  - Neutron now makes use of ubuntu cloud archive by
-    default. This can be disabled by setting
-    ``neutron_use_uca`` to ``False`` in your user
-    variables.
+upgrade:
+  - Neutron now makes use of Ubuntu Cloud Archive by default. This can be
+    disabled by setting ``neutron_uca_enable`` to ``False``.

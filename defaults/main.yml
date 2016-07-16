@@ -38,8 +38,6 @@ neutron_developer_constraints:
   - "git+{{ neutron_lbaas_git_repo }}@{{ neutron_lbaas_git_install_branch }}#egg=neutron-lbaas"
   - "git+{{ neutron_vpnaas_git_repo }}@{{ neutron_vpnaas_git_install_branch }}#egg=neutron-vpnaas"
 
-neutron_use_uca: True
-
 # Name of the virtual env to deploy into
 neutron_venv_tag: untagged
 neutron_bin: "/openstack/venvs/neutron-{{ neutron_venv_tag }}/bin"
@@ -383,6 +381,11 @@ neutron_service_in_ldap: false
 
 # neutron_local_ip is used for the VXLAN local tunnel endpoint
 neutron_local_ip: 127.0.0.1
+
+# Toggle the use of Ubuntu Cloud Archive
+neutron_uca_enable: True
+# Ubuntu Cloud Archive mirror URL
+uca_apt_repo_url: "http://ubuntu-cloud.archive.canonical.com/ubuntu"
 
 # When running in an AIO, we need to implement an iptables rule in any
 # neutron_agent containers to that ensure instances can communicate with
