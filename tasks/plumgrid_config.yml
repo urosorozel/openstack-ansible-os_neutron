@@ -30,7 +30,7 @@
 
 - name: Install plumgrid pip packages
   pip:
-    name: "{{ item }}"
+    name: "{{ neutron_optional_plumgrid_pip_packages | join(' ') }}"
     state: latest
     virtualenv: "{{ neutron_bin | dirname }}"
     virtualenv_site_packages: "no"
@@ -40,14 +40,12 @@
   ignore_errors: True
   retries: 5
   delay: 2
-  with_items:
-    - "{{ neutron_optional_plumgrid_pip_packages }}"
   when:
     - neutron_services['neutron-server']['group'] in group_names
 
 - name: Install plumgrid pip packages fall back
   pip:
-    name: "{{ item }}"
+    name: "{{ neutron_optional_plumgrid_pip_packages | join(' ') }}"
     state: latest
     virtualenv: "{{ neutron_bin | dirname }}"
     virtualenv_site_packages: "no"
@@ -56,8 +54,6 @@
   until: install_packages_fall_back|success
   retries: 5
   delay: 2
-  with_items:
-    - "{{ neutron_optional_plumgrid_pip_packages }}"
   when:
     - install_packages | failed
     - neutron_services['neutron-server']['group'] in group_names
