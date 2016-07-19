@@ -87,8 +87,8 @@
   delay: 2
   with_items: "{{ neutron_lbaas_apt_packages }}"
   when:
-    - neutron_services['neutron-lbaas-agent']['group'] in group_names
-    - neutron_lbaas | bool or neutron_lbaasv2 | bool
+    - neutron_services['neutron-lbaasv2-agent']['group'] in group_names
+    - neutron_lbaasv2 | bool
 
 - name: Install apt packages for VPNaaS
   apt:

@@ -80,7 +80,7 @@ neutron_plugin_core: "{{ neutron_plugins[neutron_plugin_type].plugin_core }}"
 #   - router
 #   - firewall
 #   - lbaas
-#   - lbaasv2
+#   - neutron_lbaas.services.loadbalancer.plugin.LoadBalancerPluginv2
 #   - vpnaas
 #   - metering
 #   - qos
@@ -186,17 +186,8 @@ neutron_services:
    config_options: --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/l3_agent.ini --log-file=/var/log/neutron/neutron-l3-agent.log
    config_overrides: "{{ neutron_l3_agent_ini_overrides }}"
    config_type: "ini"
- neutron-lbaas-agent:
-   group: neutron_lbaas_agent
-   service_name: neutron-lbaas-agent
-   service_en: "{{ neutron_lbaas | bool }}"
-   service_conf: lbaas_agent.ini
-   service_rootwrap: rootwrap.d/lbaas-haproxy.filters
-   config_options: --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/lbaas_agent.ini --log-file=/var/log/neutron/neutron-lbaas-agent.log
-   config_overrides: "{{ neutron_lbaas_agent_ini_overrides }}"
-   config_type: "ini"
  neutron-lbaasv2-agent:
-   group: neutron_lbaas_agent
+   group: neutron_lbaasv2_agent
    service_name: neutron-lbaasv2-agent
    service_en: "{{ neutron_lbaasv2 | bool }}"
    service_conf: lbaas_agent.ini
@@ -226,15 +217,16 @@ neutron_dhcp: "{% if neutron_plugin_type.split('.')[0] == 'ml2' %}True{% else %}
 neutron_metadata: "{% if neutron_plugin_type.split('.')[0] == 'ml2' and (neutron_plugin_type == 'ml2.ovs.dvr' or 'nova_compute' not in group_names) %}True{% else %}False{% endif %}"
 
 ## Neutron LBaaS
-# See documentation section titled "Configuring the Network Load Balacing
+# See documentation section titled "Configuring the Network Load Balancing
 # Service (Optional)" for more details.
 #
-# To enable LBaaS v1, add 'lbaas' to neutron_plugin_base list.
-# To enable LBaaS v2, add 'lbaasv2' to neutron_plugin_base list
-# TODO(odyssey4me): Remove the classpath from this conditional in the Newton cycle.
-neutron_lbaas: "{% if 'lbaas' in neutron_plugin_base or 'neutron_lbaas.services.loadbalancer.plugin.LoadBalancerPlugin' in neutron_plugin_base %}True{% else %}False{% endif %}"
-neutron_lbaasv2: "{% if 'lbaasv2' in neutron_plugin_base or 'neutron_lbaas.services.loadbalancer.plugin.LoadBalancerPluginv2' in neutron_plugin_base %}True{% else %}False{% endif %}"
-
+# To enable LBaaS v2, add the following item to the neutron_plugin_base list:
+#   neutron_lbaas.services.loadbalancer.plugin.LoadBalancerPluginv2
+#
+# NOTE(mhayden): neutron-lbaas doesn't have entry points and the full classpath
+#                is required.
+neutron_lbaasv2: "{% if 'neutron_lbaas.services.loadbalancer.plugin.LoadBalancerPluginv2' in neutron_plugin_base %}True{% else %}False{% endif %}"
+neutron_lbaasv2_device_driver: neutron_lbaas.drivers.haproxy.namespace_driver.HaproxyNSDriver
 ## Neutron L3
 ## Please add 'router' to the neutron_plugin_base list
 #TODO(odyssey4me): Remove the class path from this conditional in the Newton cycle

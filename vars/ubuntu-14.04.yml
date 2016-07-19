@@ -50,7 +50,5 @@ neutron_vpnaas_apt_packages:
 neutron_apt_remove_packages:
   - conntrackd
 
-neutron_lbaasv1_initscript_path: "/etc/init/neutron-lbaas-agent.conf"
 neutron_lbaasv2_initscript_path: "/etc/init/neutron-lbaasv2-agent.conf"
-neutron_lbaasv1_agent_servicename: "neutron-lbaas-agent"
 neutron_lbaasv2_agent_servicename: "neutron-lbaasv2-agent"

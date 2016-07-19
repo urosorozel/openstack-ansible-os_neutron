@@ -62,10 +62,6 @@
   tags:
     - neutron-config
 
-- include: neutron_check.yml
-  tags:
-    - always
-
 - include: neutron_pre_install.yml
   tags:
     - neutron-install
@@ -81,10 +77,6 @@
 
 # neutron system services
 - include: neutron_init.yml
-  tags:
-    - neutron-install
-
-- include: neutron_lbaas.yml
   tags:
     - neutron-install
 
