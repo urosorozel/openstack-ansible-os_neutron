@@ -99,6 +99,7 @@ neutron_plugins:
     drivers_type: "{{ neutron_ml2_drivers_type }}"
     l2_population: "{{ neutron_l2_population }}"
     mechanisms: "linuxbridge{% if neutron_l2_population | bool %},l2population{% endif %}"
+    l3_agent_mode: "legacy"
     plugin_conf_ini_overrides: "{{ neutron_ml2_conf_ini_overrides }}"
     plugin_core: neutron.plugins.ml2.plugin.Ml2Plugin
     plugin_ini: plugins/ml2/ml2_conf.ini
@@ -108,6 +109,18 @@ neutron_plugins:
     drivers_type: "{{ neutron_ml2_drivers_type }}"
     l2_population: "{{ neutron_l2_population }}"
     mechanisms: "openvswitch{% if neutron_l2_population | bool %},l2population{% endif %}"
+    l3_agent_mode: "legacy"
+    plugin_conf_ini_overrides: "{{ neutron_ml2_conf_ini_overrides }}"
+    plugin_core: neutron.plugins.ml2.plugin.Ml2Plugin
+    plugin_ini: plugins/ml2/ml2_conf.ini
+  ml2.ovs.dvr:
+    driver_firewall: neutron.agent.linux.iptables_firewall.OVSHybridIptablesFirewallDriver
+    driver_interface: neutron.agent.linux.interface.OVSInterfaceDriver
+    drivers_type: "{{ neutron_ml2_drivers_type }}"
+    l2_population: "{{ neutron_l2_population }}"
+    mechanisms: "openvswitch{% if neutron_l2_population | bool %},l2population{% endif %}"
+    l3_agent_mode: "{% if 'nova_compute' in group_names %}dvr{% else %}dvr_snat{% endif %}"
+    router_distributed: True
     plugin_conf_ini_overrides: "{{ neutron_ml2_conf_ini_overrides }}"
     plugin_core: neutron.plugins.ml2.plugin.Ml2Plugin
     plugin_ini: plugins/ml2/ml2_conf.ini
@@ -133,7 +146,7 @@ neutron_services:
  neutron-openvswitch-agent:
    group: neutron_openvswitch_agent
    service_name: neutron-openvswitch-agent
-   service_en: "{{ neutron_plugin_type == 'ml2.ovs' }}"
+   service_en: "{{ 'ml2.ovs' in neutron_plugin_type }}"
    service_conf: plugins/ml2/openvswitch_agent.ini
    service_rootwrap: rootwrap.d/openvswitch-plugin.filters
    config_options: --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/plugins/ml2/ml2_conf.ini --config-file /etc/neutron/plugins/ml2/openvswitch_agent.ini --log-file=/var/log/neutron/neutron-openvswitch-agent.log
@@ -210,7 +223,7 @@ neutron_services:
 neutron_dhcp: "{% if neutron_plugin_type.split('.')[0] == 'ml2' %}True{% else %}False{% endif %}"
 
 ## Neutron Metadata Agent
-neutron_metadata: "{% if neutron_plugin_type.split('.')[0] == 'ml2' %}True{% else %}False{% endif %}"
+neutron_metadata: "{% if neutron_plugin_type.split('.')[0] == 'ml2' and (neutron_plugin_type == 'ml2.ovs.dvr' or 'nova_compute' not in group_names) %}True{% else %}False{% endif %}"
 
 ## Neutron LBaaS
 # See documentation section titled "Configuring the Network Load Balacing
@@ -225,7 +238,8 @@ neutron_lbaasv2: "{% if 'lbaasv2' in neutron_plugin_base or 'neutron_lbaas.servi
 ## Neutron L3
 ## Please add 'router' to the neutron_plugin_base list
 #TODO(odyssey4me): Remove the class path from this conditional in the Newton cycle
-neutron_l3: "{% if 'router' in neutron_plugin_base or 'neutron.services.l3_router.l3_router_plugin.L3RouterPlugin' in neutron_plugin_base %}True{% else %}False{% endif %}"
+# Should the neutron-l3-agent service should be enabled on the host
+neutron_l3: "{% if ('router' in neutron_plugin_base or 'neutron.services.l3_router.l3_router_plugin.L3RouterPlugin' in neutron_plugin_base) and (neutron_plugin_type == 'ml2.ovs.dvr' or 'nova_compute' not in group_names) %}True{% else %}False{% endif %}"
 
 # Set this option to "true" to enable legacy neutron L3HA tool support
 # TODO(cloudnull): Remove this in the Ocata cycle
@@ -309,7 +323,6 @@ neutron_keystone_auth_plugin: password
 neutron_external_network_bridge: ""
 neutron_gateway_external_network_id: ""
 
-neutron_agent_mode: legacy
 neutron_agent_down_time: 120
 neutron_agent_polling_interval: 5
 neutron_report_interval: "{{ neutron_agent_down_time | int / 2 | int }}"

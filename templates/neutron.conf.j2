@@ -40,8 +40,8 @@ notification_driver = messagingv2
 network_auto_schedule = True
 router_auto_schedule = True
 
-# Distributed virtual routing (disable by default)
-router_distributed = False
+# Distributed virtual routing
+router_distributed = {{ neutron_plugins[neutron_plugin_type].router_distributed | default('False') }}
 
 # Agents
 agent_down_time = {{ neutron_agent_down_time }}
