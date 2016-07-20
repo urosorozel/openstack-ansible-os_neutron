@@ -1,6 +1,5 @@
 # {{ ansible_managed }}
 
-# Linux bridge agent physical interface mappings
 [ovs]
 {% if neutron_tunnel_types | length > 0 %}
 local_ip = {{ neutron_local_ip }}

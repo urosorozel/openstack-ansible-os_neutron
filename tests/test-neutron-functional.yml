@@ -27,6 +27,14 @@
     url: "http://localhost:9696"
     status_code: 200
 
+# No assertion around this yet, just useful for debug purposes
+# TODO(automagically) - Test for all expected agents and agent status
+- name: Neutron agents status
+  shell: |
+    . /root/openrc
+    neutron agent-list
+  register: agent_list
+
 - name: Ensure that the DHCP agent is alive
   shell: |
     . /root/openrc
@@ -60,12 +68,13 @@
   delay: 10
 
 - name: Check for dhcp network namespace
-  shell: |
-    ip netns | grep "^qdhcp"
+  shell: ip netns
   register: dhcp_namespace
-  until: dhcp_namespace.rc == 0
-  retries: 5
-  delay: 10
+
+- name: Make sure the dhcp namespace is present
+  assert:
+    that:
+      - "'qdhcp' in dhcp_namespace.stdout"
 
 - name: Check for iptables checksum rule
   shell: |
@@ -74,3 +83,5 @@
   until : checksum_rule.rc == 0
   retries: 5
   delay: 10
+  when:
+    - groups['neutron_linuxbridge_agent'] | length > 0
