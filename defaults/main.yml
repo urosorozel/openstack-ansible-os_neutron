@@ -70,8 +70,20 @@ neutron_db_pool_size: 120
 neutron_db_pool_timeout: 30
 
 ## RabbitMQ info
+
+## Configuration for RPC communications
 neutron_rabbitmq_userid: neutron
 neutron_rabbitmq_vhost: /neutron
+neutron_rabbitmq_port: 5672
+neutron_rabbitmq_servers: 127.0.0.1
+neutron_rabbitmq_use_ssl: False
+
+## Configuration for notifications communication, i.e. [oslo_messaging_notifications]
+neutron_rabbitmq_telemetry_userid: "{{ neutron_rabbitmq_userid }}"
+neutron_rabbitmq_telemetry_vhost: "{{ neutron_rabbitmq_vhost }}"
+neutron_rabbitmq_telemetry_port: "{{ neutron_rabbitmq_port }}"
+neutron_rabbitmq_telemetry_servers: "{{ neutron_rabbitmq_servers }}"
+neutron_rabbitmq_telemetry_use_ssl: "{{ neutron_rabbitmq_use_ssl }}"
 
 ## Plugins
 neutron_plugin_core: "{{ neutron_plugins[neutron_plugin_type].plugin_core }}"
