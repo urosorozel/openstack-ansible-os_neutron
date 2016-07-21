@@ -227,6 +227,8 @@ neutron_metadata: "{% if neutron_plugin_type.split('.')[0] == 'ml2' and (neutron
 #                is required.
 neutron_lbaasv2: "{% if 'neutron_lbaas.services.loadbalancer.plugin.LoadBalancerPluginv2' in neutron_plugin_base %}True{% else %}False{% endif %}"
 neutron_lbaasv2_device_driver: neutron_lbaas.drivers.haproxy.namespace_driver.HaproxyNSDriver
+neutron_lbaasv2_service_provider: LOADBALANCERV2:Haproxy:neutron_lbaas.drivers.haproxy.plugin_driver.HaproxyOnHostPluginDriver:default
+
 ## Neutron L3
 ## Please add 'router' to the neutron_plugin_base list
 #TODO(odyssey4me): Remove the class path from this conditional in the Newton cycle
