@@ -80,6 +80,7 @@ neutron_rabbitmq_use_ssl: False
 
 ## Configuration for notifications communication, i.e. [oslo_messaging_notifications]
 neutron_rabbitmq_telemetry_userid: "{{ neutron_rabbitmq_userid }}"
+neutron_rabbitmq_telemetry_password: "{{ neutron_rabbitmq_password }}"
 neutron_rabbitmq_telemetry_vhost: "{{ neutron_rabbitmq_vhost }}"
 neutron_rabbitmq_telemetry_port: "{{ neutron_rabbitmq_port }}"
 neutron_rabbitmq_telemetry_servers: "{{ neutron_rabbitmq_servers }}"
