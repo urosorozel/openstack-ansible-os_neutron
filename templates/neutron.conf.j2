@@ -32,9 +32,6 @@ auth_strategy = keystone
 network_scheduler_driver = {{ neutron_driver_network_scheduler }}
 router_scheduler_driver = {{ neutron_driver_router_scheduler }}
 loadbalancer_pool_scheduler_driver = {{ neutron_driver_loadbalancer_pool_scheduler }}
-{% if neutron_ceilometer_enabled %}
-notification_driver = messagingv2
-{% endif %}
 
 # Schedulers
 network_auto_schedule = True
@@ -89,6 +86,7 @@ rpc_backend = {{ neutron_rpc_backend }}
 executor_thread_pool_size = {{ neutron_rpc_thread_pool_size }}
 rpc_conn_pool_size = {{ neutron_rpc_conn_pool_size }}
 rpc_response_timeout = {{ neutron_rpc_response_timeout }}
+transport_url = rabbit://{% for host in neutron_rabbitmq_servers.split(',') %}{{ neutron_rabbitmq_userid }}:{{ neutron_rabbitmq_password }}@{{ host }}:{{ neutron_rabbitmq_port }}/{{ neutron_rabbitmq_vhost }}?rabbit_use_ssl={{ neutron_rabbitmq_use_ssl }},{% endfor %}
 
 [nova]
 auth_plugin = {{ nova_keystone_auth_plugin }}
@@ -176,14 +174,15 @@ polling_interval = {{ neutron_agent_polling_interval|default(5) }}
 report_interval = {{ neutron_report_interval|int }}
 root_helper = sudo {{ neutron_bin }}/neutron-rootwrap /etc/neutron/rootwrap.conf
 
-# Messaging service
+# Messaging
 [oslo_messaging_rabbit]
-rabbit_port = {{ neutron_rabbitmq_port }}
-rabbit_userid = {{ neutron_rabbitmq_userid }}
-rabbit_password = {{ neutron_rabbitmq_password }}
-rabbit_virtual_host = {{ neutron_rabbitmq_vhost }}
-rabbit_hosts = {{ neutron_rabbitmq_servers }}
-rabbit_use_ssl = {{ neutron_rabbitmq_use_ssl }}
+
+# Notifications
+{% if neutron_ceilometer_enabled %}
+[oslo_messaging_notifications]
+driver = messagingv2
+transport_url = rabbit://{% for host in neutron_rabbitmq_telemetry_servers.split(',') %}{{ neutron_rabbitmq_telemetry_userid }}:{{ neutron_rabbitmq_telemetry_password }}@{{ host }}:{{ neutron_rabbitmq_telemetry_port }}/{{ neutron_rabbitmq_telemetry_vhost }}?rabbit_use_ssl={{ neutron_rabbitmq_telemetry_use_ssl }},{% endfor %}
+{% endif %}
 
 # Concurrency (locking mechanisms)
 [oslo_concurrency]

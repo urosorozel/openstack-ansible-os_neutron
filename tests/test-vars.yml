@@ -13,9 +13,9 @@ keystone_galera_address: 10.100.100.2
 keystone_galera_database: keystone
 keystone_git_install_branch: master
 keystone_rabbitmq_password: secrete
-keystone_rabbitmq_port: 5671
-keystone_rabbitmq_servers: 10.100.100.2
-keystone_rabbitmq_use_ssl: false
+keystone_rabbitmq_port: "{{ rabbitmq_port }}"
+keystone_rabbitmq_servers: "{{ rabbitmq_servers }}"
+keystone_rabbitmq_use_ssl: "{{ rabbitmq_use_ssl }}"
 keystone_rabbitmq_userid: keystone
 keystone_rabbitmq_vhost: /keystone
 keystone_requirements_git_install_branch: master
@@ -43,9 +43,9 @@ neutron_provider_networks:
 neutron_rabbitmq_password: secrete
 neutron_rabbitmq_userid: neutron
 neutron_rabbitmq_vhost: /neutron
-neutron_rabbitmq_port: 5671
-neutron_rabbitmq_servers: 10.100.100.2
-neutron_rabbitmq_use_ssl: true
+neutron_rabbitmq_port: "{{ rabbitmq_port }}"
+neutron_rabbitmq_servers: "{{ rabbitmq_servers }}"
+neutron_rabbitmq_use_ssl: "{{ rabbitmq_use_ssl }}"
 neutron_requirements_git_install_branch: master
 neutron_service_password: secrete
 neutron_venv_tag: testing
@@ -62,6 +62,6 @@ nova_service_user_name: nova
 openrc_os_auth_url: "http://127.0.0.1:5000/v3"
 openrc_os_domain_name: Default
 openrc_os_password: "{{ keystone_auth_admin_password }}"
-rabbitmq_port: 5671
+rabbitmq_port: 5672
 rabbitmq_servers: 10.100.100.2
-rabbitmq_use_ssl: true
+rabbitmq_use_ssl: False
