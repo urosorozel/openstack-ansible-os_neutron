@@ -65,7 +65,7 @@
 - name: Generate neutron agent only Config
   config_template:
     src: "{{ item.value.service_conf }}.j2"
-    dest: "/etc/neutron/{{ item.value.service_conf }}"
+    dest: "{{ item.value.service_conf_path }}/{{ item.value.service_conf }}"
     owner: "{{ neutron_system_user_name }}"
     group: "{{ neutron_system_group_name }}"
     mode: "0644"
@@ -76,6 +76,7 @@
     - Restart neutron services
   when:
        - item.value.service_en | bool
+       - item.value.service_conf_path is defined
        - item.value.service_conf is defined
        - item.value.group in group_names
 
