@@ -16,7 +16,7 @@
 - name: Add Ubuntu Cloud Archive keyring
   apt:
     pkg: ubuntu-cloud-keyring
-    state: latest
+    state: "{{ neutron_package_state }}"
   register: add_uca_keys
   when: neutron_uca_enable | bool
 
@@ -44,17 +44,17 @@
 - name: Install neutron apt dependencies
   apt:
     pkg: "{{ item }}"
-    state: latest
+    state: "{{ neutron_package_state }}"
   register: install_packages
   until: install_packages|success
   retries: 5
   delay: 2
   with_items: "{{ neutron_apt_packages }}"
 
-- name: Install apt packages for lxb
+- name: Install apt packages for LXB
   apt:
     pkg: "{{ item }}"
-    state: latest
+    state: "{{ neutron_package_state }}"
   register: install_packages
   until: install_packages|success
   retries: 5
@@ -64,10 +64,10 @@
     - neutron_services['neutron-linuxbridge-agent']['group'] in group_names
     - neutron_services['neutron-linuxbridge-agent'].service_en | bool
 
-- name: Install apt packages for ovs
+- name: Install apt packages for OVS
   apt:
     pkg: "{{ item }}"
-    state: latest
+    state: "{{ neutron_package_state }}"
   register: install_packages
   until: install_packages|success
   retries: 5
@@ -80,7 +80,7 @@
 - name: Install apt packages for LBaaS
   apt:
     pkg: "{{ item }}"
-    state: latest
+    state: "{{ neutron_package_state }}"
   register: install_packages
   until: install_packages|success
   retries: 5
@@ -93,7 +93,7 @@
 - name: Install apt packages for VPNaaS
   apt:
     pkg: "{{ item }}"
-    state: latest
+    state: "{{ neutron_package_state }}"
   register: install_packages
   until: install_packages|success
   retries: 5
@@ -103,7 +103,7 @@
     - neutron_services['neutron-vpnaas-agent']['group'] in group_names
     - neutron_vpnaas | bool
 
-- name: remove specific apt packages
+- name: Remove known problem packages
   apt:
     pkg: "{{ item }}"
     state: absent

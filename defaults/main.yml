@@ -16,6 +16,10 @@
 ## Verbosity Options
 debug: False
 
+# Set the package install state for distribution packages
+# Options are 'present' and 'latest'
+neutron_package_state: "latest"
+
 neutron_git_repo: https://git.openstack.org/openstack/neutron
 neutron_git_install_branch: master
 
