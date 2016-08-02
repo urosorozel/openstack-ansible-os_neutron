@@ -9,6 +9,12 @@ debug = {{ debug }}
 fatal_deprecations = {{ neutron_fatal_deprecations }}
 log_file = /var/log/neutron/neutron.log
 
+## Rpc all
+executor_thread_pool_size = {{ neutron_rpc_thread_pool_size }}
+rpc_conn_pool_size = {{ neutron_rpc_conn_pool_size }}
+rpc_response_timeout = {{ neutron_rpc_response_timeout }}
+transport_url = rabbit://{% for host in neutron_rabbitmq_servers.split(',') %}{{ neutron_rabbitmq_userid }}:{{ neutron_rabbitmq_password }}@{{ host }}:{{ neutron_rabbitmq_port }}{% if not loop.last %},{% else %}/{{ neutron_rabbitmq_vhost }}{% endif %}{% endfor %}
+
 {% if neutron_services['neutron-server']['group'] in group_names %}
 
 # General, only applies to neutron server host group
@@ -80,13 +86,6 @@ notify_nova_on_port_status_changes = True
 notify_nova_on_port_data_changes = True
 send_events_interval = 2
 nova_url = {{ nova_service_adminurl|replace('/%(tenant_id)s', '') }}
-
-## Rpc all
-rpc_backend = {{ neutron_rpc_backend }}
-executor_thread_pool_size = {{ neutron_rpc_thread_pool_size }}
-rpc_conn_pool_size = {{ neutron_rpc_conn_pool_size }}
-rpc_response_timeout = {{ neutron_rpc_response_timeout }}
-transport_url = rabbit://{% for host in neutron_rabbitmq_servers.split(',') %}{{ neutron_rabbitmq_userid }}:{{ neutron_rabbitmq_password }}@{{ host }}:{{ neutron_rabbitmq_port }}/{{ neutron_rabbitmq_vhost }}?rabbit_use_ssl={{ neutron_rabbitmq_use_ssl }}{% if not loop.last %},{% endif %}{% endfor %}
 
 [nova]
 auth_plugin = {{ nova_keystone_auth_plugin }}
@@ -177,17 +176,13 @@ root_helper = sudo {{ neutron_bin }}/neutron-rootwrap /etc/neutron/rootwrap.conf
 
 # Messaging
 [oslo_messaging_rabbit]
-rabbit_port = {{ neutron_rabbitmq_port }}
-rabbit_userid = {{ neutron_rabbitmq_userid }}
-rabbit_password = {{ neutron_rabbitmq_password }}
-rabbit_virtual_host = {{ neutron_rabbitmq_vhost }}
-rabbit_hosts = {{ neutron_rabbitmq_servers }}
+rabbit_use_ssl = {{ neutron_rabbitmq_use_ssl }}
 
 # Notifications
 {% if neutron_ceilometer_enabled %}
 [oslo_messaging_notifications]
 driver = messagingv2
-transport_url = rabbit://{% for host in neutron_rabbitmq_telemetry_servers.split(',') %}{{ neutron_rabbitmq_telemetry_userid }}:{{ neutron_rabbitmq_telemetry_password }}@{{ host }}:{{ neutron_rabbitmq_telemetry_port }}/{{ neutron_rabbitmq_telemetry_vhost }}?rabbit_use_ssl={{ neutron_rabbitmq_telemetry_use_ssl }}{% if not loop.last %},{% endif %}{% endfor %}
+transport_url = rabbit://{% for host in neutron_rabbitmq_telemetry_servers.split(',') %}{{ neutron_rabbitmq_telemetry_userid }}:{{ neutron_rabbitmq_telemetry_password }}@{{ host }}:{{ neutron_rabbitmq_telemetry_port }}{% if not loop.last %},{% else %}/{{ neutron_rabbitmq_telemetry_vhost }}{% endif %}{% endfor %}
 {% endif %}
 
 # Concurrency (locking mechanisms)
