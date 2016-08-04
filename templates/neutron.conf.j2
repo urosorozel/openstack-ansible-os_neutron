@@ -6,6 +6,8 @@
 # General, applies to all host groups
 [DEFAULT]
 verbose = {{ verbose }}
+# Disable stderr logging
+use_stderr = False
 debug = {{ debug }}
 fatal_deprecations = {{ neutron_fatal_deprecations }}
 log_file = /var/log/neutron/neutron.log
