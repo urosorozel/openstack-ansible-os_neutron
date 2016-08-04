@@ -450,6 +450,12 @@ neutron_proprietary_nuage_pip_packages:
   - nuage-openstack-neutronclient
   - nuagenetlib
 
+# This variable is used by the repo_build process to determine
+# which host group to check for members of before building the
+# pip packages required by this role. The value is picked up
+# by the py_pkgs lookup.
+neutron_role_project_group: neutron_all
+
 ## Tunable overrides
 neutron_neutron_conf_overrides: {}
 neutron_ml2_conf_ini_overrides: {}
