@@ -13,7 +13,6 @@ log_file = /var/log/neutron/neutron.log
 
 ## Rpc all
 executor_thread_pool_size = {{ neutron_rpc_thread_pool_size }}
-rpc_conn_pool_size = {{ neutron_rpc_conn_pool_size }}
 rpc_response_timeout = {{ neutron_rpc_response_timeout }}
 transport_url = rabbit://{% for host in neutron_rabbitmq_servers.split(',') %}{{ neutron_rabbitmq_userid }}:{{ neutron_rabbitmq_password }}@{{ host }}:{{ neutron_rabbitmq_port }}{% if not loop.last %},{% else %}/{{ neutron_rabbitmq_vhost }}{% endif %}{% endfor %}
 
@@ -179,6 +178,7 @@ root_helper = sudo {{ neutron_bin }}/neutron-rootwrap /etc/neutron/rootwrap.conf
 # Messaging
 [oslo_messaging_rabbit]
 rabbit_use_ssl = {{ neutron_rabbitmq_use_ssl }}
+rpc_conn_pool_size = {{ neutron_rpc_conn_pool_size }}
 
 # Notifications
 {% if neutron_ceilometer_enabled %}
