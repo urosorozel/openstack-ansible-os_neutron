@@ -1,22 +1,32 @@
-os_neutron Role Docs
-====================
+==================================
+Neutron role for OpenStack-Ansible
+==================================
 
-The os_neutron role is used to to deploy, configure and install OpenStack
-Networking.
+.. toctree::
+   :maxdepth: 2
 
-This role will install the following:
+   overview.rst
+   app-nuage.rst
+   app-plumgrid.rst
+
+:tags: openstack, neutron, cloud, ansible
+:category: \*nix
+
+This role will install the following Upstart services:
     * neutron-server
     * neutron-agents
 
-Basic Role Example
-^^^^^^^^^^^^^^^^^^
+Example playbook
+~~~~~~~~~~~~~~~~
 
-.. code-block:: yaml
+.. literalinclude:: ../../examples/playbook.yml
+   :language: yaml
 
-    - name: Installation and setup of Neutron
-      hosts: neutron_all
-      user: root
-      roles:
-        - { role: "os_neutron", tags: [ "os-neutron" ] }
-      vars:
-        neutron_galera_address: "{{ internal_lb_vip_address }}"
+Tags
+~~~~
+
+This role supports two tags: ``neutron-install`` and ``neutron-config``
+
+The ``neutron-install`` tag can be used to install and upgrade.
+
+The ``neutron-config`` tag can be used to manage configuration.
