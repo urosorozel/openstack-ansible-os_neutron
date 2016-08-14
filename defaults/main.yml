@@ -436,8 +436,10 @@ neutron_requires_pip_packages:
 neutron_pip_packages:
   - configobj
   - cliff
+  - fixtures
   - keystonemiddleware
   - PyMySQL
+  - mock
   - neutron
   - neutron_fwaas
   - neutron_lbaas
