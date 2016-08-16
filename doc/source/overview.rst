@@ -2,12 +2,22 @@
 Overview
 ========
 
+This role installs the following Upstart services:
+
+  * neutron-server
+  * neutron-agents
+
 Default variables
 ~~~~~~~~~~~~~~~~~
 
 .. literalinclude:: ../../defaults/main.yml
    :language: yaml
    :start-after: under the License.
+
+Required variables
+~~~~~~~~~~~~~~~~~~
+
+None.
 
 Example playbook
 ~~~~~~~~~~~~~~~~

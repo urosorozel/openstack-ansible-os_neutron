@@ -24,7 +24,7 @@ Prerequisites
 #. The deployment environment is configured according to OSA best
    practices such as cloning OSA software and bootstrapping Ansible.
    See `OpenStack-Ansible Install Guide
-   <http://docs.openstack.org/developer/openstack-ansible/install-guide/index.html>`_
+   <http://docs.openstack.org/developer/openstack-ansible/install-guide/index.html>`_.
 
 #. VCS stand-alone components, VSD and VSC, are configured and
    deployed. See the Nuage Networks VSD and VSC Install Guides.
@@ -106,7 +106,7 @@ VCS environment:
 
 #. Replace *Local Package Repository* with the link of the local
    repository hosting the Nuage VRS packages. For example:
-   ``http://192.0.2.10/debs/3.2/vrs/``
+   ``http://192.0.2.10/debs/3.2/vrs/``:
 
    .. code-block:: yaml
 

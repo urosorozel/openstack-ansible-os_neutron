@@ -79,7 +79,7 @@ configure the following parameters:
       pg_vip: PG_VIP
 
 #. Replace ``FABRIC_IFC`` with the name of the interface to be used
-   for PLUMgrid Fabric.
+   for PLUMgrid Fabric:
 
    .. note::
 
