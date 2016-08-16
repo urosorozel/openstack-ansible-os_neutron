@@ -15,7 +15,7 @@
 - name: Setup PLUMlib Neutron Config
   config_template:
     src: plugins/plumgrid/plumlib.ini
-    dest: /etc/neutron/plugins/plumgrid/plumlib.ini
+    dest: "{{ neutron_conf_dir }}/plugins/plumgrid/plumlib.ini"
     owner: "{{ neutron_system_user_name }}"
     group: "{{ neutron_system_group_name }}"
     config_overrides: "{{ neutron_plumlib_ini_overrides }}"
@@ -24,7 +24,7 @@
 - name: Place pgrc file
   template:
     src: plugins/plumgrid/pgrc
-    dest: /etc/neutron/plugins/plumgrid/pgrc
+    dest: "{{ neutron_conf_dir }}/plugins/plumgrid/pgrc"
     owner: "{{ neutron_system_user_name }}"
     group: "{{ neutron_system_group_name }}"
 
