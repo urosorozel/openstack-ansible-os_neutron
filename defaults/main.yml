@@ -441,9 +441,6 @@ neutron_pip_packages:
   - python-novaclient
   - repoze.lru
 
-neutron_optional_plumgrid_pip_packages:
-  - networking-plumgrid==2015.2.1.1
-
 neutron_proprietary_nuage_pip_packages:
   - nuage-openstack-neutron
   - nuage-openstack-neutronclient

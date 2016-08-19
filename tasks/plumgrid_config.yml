@@ -20,8 +20,6 @@
     group: "{{ neutron_system_group_name }}"
     config_overrides: "{{ neutron_plumlib_ini_overrides }}"
     config_type: "ini"
-  tags:
-    - neutron_config
 
 - name: Place pgrc file
   template:
@@ -29,85 +27,35 @@
     dest: /etc/neutron/plugins/plumgrid/pgrc
     owner: "{{ neutron_system_user_name }}"
     group: "{{ neutron_system_group_name }}"
-  tags:
-    - neutron_config
 
-- name: Install plumgrid pip packages (venv)
-  pip:
-    name: "{{ item }}"
-    state: latest
-    virtualenv: "{{ neutron_venv_bin | dirname }}"
-    virtualenv_site_packages: "no"
-    extra_args: "{{ pip_install_options|default('') }}"
-  register: install_packages
-  until: install_packages|success
-  ignore_errors: True
-  retries: 5
-  delay: 2
-  with_items:
-    - "{{ neutron_optional_plumgrid_pip_packages }}"
-  when:
-    - neutron_venv_enabled | bool
-    - inventory_hostname in groups[neutron_services['neutron-server']['group']]
-  tags:
-    - neutron-install
-    - neutron-pip-packages
-
-- name: Install plumgrid pip packages fall back (venv)
-  pip:
-    name: "{{ item }}"
-    state: latest
-    virtualenv: "{{ neutron_venv_bin | dirname }}"
-    virtualenv_site_packages: "no"
-    extra_args: "--isolated"
-  register: install_packages_fall_back
-  until: install_packages_fall_back|success
-  retries: 5
-  delay: 2
-  with_items:
-    - "{{ neutron_optional_plumgrid_pip_packages }}"
-  when:
-    - install_packages | failed
-    - neutron_venv_enabled | bool
-    - inventory_hostname in groups[neutron_services['neutron-server']['group']]
-  tags:
-    - neutron-install
-    - neutron-pip-packages
-
-- name: Install plumgrid pip packages (no venv)
-  pip:
-    name: "{{ item }}"
-    state: latest
-    extra_args: "{{ pip_install_options|default('') }}"
+- name: Install networking-plumgrid
+  apt:
+    name: networking-plumgrid
+    state: "{{ neutron_package_state }}"
+    force: yes
   register: install_packages
   until: install_packages|success
   retries: 5
   delay: 2
-  ignore_errors: True
-  with_items:
-    - "{{ neutron_optional_plumgrid_pip_packages }}"
   when:
-    - not neutron_venv_enabled | bool
     - inventory_hostname in groups[neutron_services['neutron-server']['group']]
-  tags:
-    - neutron-install
-    - neutron-pip-packages
 
-- name: Install plumgrid pip packages fall back (no venv)
-  pip:
-    name: "{{ item }}"
-    state: latest
-    extra_args: "--isolated"
-  register: install_packages_fall_back
-  until: install_packages_fall_back|success
-  retries: 5
-  delay: 2
-  with_items:
-    - "{{ neutron_optional_plumgrid_pip_packages }}"
+- name: Register networking_plumgrid version
+  shell: >
+    dpkg -l | grep networking-plumgrid | awk '{print $3}'
+  register: np_ver
   when:
-    - install_packages | failed
-    - not neutron_venv_enabled | bool
     - inventory_hostname in groups[neutron_services['neutron-server']['group']]
-  tags:
-    - neutron-install
-    - neutron-pip-packages
+
+- name: Link networking-plumgrid files (venv)
+  file:
+    src: "{{ item.name }}"
+    dest: "{{ neutron_venv_lib_dir }}{{ item.name | basename }}"
+    state: "{{ item.state }}"
+    force: "yes"
+  with_items:
+    - { state: link, name: "/usr/local/lib/python2.7/dist-packages/networking_plumgrid" }
+    - { state: link, name: "/usr/local/lib/python2.7/dist-packages/networking_plumgrid-{{ np_ver.stdout }}-py2.7.egg-info" }
+  when:
+    - neutron_venv_enabled | bool
+    - inventory_hostname in groups[neutron_services['neutron-server']['group']]
