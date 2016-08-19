@@ -28,32 +28,35 @@
     owner: "{{ neutron_system_user_name }}"
     group: "{{ neutron_system_group_name }}"
 
-- name: Install plumgrid pip packages
-  pip:
-    name: "{{ neutron_optional_plumgrid_pip_packages | join(' ') }}"
-    state: latest
-    virtualenv: "{{ neutron_bin | dirname }}"
-    virtualenv_site_packages: "no"
-    extra_args: "{{ pip_install_options|default('') }}"
+- name: Install networking-plumgrid
+  apt:
+    name: networking-plumgrid
+    state: "{{ neutron_package_state }}"
+    force: yes
   register: install_packages
   until: install_packages|success
-  ignore_errors: True
   retries: 5
   delay: 2
   when:
-    - neutron_services['neutron-server']['group'] in group_names
+    - inventory_hostname in groups[neutron_services['neutron-server']['group']]
 
-- name: Install plumgrid pip packages fall back
-  pip:
-    name: "{{ neutron_optional_plumgrid_pip_packages | join(' ') }}"
-    state: latest
-    virtualenv: "{{ neutron_bin | dirname }}"
-    virtualenv_site_packages: "no"
-    extra_args: "--isolated"
-  register: install_packages_fall_back
-  until: install_packages_fall_back|success
-  retries: 5
-  delay: 2
+- name: Register networking_plumgrid version
+  shell: >
+    dpkg -l | grep networking-plumgrid | awk '{print $3}'
+  register: np_ver
   when:
-    - install_packages | failed
-    - neutron_services['neutron-server']['group'] in group_names
+    - inventory_hostname in groups[neutron_services['neutron-server']['group']]
+
+- name: Link networking-plumgrid files (venv)
+  file:
+    src: "{{ item.name }}"
+    dest: "{{ neutron_venv_lib_dir }}{{ item.name | basename }}"
+    state: "{{ item.state }}"
+    force: "yes"
+  with_items:
+    - { state: link, name: "/usr/local/lib/python2.7/dist-packages/networking_plumgrid" }
+    - { state: link, name: "/usr/local/lib/python2.7/dist-packages/networking_plumgrid-{{ np_ver.stdout }}-py2.7.egg-info" }
+  when:
+    - neutron_venv_enabled | bool
+    - inventory_hostname in groups[neutron_services['neutron-server']['group']]
+
