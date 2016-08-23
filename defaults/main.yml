@@ -32,6 +32,9 @@ neutron_lbaas_git_install_branch: master
 neutron_vpnaas_git_repo: https://git.openstack.org/openstack/neutron-vpnaas
 neutron_vpnaas_git_install_branch: master
 
+neutron_dynamic_routing_git_repo: https://git.openstack.org/openstack/neutron-dynamic-routing
+neutron_dynamic_routing_git_install_branch: master
+
 neutron_requirements_git_repo: https://git.openstack.org/openstack/requirements
 neutron_requirements_git_install_branch: master
 
@@ -47,6 +50,7 @@ neutron_developer_constraints:
   - "git+{{ neutron_fwaas_git_repo }}@{{ neutron_fwaas_git_install_branch }}#egg=neutron-fwaas"
   - "git+{{ neutron_lbaas_git_repo }}@{{ neutron_lbaas_git_install_branch }}#egg=neutron-lbaas"
   - "git+{{ neutron_vpnaas_git_repo }}@{{ neutron_vpnaas_git_install_branch }}#egg=neutron-vpnaas"
+  - "git+{{ neutron_dynamic_routing_git_repo }}@{{ neutron_dynamic_routing_git_install_branch }}#egg=neutron-dynamic-routing"
   - "git+{{ calico_git_repo }}@{{ calico_git_install_branch }}#egg=calico"
   - "git+{{ networking_calico_git_repo }}@{{ networking_calico_git_install_branch }}#egg=networking-calico"
 
@@ -109,6 +113,7 @@ neutron_plugin_core: "{{ neutron_plugins[neutron_plugin_type].plugin_core }}"
 #   - firewall
 #   - lbaas
 #   - neutron_lbaas.services.loadbalancer.plugin.LoadBalancerPluginv2
+#   - neutron_dynamic_routing.services.bgp.bgp_plugin.BgpPlugin
 #   - vpnaas
 #   - metering
 #   - qos
@@ -236,6 +241,15 @@ neutron_services:
    config_options: "--config-file {{ neutron_conf_dir }}/neutron.conf --config-file {{ neutron_conf_dir }}/lbaas_agent.ini --log-file=/var/log/neutron/neutron-lbaasv2-agent.log"
    config_overrides: "{{ neutron_lbaas_agent_ini_overrides }}"
    config_type: "ini"
+ neutron-bgp-dragent:
+   group: neutron_bgp_dragent
+   service_name: neutron-bgp-dragent
+   service_en: "{{ neutron_bgp | bool }}"
+   service_conf_path: "{{ neutron_conf_dir }}"
+   service_conf: bgp_dragent.ini
+   config_options: "--config-file {{ neutron_conf_dir }}/neutron.conf --config-file {{ neutron_conf_dir }}/bgp_dragent.ini --log-file=/var/log/neutron/neutron-bgp-dragent.log"
+   config_overrides: "{{ neutron_bgp_dragent_ini_overrides }}"
+   config_type: "ini"
  neutron-vpnaas-agent:
    group: neutron_l3_agent
    service_name: neutron-vpn-agent
@@ -310,6 +324,16 @@ neutron_fwaas: "{% if 'firewall' in neutron_plugin_base %}True{% else %}False{% 
 ## Neutron VPNaaS
 # Please add the 'vpnaas' to the neutron_plugin_base list
 neutron_vpnaas: "{% if 'vpnaas' in neutron_plugin_base %}True{% else %}False{% endif %}"
+
+## Neutron Dynamic Routing Agent's BGP plugin
+# To enable the BGP plugin, add the following item to the neutron_plugin_base list:
+#   neutron_dynamic_routing.services.bgp.bgp_plugin.BgpPlugin
+#
+# NOTE(matias): BgpPlugin doesn't have entry points and the full classpath
+#               is required.
+neutron_bgp: "{% if 'neutron_dynamic_routing.services.bgp.bgp_plugin.BgpPlugin' in neutron_plugin_base %}True{% else %}False{% endif %}"
+neutron_bgp_speaker_driver: neutron_dynamic_routing.services.bgp.agent.driver.ryu.driver.RyuBgpDriver
+neutron_bgp_router_id: "{{ neutron_local_ip }}"
 
 ## Drivers
 neutron_driver_network_scheduler: neutron.scheduler.dhcp_agent_scheduler.WeightScheduler
@@ -476,6 +500,7 @@ neutron_pip_packages:
   - neutron_fwaas
   - neutron_lbaas
   - neutron_vpnaas
+  - neutron_dynamic_routing
   - pycrypto
   - python-glanceclient
   - python-keystoneclient
@@ -518,5 +543,6 @@ neutron_linuxbridge_agent_ini_overrides: {}
 neutron_lbaas_agent_ini_overrides: {}
 neutron_vpnaas_agent_ini_overrides: {}
 neutron_openvswitch_agent_ini_overrides: {}
+neutron_bgp_dragent_ini_overrides: {}
 neutron_calico_dhcp_agent_ini_overrides: {}
 neutron_calico_felix_ini_overrides: {}

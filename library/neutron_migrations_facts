@@ -112,6 +112,19 @@ MIGRATIONS = {
                 }
             },
             'installed': False
+        },
+        'neutron-dynamic-routing': {
+            'branches': {
+                'expand': {
+                    'revision': None,
+                    'head': None
+                },
+                'contract': {
+                    'revision': None,
+                    'head': None
+                }
+            },
+            'installed': False
         }
     },
     'run_contract': True,
@@ -228,7 +241,7 @@ def main():
     for line in current.splitlines():
         head = False
         project_match = re.search(
-            "^\s*Running current for (neutron(-[a-z]+)?) ...$",
+            "^\s*Running current for (neutron(-[a-z-]+)?) ...$",
             line
         )
         migration_match = re.search("^([0-9a-z]{4,12})(\s\(head\))?$", line)

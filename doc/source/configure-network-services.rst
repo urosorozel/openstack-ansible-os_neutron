@@ -14,6 +14,10 @@ Load Balancer as a Service (LBaaS)
 VPN as a Service (VPNaaS)
   Provides a method for extending a private network across a public network.
 
+BGP Dynamic Routing service
+  Provides a means for advertising self-service (private) network prefixes
+  to physical network devices that support BGP.
+
 Firewall service (optional)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -188,3 +192,39 @@ The VPNaaS default configuration options are changed through the
 dict.
 
 .. _conf override: http://docs.openstack.org/developer/openstack-ansible/install-guide/configure-openstack.html
+
+BGP Dynamic Routing service (optional)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The `BGP Dynamic Routing`_ plugin for neutron provides BGP speakers which can
+advertise OpenStack project network prefixes to external network devices, such
+as routers. This is especially useful when coupled with the `subnet pools`_
+feature, which enables neutron to be configured in such a way as to allow users
+to create self-service `segmented IPv6 subnets`_.
+
+.. _BGP Dynamic Routing: http://docs.openstack.org/networking-guide/config-bgp-dynamic-routing.html
+.. _subnet pools: http://docs.openstack.org/networking-guide/config-subnet-pools.html
+.. _segmented IPv6 subnets: https://cloudbau.github.io/openstack/neutron/networking/2016/05/17/neutron-ipv6.html
+
+The following procedure describes how to modify the
+``/etc/openstack_deploy/user_variables.yml`` file to enable the BGP Dynamic
+Routing plugin.
+
+#. Add the BGP plugin to the ``neutron_plugin_base`` variable
+   in ``/etc/openstack_deploy/user_variables.yml``:
+
+   .. code-block:: yaml
+
+      neutron_plugin_base:
+        - ...
+        - neutron_dynamic_routing.services.bgp.bgp_plugin.BgpPlugin
+
+   Ensure that ``neutron_plugin_base`` includes all of the plugins that you
+   want to deploy with neutron in addition to the BGP plugin.
+
+#. Execute the neutron install playbook in order to update the configuration:
+
+   .. code-block:: shell-session
+
+       # cd /opt/openstack-ansible/playbooks
+       # openstack-ansible os-neutron-install.yml
