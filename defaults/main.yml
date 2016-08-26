@@ -232,7 +232,7 @@ neutron_services:
    config_overrides: "{{ neutron_l3_agent_ini_overrides }}"
    config_type: "ini"
  neutron-lbaasv2-agent:
-   group: neutron_lbaasv2_agent
+   group: neutron_lbaas_agent
    service_name: neutron-lbaasv2-agent
    service_en: "{{ neutron_lbaasv2 | bool }}"
    service_conf_path: "{{ neutron_conf_dir }}"
