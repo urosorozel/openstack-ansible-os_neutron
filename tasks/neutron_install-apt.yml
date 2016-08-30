@@ -49,7 +49,7 @@
   until: install_packages|success
   retries: 5
   delay: 2
-  with_items: "{{ neutron_apt_packages }}"
+  with_items: "{{ neutron_distro_packages }}"
 
 - name: Install apt packages for LXB
   apt:
@@ -59,7 +59,7 @@
   until: install_packages|success
   retries: 5
   delay: 2
-  with_items: "{{ neutron_lxb_apt_packages }}"
+  with_items: "{{ neutron_lxb_distro_packages }}"
   when:
     - neutron_services['neutron-linuxbridge-agent']['group'] in group_names
     - neutron_services['neutron-linuxbridge-agent'].service_en | bool
@@ -72,7 +72,7 @@
   until: install_packages|success
   retries: 5
   delay: 2
-  with_items: "{{ ovs_apt_packages }}"
+  with_items: "{{ neutron_ovs_distro_packages }}"
   when:
     - neutron_services['neutron-openvswitch-agent']['group'] in group_names
     - neutron_services['neutron-openvswitch-agent'].service_en | bool
@@ -85,7 +85,7 @@
   until: install_packages|success
   retries: 5
   delay: 2
-  with_items: "{{ neutron_lbaas_apt_packages }}"
+  with_items: "{{ neutron_lbaas_distro_packages }}"
   when:
     - neutron_services['neutron-lbaasv2-agent']['group'] in group_names
     - neutron_lbaasv2 | bool
@@ -98,7 +98,7 @@
   until: install_packages|success
   retries: 5
   delay: 2
-  with_items: "{{ neutron_vpnaas_apt_packages }}"
+  with_items: "{{ neutron_vpnaas_distro_packages }}"
   when:
     - neutron_services['neutron-vpnaas-agent']['group'] in group_names
     - neutron_vpnaas | bool
@@ -111,4 +111,4 @@
   until: remove_packages|success
   retries: 5
   delay: 2
-  with_items: "{{ neutron_apt_remove_packages }}"
+  with_items: "{{ neutron_remove_distro_packages }}"

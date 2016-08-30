@@ -20,14 +20,14 @@ uca_openstack_release: mitaka
 uca_repo_dist: "{{ ansible_lsb.codename }}-updates/{{ uca_openstack_release }}"
 uca_repo: "deb {{ uca_apt_repo_url }} {{ uca_repo_dist }} main"
 
-ovs_apt_packages:
+neutron_ovs_distro_packages:
   - openvswitch-common
   - openvswitch-switch
 
 ## APT Cache options
 cache_timeout: 600
 
-neutron_apt_packages:
+neutron_distro_packages:
   - conntrack
   - dnsmasq-base
   - dnsmasq-utils
@@ -38,16 +38,16 @@ neutron_apt_packages:
   - libpq-dev
   - radvd
 
-neutron_lxb_apt_packages:
+neutron_lxb_distro_packages:
   - bridge-utils
 
-neutron_lbaas_apt_packages:
+neutron_lbaas_distro_packages:
   - haproxy
 
-neutron_vpnaas_apt_packages:
+neutron_vpnaas_distro_packages:
   - openswan
 
-neutron_apt_remove_packages:
+neutron_remove_distro_packages:
   - conntrackd
 
 neutron_lbaasv2_initscript_path: "/etc/init/neutron-lbaasv2-agent.conf"
