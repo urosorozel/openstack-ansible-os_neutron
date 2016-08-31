@@ -97,20 +97,17 @@ Deploying LBaaS v2
    Ensure that ``neutron_plugin_base`` includes all of the plugins that you
    want to deploy with neutron in addition to the LBaaS plugin.
 
-#. Run the neutron playbook to deploy and enable the LBaaS v2 agent:
+   Adding the LBaaS v2 plugin to ``neutron_plugin_base`` automatically enables
+   the Dashboard panels for LBaaS v2 when the ``os_horizon`` role is
+   redeployed (see the following step).
+
+#. Run the neutron playbook to deploy the LBaaS v2 agent and enable the
+   Dashboard panels for LBaaSv2:
 
    .. code-block:: console
 
        # cd /opt/openstack-ansible/playbooks
        # openstack-ansible os-neutron-install.yml
-
-#. Set ``horizon_enable_neutron_lbaas`` to ``True`` in
-   ``/etc/openstack_deploy/user_variables.yml`` and run the horizon playbook to
-   enable the LBaaS v2 panels in horizon:
-
-   .. code-block:: console
-
-       # cd /opt/openstack-ansible/playbooks
        # openstack-ansible os-horizon-install.yml
 
 .. _lbaas-special-notes:
