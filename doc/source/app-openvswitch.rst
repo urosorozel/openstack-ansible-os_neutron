@@ -23,6 +23,7 @@ Prerequisites
 ~~~~~~~~~~~~~
 
 All compute nodes must have bridges configured:
+
 - ``br-mgmt``
 - ``br-vlan`` (optional - used for vlan networks)
 - ``br-vxlan`` (optional - used for vxlan tenant networks)
@@ -94,14 +95,12 @@ with Open vSwitch on Ubuntu 14.04 or 16.04 LTS: *
     source /etc/network/interfaces.d/*.cfg
 
     # Management network
-    auto eth0
     allow-br-mgmt eth0
     iface eth0 inet manual
       ovs_bridge br-mgmt
       ovs_type OVSPort
 
     # VLAN network
-    auto eth1
     allow-br-vlan eth1
     iface eth1 inet manual
       ovs_bridge br-vlan
@@ -113,6 +112,7 @@ with Open vSwitch on Ubuntu 14.04 or 16.04 LTS: *
 
     # OpenStack Management network bridge
     auto br-mgmt
+    allow-ovs br-mgmt
     iface br-mgmt inet static
       address MANAGEMENT_NETWORK_IP
       netmask 255.255.255.0
@@ -123,13 +123,18 @@ One ``br-<type>.cfg`` is required for each bridge. VLAN interfaces can be used
 to back the ``br-<type>`` bridges if there are limited physical adapters on the
 system.
 
+**Warning**: There is a bug in Ubuntu 16.04 LTS where the Open vSwitch service
+won't start properly when using systemd. The bug and workaround are discussed
+here: `<http://www.opencloudblog.com/?p=240>`_
+
+
 OpenStack-Ansible user variables
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Set the following user variables in your
 ``/etc/openstack_deploy/user_variables.yml``: *
 
-.. code-block:: shell-session
+.. code-block:: yaml
 
   # Ensure the openvswitch kernel module is loaded
   openstack_host_specific_kernel_modules:
