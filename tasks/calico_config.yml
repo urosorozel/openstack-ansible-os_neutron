@@ -34,20 +34,6 @@
     - calico-install
     - calico-pip-packages
 
-- name: Set Calico compatible qemu libvirt config
-  copy:
-    src: "calico-qemu.conf"
-    dest: "/etc/libvirt/qemu.conf"
-    owner: "root"
-    group: "root"
-    mode: "0644"
-  notify: Restart libvirt-bin
-  when:
-    - neutron_services['calico-felix']['group'] in group_names
-      or neutron_services['calico-dhcp-agent']['group'] in group_names
-  tags:
-    - calico-config
-
 - name: Ensure calico config directory exists
   file:
     path: "/etc/calico"
