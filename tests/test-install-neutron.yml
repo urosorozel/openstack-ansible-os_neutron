@@ -110,9 +110,16 @@
       include_vars: ovs_test_vars.yml
       when:
         - groups['neutron_openvswitch_agent'] | length > 0
+    - name: Include Calico testing vars
+      include_vars: calico_test_vars.yml
+      when:
+        - groups['neutron_calico_dhcp_agent'] | length > 0
   roles:
     - role: "{{ rolename | basename }}"
   post_tasks:
     - include: test-neutron-functional.yml
+    - include: test-calico-functional.yml
+      when:
+        - "{{ neutron_plugin_type == 'ml2.calico' }}"
   vars_files:
     - test-vars.yml

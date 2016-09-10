@@ -17,6 +17,11 @@
   hosts: service_all
   user: root
   gather_facts: true
+  pre_tasks:
+    - name: Include Calico testing vars
+      include_vars: calico_test_vars.yml
+      when:
+        - groups['neutron_calico_dhcp_agent'] | length > 0
   roles:
     - role: "rabbitmq_server"
       rabbitmq_cookie_token: secrete
@@ -30,3 +35,6 @@
       galera_wsrep_provider_options:
         - { option: "gcache.size", value: "32M" }
       galera_server_id: "{{ inventory_hostname | string_2_int }}"
+    - role: "etcd"
+      when:
+        - groups['neutron_calico_dhcp_agent'] | length > 0

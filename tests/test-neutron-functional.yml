@@ -41,6 +41,8 @@
     neutron agent-list | grep DHCP
   register: neutron_dhcp_agent
   until: neutron_dhcp_agent.stdout.find(':-)') != -1
+  when:
+    - groups['neutron_dhcp_agent'] | length > 0
   retries: 5
   delay: 10
 
@@ -97,6 +99,8 @@
   assert:
     that:
       - "'qdhcp' in dhcp_namespace.stdout"
+  when:
+    - groups['neutron_dhcp_agent'] | length > 0
 
 - name: Check for iptables checksum rule
   shell: |

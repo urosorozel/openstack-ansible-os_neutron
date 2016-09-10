@@ -42,10 +42,6 @@
   src: https://git.openstack.org/openstack/openstack-ansible-rabbitmq_server
   scm: git
   version: master
-- name: bird
-  scm: git
-  src: https://github.com/logan2211/ansible-bird
-  version: master
 - name: etcd
   scm: git
   src: https://github.com/logan2211/ansible-etcd
