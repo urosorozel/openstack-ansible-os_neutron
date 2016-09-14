@@ -50,6 +50,15 @@
     openrc_path: /root/openrc
     net_name: test-network
 
+- name: Ensuring network is created correctly
+  shell: |
+    . /root/openrc
+    neutron net-list | grep test-network
+  register: neutron_net_list
+  until: neutron_net_list.rc == 0
+  retries: 10
+  delay: 3
+
 - name: Create test subnet
   neutron:
     command: create_subnet
@@ -58,18 +67,31 @@
     subnet_name: test-subnet
     cidr: "192.168.74.0/24"
 
-- name: Create test port
+- name: Ensuring subnet is created correctly
   shell: |
     . /root/openrc
-    neutron port-create --name test-port test-network
-  register: neutron_port_create
-  until: neutron_port_create.rc == 0
-  retries: 5
-  delay: 10
+    neutron subnet-list -c id -c name -f value | grep test-subnet
+  register: neutron_subnet_list
+  until: neutron_subnet_list.rc == 0
+  retries: 10
+  delay: 3
+
+- name: Ensuring dhcp port is present
+  shell: |
+    . /root/openrc
+    neutron port-list -c device_owner -c id -c fixed_ips -f value | egrep 'dhcp.*{{ neutron_subnet_list.stdout_lines[0].split(' ')[0] }}'
+  register: neutron_port_list_dhcp
+  until: neutron_port_list_dhcp.rc == 0
+  retries: 10
+  delay: 3
 
 - name: Check for dhcp network namespace
-  shell: ip netns
+  shell: ip netns ls
   register: dhcp_namespace
+
+- name: List the namespaces
+  debug:
+    msg: "{{ dhcp_namespace }}"
 
 - name: Make sure the dhcp namespace is present
   assert:
