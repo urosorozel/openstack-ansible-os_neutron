@@ -55,19 +55,21 @@
 - name: Ensuring network is created correctly
   shell: |
     . /root/openrc
-    neutron net-list | grep test-network
+    neutron net-list -c id -c name -f value | grep test-network
   register: neutron_net_list
   until: neutron_net_list.rc == 0
   retries: 10
   delay: 3
 
 - name: Create test subnet
-  neutron:
-    command: create_subnet
-    openrc_path: /root/openrc
-    net_name: test-network
-    subnet_name: test-subnet
-    cidr: "192.168.74.0/24"
+  shell: |
+    . /root/openrc
+    neutron subnet-create --name test-subnet test-network 192.168.74.0/24
+  register: neutron_subnet_create
+
+- name: Debug test subnet output
+  debug:
+    msg: "{{ neutron_subnet_create.stdout_lines }}"
 
 - name: Ensuring subnet is created correctly
   shell: |
@@ -78,12 +80,12 @@
   retries: 10
   delay: 3
 
-- name: Ensuring dhcp port is present
+- name: Ensure the dhcp agent is on the net
   shell: |
     . /root/openrc
-    neutron port-list -c device_owner -c id -c fixed_ips -f value | egrep 'dhcp.*{{ neutron_subnet_list.stdout_lines[0].split(' ')[0] }}'
-  register: neutron_port_list_dhcp
-  until: neutron_port_list_dhcp.rc == 0
+    neutron dhcp-agent-list-hosting-net '{{ neutron_net_list.stdout_lines[0].split(' ')[0] }}' | grep ":-)"
+  register: neutron_dhcp_agent_list
+  until: neutron_dhcp_agent_list.rc == 0
   retries: 10
   delay: 3
 
