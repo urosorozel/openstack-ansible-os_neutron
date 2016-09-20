@@ -1,7 +1,7 @@
 [all]
-localhost ansible_connection=local ansible_ssh_host=127.0.0.1 ansible_become=True
-infra1 ansible_host=10.100.100.2 ansible_become=True ansible_user=root
-openstack1 ansible_host=10.100.100.3 ansible_become=True ansible_user=root
+localhost
+infra1
+openstack1
 
 [physical_host]
 localhost
@@ -16,9 +16,13 @@ infra1
 [galera_all]
 infra1
 
+[memcached_all]
+infra1
+
 [service_all:children]
 rabbitmq_all
 galera_all
+memcached_all
 
 [keystone_all]
 openstack1
@@ -61,3 +65,33 @@ neutron_l3_agent
 neutron_lbaas_agent
 neutron_metadata_agent
 neutron_server
+
+[nova_api_metadata]
+openstack1
+
+[nova_api_os_compute]
+openstack1
+
+[nova_cert]
+openstack1
+
+[nova_compute]
+localhost
+
+[nova_conductor]
+openstack1
+
+[nova_console]
+openstack1
+
+[nova_scheduler]
+openstack1
+
+[nova_all:children]
+nova_api_metadata
+nova_api_os_compute
+nova_cert
+nova_compute
+nova_conductor
+nova_console
+nova_scheduler
