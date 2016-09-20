@@ -84,22 +84,14 @@
        - item.value.service_conf is defined
        - item.value.group in group_names
 
-- name: Drop neutron rootwrap filters
+- name: Copy neutron rootwrap filters
   copy:
-    src: "{{ item.src }}"
-    dest: "{{ item.dest }}"
+    src: "{{ item }}"
+    dest: "{{ neutron_conf_dir }}/rootwrap.d/"
     owner: "root"
     group: "root"
-  with_items:
-    - { src: "rootwrap.d/debug.filters", dest: "{{ neutron_conf_dir }}/rootwrap.d/debug.filters" }
-    - { src: "rootwrap.d/dibbler.filters", dest: "{{ neutron_conf_dir }}/rootwrap.d/dibbler.filters" }
-    - { src: "rootwrap.d/ebtables.filters", dest: "{{ neutron_conf_dir }}/rootwrap.d/ebtables.filters" }
-    - { src: "rootwrap.d/functional-testing.filters", dest: "{{ neutron_conf_dir }}/rootwrap.d/functional-testing.filters" }
-    - { src: "rootwrap.d/ipset-firewall.filters", dest: "{{ neutron_conf_dir }}/rootwrap.d/ipset-firewall.filters" }
-    - { src: "rootwrap.d/iptables-firewall.filters", dest: "{{ neutron_conf_dir }}/rootwrap.d/iptables-firewall.filters" }
-    - { src: "rootwrap.d/openvswitch-plugin.filters", dest: "{{ neutron_conf_dir }}/rootwrap.d/openvswitch-plugin.filters" }
-    - { src: "rootwrap.d/lbaas-haproxy.filters", dest: "{{ neutron_conf_dir }}/rootwrap.d/lbaas-haproxy.filters" }
-    - { src: "rootwrap.d/vpnaas.filters", dest: "{{ neutron_conf_dir }}/rootwrap.d/vpnaas.filters" }
+  with_fileglob:
+    - rootwrap.d/*
   notify:
     - Restart neutron services
 
