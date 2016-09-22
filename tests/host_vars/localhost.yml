@@ -1,5 +1,5 @@
 ---
-# Copyright 2015, Rackspace US, Inc.
+# Copyright 2016, Rackspace US, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,22 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Setup the user ssh keys, host and containers
-- include: playbooks/test-setup-host.yml
+bridges:
+  - name: "br-mgmt"
+    ip_addr: "10.1.0.1"
 
-# Install RabbitMQ/MariaDB
-- include: playbooks/test-install-infra.yml
-
-# Install etcd
-- include: playbooks/test-install-etcd.yml
-  when:
-    - groups['neutron_calico_dhcp_agent'] | length > 0
-
-# Install Keystone
-- include: playbooks/test-install-keystone.yml
-
-# Install Neutron
-- include: playbooks/test-install-neutron.yml
-
-# Run tests
-- include: test-neutron-functional.yml
+ansible_python_interpreter: "/usr/bin/python2"
+ansible_become: True

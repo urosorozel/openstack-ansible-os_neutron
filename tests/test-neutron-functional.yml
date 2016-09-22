@@ -15,101 +15,114 @@
 
 # Packages need to be installed outside
 # of venv to be usable by Ansible
-- name: Install testing pip packages
-  pip:
-    name: "{{ item }}"
-  with_items:
-    - python-neutronclient
-    - httplib2
 
-- name: Check the neutron api
-  uri:
-    url: "http://localhost:9696"
-    status_code: 200
+- name: Test neutron
+  hosts: neutron_all
+  user: root
+  gather_facts: true
+  tasks:
+    - name: Install testing pip packages
+      pip:
+        name: "{{ item }}"
+      with_items:
+        - python-neutronclient
+        - httplib2
 
-# No assertion around this yet, just useful for debug purposes
-# TODO(automagically) - Test for all expected agents and agent status
-- name: Neutron agents status
-  shell: |
-    . /root/openrc
-    neutron agent-list
-  register: agent_list
+    - name: Check the neutron api
+      uri:
+        url: "http://localhost:9696"
+        status_code: 200
 
-- name: Ensure that the DHCP agent is alive
-  shell: |
-    . /root/openrc
-    neutron agent-list | grep DHCP
-  register: neutron_dhcp_agent
-  until: neutron_dhcp_agent.stdout.find(':-)') != -1
-  when:
-    - groups['neutron_dhcp_agent'] | length > 0
-  retries: 5
-  delay: 10
+    # No assertion around this yet, just useful for debug purposes
+    # TODO(automagically) - Test for all expected agents and agent status
+    - name: Neutron agents status
+      shell: |
+         . /root/openrc
+         neutron agent-list
+      register: agent_list
 
-- name: Create test network
-  neutron:
-    command: create_network
-    openrc_path: /root/openrc
-    net_name: test-network
+    - name: Ensure that the DHCP agent is alive
+      shell: |
+        . /root/openrc
+        neutron agent-list | grep DHCP
+      register: neutron_dhcp_agent
+      until: neutron_dhcp_agent.stdout.find(':-)') != -1
+      when:
+        - groups['neutron_dhcp_agent'] | length > 0
+      retries: 5
+      delay: 10
 
-- name: Ensuring network is created correctly
-  shell: |
-    . /root/openrc
-    neutron net-list -c id -c name -f value | grep test-network
-  register: neutron_net_list
-  until: neutron_net_list.rc == 0
-  retries: 10
-  delay: 3
+    - name: Create test network
+      neutron:
+        command: create_network
+        openrc_path: /root/openrc
+        net_name: test-network
 
-- name: Create test subnet
-  shell: |
-    . /root/openrc
-    neutron subnet-create --name test-subnet test-network 192.168.74.0/24
-  register: neutron_subnet_create
+    - name: Ensuring network is created correctly
+      shell: |
+        . /root/openrc
+        neutron net-list -c id -c name -f value | grep test-network
+      register: neutron_net_list
+      until: neutron_net_list.rc == 0
+      retries: 10
+      delay: 3
 
-- name: Debug test subnet output
-  debug:
-    msg: "{{ neutron_subnet_create.stdout_lines }}"
+    - name: Create test subnet
+      shell: |
+        . /root/openrc
+        neutron subnet-create --name test-subnet test-network 192.168.74.0/24
+      register: neutron_subnet_create
 
-- name: Ensuring subnet is created correctly
-  shell: |
-    . /root/openrc
-    neutron subnet-list -c id -c name -f value | grep test-subnet
-  register: neutron_subnet_list
-  until: neutron_subnet_list.rc == 0
-  retries: 10
-  delay: 3
+    - name: Debug test subnet output
+      debug:
+        msg: "{{ neutron_subnet_create.stdout_lines }}"
 
-- name: Ensure the dhcp agent is on the net
-  shell: |
-    . /root/openrc
-    neutron dhcp-agent-list-hosting-net '{{ neutron_net_list.stdout_lines[0].split(' ')[0] }}' | grep ":-)"
-  register: neutron_dhcp_agent_list
-  until: neutron_dhcp_agent_list.rc == 0
-  retries: 10
-  delay: 3
+    - name: Ensuring subnet is created correctly
+      shell: |
+        . /root/openrc
+        neutron subnet-list -c id -c name -f value | grep test-subnet
+      register: neutron_subnet_list
+      until: neutron_subnet_list.rc == 0
+      retries: 10
+      delay: 3
 
-- name: Check for dhcp network namespace
-  shell: ip netns ls
-  register: dhcp_namespace
+    - name: Ensure the dhcp agent is on the net
+      shell: |
+        . /root/openrc
+        neutron dhcp-agent-list-hosting-net '{{ neutron_net_list.stdout_lines[0].split(' ')[0] }}' | grep ":-)"
+      register: neutron_dhcp_agent_list
+      until: neutron_dhcp_agent_list.rc == 0
+      retries: 10
+      delay: 3
 
-- name: List the namespaces
-  debug:
-    msg: "{{ dhcp_namespace }}"
+    - name: Check for dhcp network namespace
+      shell: ip netns ls
+      register: dhcp_namespace
 
-- name: Make sure the dhcp namespace is present
-  assert:
-    that:
-      - "'qdhcp' in dhcp_namespace.stdout"
-  when:
-    - groups['neutron_dhcp_agent'] | length > 0
+    - name: List the namespaces
+      debug:
+        msg: "{{ dhcp_namespace }}"
 
-- name: Check for iptables checksum rule
-  shell: |
-    ip netns exec {{ dhcp_namespace.stdout.split(' ')[0] }} iptables -C neutron-dhcp-age-POSTROUTING -t mangle -p udp --dport 68 -j CHECKSUM --checksum-fill
-  register: checksum_rule
-  until : checksum_rule.rc == 0
-  retries: 5
-  delay: 10
-  when:
-    - groups['neutron_linuxbridge_agent'] | length > 0
+    - name: Make sure the dhcp namespace is present
+      assert:
+        that:
+          - "'qdhcp' in dhcp_namespace.stdout"
+      when:
+        - groups['neutron_dhcp_agent'] | length > 0
+
+    - name: Check for iptables checksum rule
+      shell: |
+        ip netns exec {{ dhcp_namespace.stdout.split(' ')[0] }} iptables -C neutron-dhcp-age-POSTROUTING -t mangle -p udp --dport 68 -j CHECKSUM --checksum-fill
+      register: checksum_rule
+      until : checksum_rule.rc == 0
+      retries: 5
+      delay: 10
+      when:
+         - groups['neutron_linuxbridge_agent'] | length > 0
+
+  post_tasks:
+    - include: test-calico-functional.yml
+      when:
+        - "{{ neutron_plugin_type == 'ml2.calico' }}"
+  vars_files:
+    - playbooks/test-vars.yml
