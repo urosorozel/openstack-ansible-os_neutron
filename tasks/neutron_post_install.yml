@@ -64,6 +64,7 @@
 
 - name: Setup Calico config
   include: calico_config.yml
+  static: no
   when: neutron_plugin_type == 'ml2.calico'
 
 - name: Generate neutron agent only Config
@@ -110,12 +111,13 @@
 
 - name: Setup PLUMgrid config
   include: plumgrid_config.yml
+  static: no
   when: neutron_plugin_type == 'plumgrid'
 
 - name: Setup Nuage neutron config
   include: nuage_neutron_config.yml
-  when:
-    - neutron_plugin_type == 'nuage'
+  static: no
+  when: neutron_plugin_type == 'nuage'
 
 - name: Drop metadata iptables checksum fix
   copy:

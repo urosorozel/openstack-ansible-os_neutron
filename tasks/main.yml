@@ -54,6 +54,7 @@
     - always
 
 - include: neutron_ml2_ovs_powervm.yml
+  static: no
   when:
     - neutron_os_type is defined
     - neutron_os_type == 'powervm'
@@ -80,11 +81,13 @@
   tags:
     - neutron-install
 - include: calico_init.yml
+  static: no
   when: neutron_plugin_type == 'ml2.calico'
   tags:
     - neutron-install
 
 - include: neutron_db_setup.yml
+  static: no
   when:
     - neutron_services['neutron-server']['group'] in group_names
     - inventory_hostname == groups[neutron_services['neutron-server']['group']][0]
@@ -92,6 +95,7 @@
     - neutron-install
 
 - include: neutron_service_setup.yml
+  static: no
   when:
     - "'neutron_all' in group_names"
     - inventory_hostname == groups['neutron_all'][0]
@@ -99,6 +103,7 @@
     - neutron-install
 
 - include: neutron_l3_ha.yml
+  static: no
   when:
     - neutron_services['neutron-l3-agent']['group'] in group_names
     - neutron_legacy_ha_tool_enabled | bool
