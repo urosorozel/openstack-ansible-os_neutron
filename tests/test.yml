@@ -14,21 +14,21 @@
 # limitations under the License.
 
 # Setup the user ssh keys, host and containers
-- include: playbooks/test-setup-host.yml
+- include: common/test-setup-host.yml
 
 # Install RabbitMQ/MariaDB
-- include: playbooks/test-install-infra.yml
+- include: common/test-install-infra.yml
 
 # Install etcd
-- include: playbooks/test-install-etcd.yml
+- include: common/test-install-etcd.yml
   when:
     - groups['neutron_calico_dhcp_agent'] | length > 0
 
 # Install Keystone
-- include: playbooks/test-install-keystone.yml
+- include: common/test-install-keystone.yml
 
 # Install Neutron
-- include: playbooks/test-install-neutron.yml
+- include: common/test-install-neutron.yml
 
 # Run tests
 - include: test-neutron-functional.yml

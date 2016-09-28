@@ -125,4 +125,4 @@
       when:
         - "{{ neutron_plugin_type == 'ml2.calico' }}"
   vars_files:
-    - playbooks/test-vars.yml
+    - common/test-vars.yml
