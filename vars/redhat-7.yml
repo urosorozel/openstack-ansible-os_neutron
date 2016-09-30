@@ -13,16 +13,30 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: neutron_init_upstart.yml
-  when: pid1_name == "init"
+rdo_package: "https://rdoproject.org/repos/rdo-release.rpm"
 
-- include: neutron_init_systemd.yml
-  when: pid1_name == "systemd"
+neutron_ovs_distro_packages:
+  - openvswitch
 
-- name: Load service
-  service:
-   name: "{{ program_name }}"
-   enabled: "yes"
-   state: started
-  notify:
-    - Restart neutron services
+neutron_distro_packages:
+  - conntrack-tools
+  - dnsmasq
+  - dnsmasq-utils
+  - ebtables
+  - ipset
+  - iputils
+  - keepalived
+  - libpqxx-devel
+  - radvd
+
+neutron_lxb_distro_packages:
+  - bridge-utils
+
+neutron_lbaas_distro_packages:
+  - haproxy
+
+neutron_vpnaas_distro_packages:
+  - openswan
+
+neutron_lbaasv2_initscript_path: "/etc/init/neutron-lbaasv2-agent.conf"
+neutron_lbaasv2_agent_servicename: "neutron-lbaasv2-agent"
