@@ -86,6 +86,14 @@
       retries: 10
       delay: 3
 
+    # (andymccr): To avoid a race condition we can restart
+    # the neutron-dhcp-agent service:
+    # https://bugs.launchpad.net/openstack-ansible/+bug/1629346
+    - name: Restart neutron-dhcp-agent service
+      service:
+        state: restarted
+        name: neutron-dhcp-agent
+
     - name: Ensure the dhcp agent is on the net
       shell: |
         . /root/openrc
@@ -98,6 +106,9 @@
     - name: Check for dhcp network namespace
       shell: ip netns ls
       register: dhcp_namespace
+      until: dhcp_namespace.stdout.find("qdhcp") != -1
+      retries: 5
+      delay: 10
 
     - name: List the namespaces
       debug:
