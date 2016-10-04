@@ -21,8 +21,8 @@
 
 - name: Load service
   service:
-   name: "{{ program_name }}"
-   enabled: "yes"
-   state: started
+    name: "{{ program_name }}"
+    enabled: "yes"
+    state: started
   notify:
     - Restart neutron services
