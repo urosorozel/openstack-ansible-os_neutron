@@ -38,7 +38,7 @@ neutron_dynamic_routing_git_install_branch: stable/newton
 neutron_requirements_git_repo: https://git.openstack.org/openstack/requirements
 neutron_requirements_git_install_branch: stable/newton
 
-calico_git_repo: https://github.com/projectcalico/calico
+calico_git_repo: https://github.com/projectcalico/felix
 calico_git_install_branch: master
 
 networking_calico_git_repo: https://git.openstack.org/openstack/networking-calico
