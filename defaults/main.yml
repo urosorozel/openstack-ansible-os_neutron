@@ -39,6 +39,7 @@ neutron_requirements_git_repo: https://git.openstack.org/openstack/requirements
 neutron_requirements_git_install_branch: master
 
 calico_git_repo: https://github.com/projectcalico/felix
+calico_git_package_name: calico
 calico_git_install_branch: master
 
 networking_calico_git_repo: https://git.openstack.org/openstack/networking-calico
