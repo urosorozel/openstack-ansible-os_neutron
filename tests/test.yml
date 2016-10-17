@@ -30,5 +30,8 @@
 # Install Neutron
 - include: common/test-install-neutron.yml
 
+# Install Tempest
+- include: common/test-install-tempest.yml
+
 # Run tests
 - include: test-neutron-functional.yml
