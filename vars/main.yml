@@ -265,7 +265,8 @@ neutron_metadata: "{% if neutron_plugin_type.split('.')[0] == 'ml2' %}True{% els
 ###
 
 # Please add the 'firewall' to the neutron_plugin_base list
-neutron_fwaas: "{% if 'firewall' in neutron_plugin_base %}True{% else %}False{% endif %}"
+neutron_fwaas: "{{ 'firewall' in neutron_plugin_base | ternary('True', 'False') }}"
+neutron_fwaas_v2: "{{ 'firewall_v2' in neutron_plugin_base | ternary('True', 'False') }}"
 
 ###
 ### LBaaS Plugin Configuration

@@ -206,12 +206,6 @@ auth_version = 3
 
 {% endif %}
 
-{% if neutron_fwaas | bool %}
-[fwaas]
-enabled = true
-driver = neutron_fwaas.services.firewall.drivers.linux.iptables_fwaas.IptablesFwaasDriver
-{% endif %}
-
 # Agent
 [agent]
 polling_interval = {{ neutron_agent_polling_interval|default(5) }}
@@ -241,5 +235,3 @@ transport_url = rabbit://{% for host in neutron_rabbitmq_telemetry_servers.split
 # Concurrency (locking mechanisms)
 [oslo_concurrency]
 lock_path = {{ neutron_lock_path }}
-
-

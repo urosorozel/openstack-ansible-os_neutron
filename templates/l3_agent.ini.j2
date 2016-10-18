@@ -27,3 +27,25 @@ send_arp_for_ha = 3
 
 # Metadata
 enable_metadata_proxy = True
+
+{% if neutron_fwaas | bool %}
+
+[fwaas]
+enabled = true
+driver = iptables
+agent_version = v1
+
+[AGENT]
+extensions = fwaas
+
+{% elif neutron_fwaas_v2 | bool %}
+
+[fwaas]
+enabled = true
+driver = iptables_v2
+agent_version = v2
+
+[AGENT]
+extensions = fwaas_v2
+
+{% endif %}
