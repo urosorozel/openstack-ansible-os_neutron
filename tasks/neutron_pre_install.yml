@@ -35,6 +35,7 @@
     state: directory
     owner: "{{ item.owner|default(neutron_system_user_name) }}"
     group: "{{ item.group|default(neutron_system_group_name) }}"
+    mode: "{{ item.mode | default(omit) }}"
   with_items:
     - { path: "/openstack", owner: "root", group: "root" }
     - { path: "{{ neutron_conf_dir }}" }
@@ -45,7 +46,7 @@
     - { path: "/var/cache/neutron" }
     - { path: "/var/lock/neutron" }
     - { path: "/var/run/neutron" }
-    - { path: "{{ neutron_system_home_folder }}" }
+    - { path: "{{ neutron_system_home_folder }}", mode: "0755" }
     - { path: "{{ neutron_system_home_folder }}/ha_confs" }
 
 - name: Test for log directory or link
