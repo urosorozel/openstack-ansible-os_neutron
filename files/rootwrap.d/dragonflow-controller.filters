@@ -1,0 +1,11 @@
+# neutron-rootwrap command filters for nodes on which dragonflow SDN network
+# controller is used.
+#
+# This file should be owned by (and only-writeable by) the root user
+
+# format seems to be
+# cmd-name: filter-name, raw-command, user, args
+
+[Filters]
+
+

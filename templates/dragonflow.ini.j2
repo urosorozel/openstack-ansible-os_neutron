@@ -1,0 +1,58 @@
+# {{ ansible_managed }}
+#
+[DEFAULT]
+
+[df]
+# The remote db server ip address (IP address value)
+remote_db_ip = {{ dragonflow_remote_db_ip }}
+remote_db_port = {{ dragonflow_remote_db_port }}
+remote_db_hosts = $remote_db_ip:$remote_db_port
+
+# The driver to use for the NB database (string value)
+nb_db_class = {{ dragonflow_nb_db_class }}
+
+# Local host VTEP IP (IP address value)
+local_ip = {{ neutron_local_ip }}
+
+# Local host management IP
+management_ip = {{ neutron_management_ip }}
+
+# List of openflow applications classes to load (string value)
+apps_list = {{ dragonflow_apps | join(",") }}
+
+# Enable use of Dragonflow built-in pub/sub (boolean value)
+enable_df_pub_sub = {{ dragonflow_pub_sub_driver | default('', True) | length > 0 }}
+
+# Drivers to use for the Dragonflow pub/sub (string value)
+pub_sub_driver = {{ dragonflow_pub_sub_driver | default('', True) }}
+
+# Drivers to use for the Dragonflow pub/sub (string value)
+pub_sub_multiproc_driver = {{ dragonflow_pub_sub_multiproc_driver }}
+
+# Enable notifier for the Dragonflow port status (boolean value)
+enable_port_status_notifier = {{ dragonflow_port_status_notifier | default('', True) | length > 0 }}
+
+# Notifier for the Dragonflow port status (string value)
+port_status_notifier = {{ dragonflow_port_status_notifier | default('', True) }}
+
+# Neutron Server Publishers bind address (string value)
+publisher_bind_address = {{ dragonflow_publisher_bind_address }}
+
+# Use inter-process publish/subscribe.
+pub_sub_use_multiproc = {{ dragonflow_pub_sub_multiproc_enabled }}
+
+{%if dragonflow_pub_sub_multiproc_enabled | bool %}
+publisher_multiproc_socket = /var/run/dragonflow/dragonflow-publisher-socket
+{% endif %}
+
+# Have each controller get only the part of the topology relevant to it.
+enable_selective_topology_distribution = True
+
+
+[df_dnat_app]
+ex_peer_patch_port = {{ dragonflow_ex_peer_patch_port }}
+int_peer_patch_port = {{ dragonflow_int_peer_patch_port }}
+external_network_bridge = {{ dragonflow_external_network_bridge }}
+
+[df_l2_app]
+l2_responder = True

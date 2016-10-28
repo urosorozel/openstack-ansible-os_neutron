@@ -37,7 +37,11 @@ dependencies:
   - role: etcd
     etcd_install_type: proxy
     when:
-      - neutron_services['calico-dhcp-agent']['group'] in group_names
-        or neutron_services['calico-felix']['group'] in group_names
-        or neutron_services['neutron-server']['group'] in group_names
-      - neutron_plugin_type == 'ml2.calico'
+      - "{{ neutron_plugin_type in ['ml2.calico', 'ml2.dragonflow'] }}"
+      - "{{ group_names | intersect([
+              neutron_services['calico-dhcp-agent']['group'],
+              neutron_services['calico-felix']['group'],
+              neutron_services['dragonflow-controller-agent']['group'],
+              neutron_services['neutron-server']['group']
+            ]) | length > 0
+         }}"

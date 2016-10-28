@@ -42,6 +42,9 @@ calico_git_install_branch: stable/ocata
 networking_calico_git_repo: https://git.openstack.org/openstack/networking-calico
 networking_calico_git_install_branch: stable/ocata
 
+dragonflow_git_repo: https://git.openstack.org/openstack/dragonflow
+dragonflow_git_install_branch: master
+
 neutron_developer_mode: false
 neutron_developer_constraints:
   - "git+{{ neutron_git_repo }}@{{ neutron_git_install_branch }}#egg=neutron"
@@ -51,6 +54,7 @@ neutron_developer_constraints:
   - "git+{{ neutron_dynamic_routing_git_repo }}@{{ neutron_dynamic_routing_git_install_branch }}#egg=neutron-dynamic-routing"
   - "git+{{ calico_git_repo }}@{{ calico_git_install_branch }}#egg=felix"
   - "git+{{ networking_calico_git_repo }}@{{ networking_calico_git_install_branch }}#egg=networking-calico"
+  - "git+{{ dragonflow_git_repo }}@{{ dragonflow_git_install_branch }}#egg=dragonflow"
 
 # Name of the virtual env to deploy into
 neutron_venv_tag: untagged
@@ -184,6 +188,14 @@ neutron_plugins:
     plugin_conf_ini_overrides: "{{ neutron_ml2_conf_ini_overrides }}"
     plugin_core: ml2
     plugin_ini: plugins/ml2/ml2_conf.ini
+  ml2.dragonflow:
+    plugin_core: neutron.plugins.ml2.plugin.Ml2Plugin
+    plugin_ini: plugins/ml2/ml2_conf.ini
+    drivers_type: "{{ neutron_ml2_drivers_type }}"
+    mechanisms: "df"
+    plugin_conf_ini_overrides: "{{ neutron_ml2_conf_ini_overrides }}"
+    l3_agent_mode: "legacy"
+    driver_interface: "openvswitch"
   plumgrid:
     plugin_conf_ini_overrides: "{{ neutron_plumgrid_conf_ini_overrides }}"
     plugin_core: networking_plumgrid.neutron.plugins.plugin.NeutronPluginPLUMgridV2
@@ -298,7 +310,7 @@ neutron_services:
    group: neutron_server
    service_name: neutron-server
    service_en: True
-   config_options: "--config-file {{ neutron_conf_dir }}/neutron.conf --config-file {{ neutron_conf_dir }}/{{ neutron_plugins[neutron_plugin_type].plugin_ini }} --log-file=/var/log/neutron/neutron-server.log"
+   config_options: "--config-file {{ neutron_conf_dir }}/neutron.conf --config-file {{ neutron_conf_dir }}/{{ neutron_plugins[neutron_plugin_type].plugin_ini }} --log-file=/var/log/neutron/neutron-server.log {% if neutron_plugin_type == 'ml2.dragonflow' %}--config-file {{ neutron_conf_dir }}/dragonflow.ini{% endif %}"
  calico-felix:
    group: neutron_calico_dhcp_agent
    service_name: calico-felix
@@ -325,6 +337,30 @@ neutron_services:
    config_options: "--config-file {{ neutron_conf_dir }}/neutron.conf --config-file {{ neutron_conf_dir }}/plugins/ml2/ml2_conf.ini --config-file {{ neutron_conf_dir }}/plugins/ml2/sriov_nic_agent.ini --log-file=/var/log/neutron/neutron-sriov-nic-agent.log"
    config_overrides: "{{ neutron_sriov_nic_agent_ini_overrides }}"
    config_type: "ini"
+ dragonflow-controller-agent:
+   group: dragonflow_controller_agent
+   service_name: df-local-controller
+   service_en: "{{ neutron_plugin_type == 'ml2.dragonflow' }}"
+   config_options: "--config-file {{ neutron_conf_dir }}/neutron.conf --config-file {{ neutron_conf_dir }}/dragonflow.ini --log-file=/var/log/dragonflow/df-local-controller.log"
+   config_overrides: "{{ neutron_dragonflow_ini_overrides }}"
+   config_type: "ini"
+ dragonflow-l3-agent:
+   group: dragonflow_l3_agent
+   service_name: df-l3-agent
+   service_en: "{{ neutron_plugin_type == 'ml2.dragonflow' and neutron_l3 | bool }}"
+   service_conf_path: "{{ neutron_conf_dir }}"
+   service_conf: l3_agent.ini
+   service_rootwrap: rootwrap.d/l3.filters
+   config_options: "--config-file {{ neutron_conf_dir }}/neutron.conf --config-file {{ neutron_conf_dir }}/l3_agent.ini --log-file=/var/log/dragonflow/df-l3-agent.log"
+   config_overrides: "{{ neutron_dragonflow_ini_overrides }}"
+   config_type: "ini"
+ dragonflow-pubsub-agent:
+   group: dragonflow_pubsub_agent
+   service_name: df-publisher-service
+   service_en: "{{ neutron_plugin_type == 'ml2.dragonflow' }}"
+   config_options: "--config-file {{ neutron_conf_dir }}/neutron.conf --config-file {{ neutron_conf_dir }}/dragonflow.ini --log-file=/var/log/dragonflow/df-publisher-service.log"
+   config_overrides: "{{ neutron_dragonflow_ini_overrides }}"
+   config_type: "ini"
 
 ## Neutron DHCP Agent
 neutron_dhcp: "{% if neutron_plugin_type.split('.')[0] == 'ml2' %}True{% else %}False{% endif %}"
@@ -349,7 +385,7 @@ neutron_lbaasv2_service_provider: LOADBALANCERV2:Haproxy:neutron_lbaas.drivers.h
 ## Please add 'router' to the neutron_plugin_base list
 #TODO(odyssey4me): Remove the class path from this conditional in the Newton cycle
 # Should the neutron-l3-agent service should be enabled on the host
-neutron_l3: "{% if 'router' in neutron_plugin_base or 'neutron.services.l3_router.l3_router_plugin.L3RouterPlugin' in neutron_plugin_base %}True{% else %}False{% endif %}"
+neutron_l3: "{% if 'router' in neutron_plugin_base or 'neutron.services.l3_router.l3_router_plugin.L3RouterPlugin' in neutron_plugin_base or 'df-l3' in neutron_plugin_base %}True{% else %}False{% endif %}"
 
 # Set this option to "true" to enable legacy neutron L3HA tool support
 # TODO(cloudnull): Remove this in the Ocata cycle
@@ -516,6 +552,11 @@ neutron_service_in_ldap: false
 
 # neutron_local_ip is used for the VXLAN local tunnel endpoint
 neutron_local_ip: 127.0.0.1
+# neutron_management_ip is used to configure the location (IP) of the
+# neutron-server
+# Currently only used in Dragonflow
+neutron_management_ip: 127.0.0.1
+
 
 # Toggle the use of Ubuntu Cloud Archive
 neutron_uca_enable: True
@@ -529,6 +570,28 @@ uca_apt_repo_url: "http://ubuntu-cloud.archive.canonical.com/ubuntu"
 # environment there are no physical interfaces involved in instance ->
 # metadata requests, and this results in the checksums being incorrect.
 neutron_metadata_checksum_fix: False
+
+#Dragonflow configuration
+# Database specific configuration
+dragonflow_remote_db_ip: 127.0.0.1 # etcd has local proxy installed
+dragonflow_remote_db_port: 4001
+dragonflow_nb_db_class: etcd_nb_db_driver
+dragonflow_pub_sub_driver: zmq_pubsub_driver
+dragonflow_pub_sub_multiproc_driver: zmq_pubsub_multiproc_driver
+dragonflow_pub_sub_multiproc_enabled: "{{ (dragonflow_pub_sub_multiproc_driver | default('', True)) | length > 0 }}"
+dragonflow_port_status_notifier:
+dragonflow_apps:
+    - l2_app.L2App
+    - l3_proactive_app.L3ProactiveApp
+    - dhcp_app.DHCPApp
+    - dnat_app.DNATApp
+    - sg_app.SGApp
+    - portsec_app.PortSecApp
+dragonflow_ex_peer_patch_port: patch-int
+dragonflow_int_peer_patch_port: patch-ex
+dragonflow_external_network_bridge: br-ex
+dragonflow_publisher_bind_address: "*"
+
 
 # neutron packages that must be installed before anything else
 neutron_requires_pip_packages:
@@ -568,6 +631,10 @@ neutron_optional_lbaas_pip_packages:
 neutron_optional_vpnaas_pip_packages:
   - neutron_vpnaas
 
+neutron_optional_dragonflow_pip_packages:
+  - dragonflow
+  - python-etcd
+
 neutron_proprietary_nuage_pip_packages:
   - nuage-openstack-neutron
   - nuage-openstack-neutronclient
@@ -601,3 +668,4 @@ neutron_bgp_dragent_ini_overrides: {}
 neutron_calico_dhcp_agent_ini_overrides: {}
 neutron_calico_felix_ini_overrides: {}
 neutron_sriov_nic_agent_ini_overrides: {}
+neutron_dragonflow_ini_overrides: {}

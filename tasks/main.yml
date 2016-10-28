@@ -74,6 +74,11 @@
   tags:
     - neutron-config
 
+- include: dragonflow.yml
+  when: neutron_plugin_type == 'ml2.dragonflow'
+  tags:
+    - neutron-install
+
 - include: neutron_db_setup.yml
   when:
     - neutron_services['neutron-server']['group'] in group_names

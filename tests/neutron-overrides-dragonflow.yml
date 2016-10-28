@@ -1,0 +1,67 @@
+---
+# Copyright 2016, YOURSTOCHANGE
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+neutron_plugin_type: ml2.dragonflow
+neutron_plugin_base:
+  - df-l3
+  - metering
+neutron_external_network_bridge: br-ex
+neutron_local_ip: 10.1.0.3
+
+tempest_run: yes
+
+tempest_plugins:
+  - name: neutron
+    repo: https://git.openstack.org/openstack/neutron
+    branch: master
+  - name: dragonflow
+    repo: https://git.openstack.org/openstack/dragonflow
+    branch: master
+
+tempest_test_whitelist:
+  - neutron.tests.tempest.api.test_networks*
+
+dragonflow_fullstack_failing_tests:
+  - dragonflow.tests.fullstack.test_db_consistent.TestDbConsistent.test_db_consistent
+  - dragonflow.tests.fullstack.test_l2_flows.TestL2FLows.test_flat_network_flows
+  - dragonflow.tests.fullstack.test_l2_flows.TestL2FLows.test_tunnel_network_flows
+  - dragonflow.tests.fullstack.test_l2_flows.TestL2FLows.test_vlan_network_flows
+  - dragonflow.tests.fullstack.test_l2_flows.TestL2FLows.test_vm_multicast
+  - dragonflow.tests.fullstack.test_neutron_api.TestNeutronAPIandDB.test_create_delete_qos_policy
+  - dragonflow.tests.fullstack.test_neutron_api.TestNeutronAPIandDB.test_create_port_with_qospolicy
+  - dragonflow.tests.fullstack.test_neutron_api.TestNeutronAPIandDB.test_update_port_with_qospolicy
+  - dragonflow.tests.fullstack.test_object_version.TestObjectVersion.test_qospolicy_version
+  - dragonflow.tests.fullstack.test_ovsdb_monitor.TestOvsdbMonitor.test_notify_message
+  - dragonflow.tests.fullstack.test_ovsdb_monitor.TestOvsdbMonitor.test_reply_message
+  - dragonflow.tests.fullstack.test_portqos.TestPortQos.test_port_with_qospolicy
+  - dragonflow.tests.fullstack.test_portsec_flows.TestOVSFlowsForPortSecurity.test_anti_spoof_flows
+  - dragonflow.tests.fullstack.test_pub_sub.TestDbTableMonitors.test_operations
+  - dragonflow.tests.fullstack.test_pub_sub.TestPubSub.test_pub_sub_add_port
+  - dragonflow.tests.fullstack.test_pub_sub.TestPubSub.test_pub_sub_add_topic
+  - dragonflow.tests.fullstack.test_pub_sub.TestPubSub.test_pub_sub_event_number_different_port
+  - dragonflow.tests.fullstack.test_pub_sub.TestPubSub.test_pub_sub_register_addr
+  - dragonflow.tests.fullstack.test_pub_sub.TestPubSub.test_pub_sub_update_port
+  - dragonflow.tests.fullstack.test_responder.ArpResponderTest.test_arp_responder
+  - dragonflow.tests.fullstack.test_responder.ICMPResponderTest.test_icmp_responder
+  - dragonflow.tests.fullstack.test_sg_flows.TestOVSFlowsForSecurityGroup.test_associating_flows
+  - dragonflow.tests.fullstack.test_sg_flows.TestOVSFlowsForSecurityGroup.test_rule_flows
+  - dragonflow.tests.fullstack.test_topology.TestTopology.test_topology_create_vm
+  - dragonflow.tests.fullstack.test_topology.TestTopology.test_topology_create_vm2
+  - dragonflow.tests.fullstack.test_apps.TestDNATApp.test_nat_embedded_packet
+  - dragonflow.tests.fullstack.test_l3_flows.TestL3Flows.test_router_add_route
+  - dragonflow.tests.fullstack.test_allowed_address_pairs_flows.TestOVSFlowsForActivePortDectionApp.test_sending_arp_to_controller_flows
+  - dragonflow.tests.fullstack.test_apps.TestAllowedAddressPairsDetectActive.test_detected_active_port
+  - dragonflow.tests.fullstack.test_api_nb.Test_API_NB.test_create_lport # Pending patch 418381
+  - dragonflow.tests.fullstack.test_api_nb.Test_API_NB.test_create_lswitch # Pending patch 418381
