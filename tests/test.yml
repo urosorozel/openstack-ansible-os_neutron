@@ -21,8 +21,6 @@
 
 # Install etcd
 - include: common/test-install-etcd.yml
-  when:
-    - groups['neutron_calico_dhcp_agent'] | length > 0
 
 # Install Keystone
 - include: common/test-install-keystone.yml
@@ -36,3 +34,7 @@
 - include: test-calico-functional.yml
   when:
     - "{{ neutron_plugin_type == 'ml2.calico' }}"
+
+- include: test-dragonflow-functional.yml
+  when:
+    - "{{ neutron_plugin_type == 'ml2.dragonflow' }}"

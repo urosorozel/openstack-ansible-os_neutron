@@ -91,8 +91,12 @@
   delay: 2
   with_items: "{{ neutron_ovs_distro_packages }}"
   when:
-    - neutron_services['neutron-openvswitch-agent']['group'] in group_names
-    - neutron_services['neutron-openvswitch-agent'].service_en | bool
+    - (neutron_services['neutron-openvswitch-agent']['group'] in group_names and
+       neutron_services['neutron-openvswitch-agent'].service_en | bool) or
+      (neutron_services['dragonflow-controller-agent']['group'] in group_names and
+       neutron_services['dragonflow-controller-agent'].service_en | bool) or
+      (neutron_services['dragonflow-l3-agent']['group'] in group_names and
+       neutron_services['dragonflow-l3-agent'].service_en | bool)
 
 - name: Install distro packages for LBaaS
   package:

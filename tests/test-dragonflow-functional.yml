@@ -1,0 +1,48 @@
+---
+# Copyright 2016, Omer Anson <omer.anson@toganetworks.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Test Dragonflow
+  hosts: physical_host
+  user: root
+  gather_facts: true
+  roles:
+    - role: "{{ tempest_rolename | default('os_tempest') }}"
+  post_tasks:
+    - name: Run Dragonflow fullstack tests
+      shell: |
+        . {{ tempest_venv_bin }}/activate
+        . /root/openrc
+        export DF_FULLSTACK_USE_ENV=1
+        export OS_STDOUT_CAPTURE=1
+        export OS_STDERR_CAPTURE=1
+        export OS_LOG_CAPTURE=1
+        python -m subunit.run discover dragonflow.tests.fullstack > /var/log/dragonflow-fullstack.subunit
+        subunit2html /var/log/dragonflow-fullstack.subunit /var/log/dragonflow-fullstack.html
+      register: dragonflow_fullstack_tests
+    - name: Ensure etc folder exists in logs
+      file:
+        path: /var/log/etc
+        state: directory
+    - name: Copy config files
+      shell: |
+        cp -r /etc/neutron /var/log/etc
+      register: dragonflow_fullstack_log_copy
+    - name: Verify tests have passed
+      shell: |
+        . {{ tempest_venv_bin }}/activate
+        subunit-filter --without {{ dragonflow_fullstack_failing_tests | join(' --without ') }} -s /var/log/dragonflow-fullstack.subunit | subunit2pyunit
+        exit $?
+  vars_files:
+    - common/test-vars.yml

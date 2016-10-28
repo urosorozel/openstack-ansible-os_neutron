@@ -1,0 +1,119 @@
+---
+# Copyright 2016, Jean-Philippe Evrard <jean-philippe@evrard.me>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Install DragonFlow pip packages
+  pip:
+    name: "{{ neutron_optional_dragonflow_pip_packages }}"
+    state: "{{ neutron_pip_package_state }}"
+    virtualenv: "{{ neutron_bin | dirname }}"
+    virtualenv_site_packages: "no"
+    extra_args: >-
+      {{ neutron_developer_mode | ternary('--constraint /opt/developer-pip-constraints.txt', '') }}
+      {{ (pip_install_upper_constraints is defined) | ternary('--constraint ' + pip_install_upper_constraints | default(''),'') }}
+      {{ pip_install_options | default('') }}
+  register: install_packages
+  until: install_packages|success
+  retries: 5
+  delay: 2
+  notify: Restart neutron services
+  tags:
+    - dragonflow-install
+    - dragonflow-pip-packages
+
+- name: Ensure DragonFlow directories exists
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ neutron_system_user_name }}"
+    group: "{{ neutron_system_group_name }}"
+    mode: "0755"
+  with_items:
+    - "{{ neutron_conf_dir }}/plugins"
+    - "/var/log/dragonflow"
+  tags:
+    - dragonflow-config
+
+- name: Setup DragonFlow configuration
+  config_template:
+    src: dragonflow.ini.j2
+    dest: "{{ neutron_conf_dir }}/dragonflow.ini"
+    owner: "{{ neutron_system_user_name }}"
+    group: "{{ neutron_system_group_name }}"
+    config_overrides: "{{ neutron_dragonflow_ini_overrides }}"
+    config_type: "ini"
+  tags:
+    - dragonflow-config
+
+- name: Setup Dragonflow pub/sub IPC socket folder
+  file:
+    path: "/var/run/dragonflow"
+    state: directory
+    owner: "{{ neutron_system_user_name }}"
+    group: "{{ neutron_system_group_name }}"
+    mode: "0755"
+  when:
+    - dragonflow_pub_sub_multiproc_enabled
+
+- name: Setup Dragonflow integration bridge
+  openvswitch_bridge:
+    bridge: br-int
+    state: present
+  tags:
+    - dragonflow-config
+  when:
+    - (inventory_hostname in groups[neutron_services['dragonflow-l3-agent']['group']]) or
+      (inventory_hostname in groups[neutron_services['dragonflow-controller-agent']['group']])
+
+# Start Dragonflow publisher service
+- include: neutron_init_common.yml
+  vars:
+    program_name: "{{ neutron_services['dragonflow-pubsub-agent'].service_name }}"
+    program_config_options: "{{ neutron_services['dragonflow-pubsub-agent'].config_options }}"
+    system_user: "{{ neutron_system_user_name }}"
+    system_group: "{{ neutron_system_group_name }}"
+    service_home: "{{ neutron_system_home_folder }}"
+  when:
+    - neutron_services['dragonflow-pubsub-agent']['group'] in group_names
+    - neutron_services['dragonflow-pubsub-agent'].service_en | bool
+  tags:
+    - upstart-init
+
+# Start Dragonflow publisher service
+- include: neutron_init_common.yml
+  vars:
+    program_name: "{{ neutron_services['dragonflow-l3-agent'].service_name }}"
+    program_config_options: "{{ neutron_services['dragonflow-l3-agent'].config_options }}"
+    system_user: root
+    system_group: root
+    service_home: "{{ neutron_system_home_folder }}"
+  when:
+    - neutron_services['dragonflow-l3-agent']['group'] in group_names
+    - neutron_services['dragonflow-l3-agent'].service_en | bool
+  tags:
+    - upstart-init
+
+# Start Dragonflow controller agent
+- include: neutron_init_common.yml
+  vars:
+    program_name: "{{ neutron_services['dragonflow-controller-agent'].service_name }}"
+    program_config_options: "{{ neutron_services['dragonflow-controller-agent'].config_options }}"
+    system_user: root
+    system_group: root
+    service_home: "{{ neutron_system_home_folder }}"
+  when:
+    - neutron_services['dragonflow-controller-agent']['group'] in group_names
+    - neutron_services['dragonflow-controller-agent'].service_en | bool
+  tags:
+    - upstart-init
