@@ -16,7 +16,7 @@
 - name: Install Calico pip packages
   pip:
     name: "{{ item }}"
-    state: latest
+    state: "{{ neutron_pip_package_state }}"
     virtualenv: "{{ neutron_bin | dirname }}"
     virtualenv_site_packages: "no"
     extra_args: "{{ pip_install_options_fact }}"

@@ -26,6 +26,7 @@
 
 - name: Check init system
   command: cat /proc/1/comm
+  changed_when: false
   register: _pid1_name
   tags:
     - always
@@ -37,7 +38,7 @@
     - always
 
 - name: Get CPU info content and store as var
-  shell: cat /proc/cpuinfo
+  command: cat /proc/cpuinfo
   register: cpuinfo_contents
   changed_when: false
   failed_when: false
