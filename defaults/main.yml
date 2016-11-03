@@ -63,6 +63,7 @@ neutron_lib_dir: "{{ neutron_bin | dirname }}/lib/python2.7/site-packages/"
 
 # Set the Neutron configuration path
 neutron_conf_dir: /etc/neutron
+neutron_lock_path: "/var/lock/neutron"
 
 # Enable/Disable designate
 neutron_designate_enabled: False

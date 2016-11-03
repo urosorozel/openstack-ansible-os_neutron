@@ -197,4 +197,4 @@ transport_url = rabbit://{% for host in neutron_rabbitmq_telemetry_servers.split
 
 # Concurrency (locking mechanisms)
 [oslo_concurrency]
-lock_path = /var/lock/neutron
+lock_path = {{ neutron_lock_path }}
