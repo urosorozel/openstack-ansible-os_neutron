@@ -140,7 +140,7 @@ Set the following user variables in your
   openstack_host_specific_kernel_modules:
     - name: "openvswitch"
       pattern: "CONFIG_OPENVSWITCH="
-      group: "network_hosts,compute_hosts"
+      group: "network_hosts"
 
   ### neutron specific config
   neutron_plugin_type: ml2.ovs
