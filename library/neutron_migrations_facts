@@ -55,7 +55,7 @@ author: Rcbops
 EXAMPLES = """
 - name: Gather neutron migration facts
   neutron_migrations_facts:
-    release: newton
+    release: ocata
 """
 
 
@@ -131,7 +131,7 @@ MIGRATIONS = {
     'run_expand': True
 }
 
-RELEASES = ['newton', 'mitaka', 'liberty']
+RELEASES = ['ocata', 'newton', 'mitaka', 'liberty']
 
 
 def get_branch(release, revision, library_path, project):
