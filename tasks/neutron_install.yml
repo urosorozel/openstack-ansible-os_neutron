@@ -123,3 +123,27 @@
   when:
     - not neutron_developer_mode | bool
     - neutron_get_venv | success
+
+- name: Install optional pip packages
+  pip:
+    name: >-
+      {{ (neutron_bgp | bool) | ternary(neutron_optional_bgp_pip_packages | join(' '), '') }}
+      {{ (neutron_fwaas | bool) | ternary(neutron_optional_fwaas_pip_packages | join(' '), '') }}
+      {{ (neutron_lbaasv2 | bool) | ternary(neutron_optional_lbaas_pip_packages | join(' '), '') }}
+      {{ (neutron_vpnaas | bool) | ternary(neutron_optional_vpnaas_pip_packages | join(' '), '') }}
+    state: "{{ neutron_pip_package_state }}"
+    virtualenv: "{{ neutron_bin | dirname }}"
+    virtualenv_site_packages: "no"
+    extra_args: >-
+      {{ neutron_developer_mode | ternary('--constraint /opt/developer-pip-constraints.txt', '') }}
+      {{ (pip_install_upper_constraints is defined) | ternary('--constraint ' + pip_install_upper_constraints | default(''),'') }}
+      {{ pip_install_options | default('') }}
+  when: neutron_bgp | bool or
+        neutron_fwaas | bool or
+        neutron_lbaasv2 | bool or
+        neutron_vpnaas | bool
+  register: install_packages
+  until: install_packages|success
+  retries: 5
+  delay: 2
+  notify: Restart neutron services

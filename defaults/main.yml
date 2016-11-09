@@ -494,10 +494,6 @@ neutron_pip_packages:
   - keystonemiddleware
   - PyMySQL
   - neutron
-  - neutron_fwaas
-  - neutron_lbaas
-  - neutron_vpnaas
-  - neutron_dynamic_routing
   - pycrypto
   - python-glanceclient
   - python-keystoneclient
@@ -506,10 +502,22 @@ neutron_pip_packages:
   - python-novaclient
   - repoze.lru
 
+neutron_optional_bgp_pip_packages:
+  - neutron_dynamic_routing
+
 neutron_optional_calico_pip_packages:
   - felix
   - networking-calico
   - python-etcd
+
+neutron_optional_fwaas_pip_packages:
+  - neutron_fwaas
+
+neutron_optional_lbaas_pip_packages:
+  - neutron_lbaas
+
+neutron_optional_vpnaas_pip_packages:
+  - neutron_vpnaas
 
 neutron_proprietary_nuage_pip_packages:
   - nuage-openstack-neutron
