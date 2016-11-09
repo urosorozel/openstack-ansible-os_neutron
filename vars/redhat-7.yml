@@ -38,5 +38,7 @@ neutron_lbaas_distro_packages:
 neutron_vpnaas_distro_packages:
   - openswan
 
+neutron_remove_distro_packages: []
+
 neutron_lbaasv2_initscript_path: "/etc/init/neutron-lbaasv2-agent.conf"
 neutron_lbaasv2_agent_servicename: "neutron-lbaasv2-agent"
