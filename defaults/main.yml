@@ -270,7 +270,7 @@ neutron_services:
    service_conf_path: /etc/calico
    service_conf: felix.cfg
    config_options: --config-file /etc/calico/felix.cfg
-   config_overrides: "{{ neutron_calico_dhcp_agent_ini_overrides }}"
+   config_overrides: "{{ neutron_calico_felix_ini_overrides }}"
    config_type: "ini"
  calico-dhcp-agent:
    group: neutron_calico_dhcp_agent
@@ -278,7 +278,7 @@ neutron_services:
    service_en: "{{ neutron_plugin_type == 'ml2.calico' }}"
    service_rootwrap: rootwrap.d/dhcp.filters
    config_options: "--config-file {{ neutron_conf_dir }}/neutron.conf"
-   config_overrides: "{{ neutron_calico_felix_ini_overrides }}"
+   config_overrides: "{{ neutron_calico_dhcp_agent_ini_overrides }}"
    config_type: "ini"
 
 ## Neutron DHCP Agent
