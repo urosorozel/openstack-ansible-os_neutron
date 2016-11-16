@@ -90,7 +90,7 @@
 
 - name: Update virtualenv path
   command: >
-    virtualenv-tools --update-path=auto {{ neutron_bin | dirname }}
+    virtualenv-tools --update-path=auto --reinitialize {{ neutron_bin | dirname }}
   when:
     - not neutron_developer_mode | bool
     - neutron_get_venv | changed or neutron_venv_dir | changed
