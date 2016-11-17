@@ -132,41 +132,41 @@ neutron_plugin_type: ml2.lxb
 
 neutron_plugins:
   ml2.lxb:
-    driver_firewall: neutron.agent.linux.iptables_firewall.IptablesFirewallDriver
-    driver_interface: neutron.agent.linux.interface.BridgeInterfaceDriver
+    driver_firewall: iptables
+    driver_interface: linuxbridge
     drivers_type: "{{ neutron_ml2_drivers_type }}"
     l2_population: "{{ neutron_l2_population }}"
     mechanisms: "linuxbridge{% if neutron_l2_population | bool %},l2population{% endif %}"
     l3_agent_mode: "legacy"
     plugin_conf_ini_overrides: "{{ neutron_ml2_conf_ini_overrides }}"
-    plugin_core: neutron.plugins.ml2.plugin.Ml2Plugin
+    plugin_core: ml2
     plugin_ini: plugins/ml2/ml2_conf.ini
   ml2.ovs:
-    driver_firewall: neutron.agent.linux.iptables_firewall.OVSHybridIptablesFirewallDriver
-    driver_interface: neutron.agent.linux.interface.OVSInterfaceDriver
+    driver_firewall: iptables_hybrid
+    driver_interface: openvswitch
     drivers_type: "{{ neutron_ml2_drivers_type }}"
     l2_population: "{{ neutron_l2_population }}"
     mechanisms: "openvswitch{% if neutron_l2_population | bool %},l2population{% endif %}"
     l3_agent_mode: "legacy"
     plugin_conf_ini_overrides: "{{ neutron_ml2_conf_ini_overrides }}"
-    plugin_core: neutron.plugins.ml2.plugin.Ml2Plugin
+    plugin_core: ml2
     plugin_ini: plugins/ml2/ml2_conf.ini
   ml2.ovs.dvr:
-    driver_firewall: neutron.agent.linux.iptables_firewall.OVSHybridIptablesFirewallDriver
-    driver_interface: neutron.agent.linux.interface.OVSInterfaceDriver
+    driver_firewall: iptables_hybrid
+    driver_interface: openvswitch
     drivers_type: "{{ neutron_ml2_drivers_type }}"
     l2_population: "{{ neutron_l2_population }}"
     mechanisms: "openvswitch{% if neutron_l2_population | bool %},l2population{% endif %}"
     l3_agent_mode: "{% if 'nova_compute' in group_names %}dvr{% else %}dvr_snat{% endif %}"
     router_distributed: True
     plugin_conf_ini_overrides: "{{ neutron_ml2_conf_ini_overrides }}"
-    plugin_core: neutron.plugins.ml2.plugin.Ml2Plugin
+    plugin_core: ml2
     plugin_ini: plugins/ml2/ml2_conf.ini
   ml2.calico:
     drivers_type: "flat, local"
     mechanisms: "calico"
     plugin_conf_ini_overrides: "{{ neutron_ml2_conf_ini_overrides }}"
-    plugin_core: neutron.plugins.ml2.plugin.Ml2Plugin
+    plugin_core: ml2
     plugin_ini: plugins/ml2/ml2_conf.ini
   plumgrid:
     plugin_conf_ini_overrides: "{{ neutron_plumgrid_conf_ini_overrides }}"
