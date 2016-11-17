@@ -13,19 +13,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Ensure Calico services are running
-  command: pgrep -a {{ item }}
-  with_items:
-    - calico-felix
-    - calico-dhcp-age
-
-- name: Ensure that the Calico Felix agent is alive
-  shell: |
-    . /root/openrc
-    neutron agent-list | grep calico-felix
-  register: calico_felix_agent
-  until: calico_felix_agent.stdout.find(':-)') != -1
-  when:
-    - groups['neutron_calico_dhcp_agent'] | length > 0
-  retries: 5
-  delay: 10
+- name: Test calico
+  hosts: neutron_all
+  user: root
+  gather_facts: true
+  tasks:
+    - name: Ensure Calico services are running
+      command: pgrep -a {{ item }}
+      with_items:
+        - calico-felix
+        - calico-dhcp-age
+    - name: Ensure that the Calico Felix agent is alive
+      shell: |
+        . /root/openrc
+        neutron agent-list | grep calico-felix
+      register: calico_felix_agent
+      until: calico_felix_agent.stdout.find(':-)') != -1
+      when:
+        - groups['neutron_calico_dhcp_agent'] | length > 0
+      retries: 5
+      delay: 10
+  vars_files:
+    - common/test-vars.yml

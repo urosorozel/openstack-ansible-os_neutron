@@ -13,6 +13,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+tempest_run: yes
+
+tempest_plugins:
+  - name: neutron
+    repo: https://git.openstack.org/openstack/neutron
+    branch: master
+
+tempest_test_whitelist:
+  - neutron.tests.tempest.api.test_networks*
+
 neutron_plugin_type: ml2.calico
 neutron_provider_networks:
   network_types: ''
