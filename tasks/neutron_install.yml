@@ -30,7 +30,7 @@
 
 - name: Install requires pip packages
   pip:
-    name: "{{ neutron_requires_pip_packages | join(' ') }}"
+    name: "{{ neutron_requires_pip_packages }}"
     state: "{{ neutron_pip_package_state }}"
     extra_args: >-
       {{ (pip_install_upper_constraints is defined) | ternary('--constraint ' + pip_install_upper_constraints | default(''),'') }}
@@ -73,7 +73,7 @@
 
 - name: Install pip packages
   pip:
-    name: "{{ neutron_pip_packages | join(' ') }}"
+    name: "{{ neutron_pip_packages }}"
     state: "{{ neutron_pip_package_state }}"
     virtualenv: "{{ neutron_bin | dirname }}"
     virtualenv_site_packages: "no"
@@ -98,10 +98,10 @@
 - name: Install optional pip packages
   pip:
     name: >-
-      {{ (neutron_bgp | bool) | ternary(neutron_optional_bgp_pip_packages | join(' '), '') }}
-      {{ (neutron_fwaas | bool) | ternary(neutron_optional_fwaas_pip_packages | join(' '), '') }}
-      {{ (neutron_lbaasv2 | bool) | ternary(neutron_optional_lbaas_pip_packages | join(' '), '') }}
-      {{ (neutron_vpnaas | bool) | ternary(neutron_optional_vpnaas_pip_packages | join(' '), '') }}
+      {{ (neutron_bgp | bool) | ternary(neutron_optional_bgp_pip_packages, []) +
+         (neutron_fwaas | bool) | ternary(neutron_optional_fwaas_pip_packages, []) +
+         (neutron_lbaasv2 | bool) | ternary(neutron_optional_lbaas_pip_packages, []) +
+         (neutron_vpnaas | bool) | ternary(neutron_optional_vpnaas_pip_packages, []) }}
     state: "{{ neutron_pip_package_state }}"
     virtualenv: "{{ neutron_bin | dirname }}"
     virtualenv_site_packages: "no"
