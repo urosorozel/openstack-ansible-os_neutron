@@ -27,11 +27,21 @@
 # Install Keystone
 - include: common/test-install-keystone.yml
 
+# Install previous Neutron
+- include: test-install-previous-neutron.yml
+  when:
+    - neutron_upgrade is defined
+    - neutron_upgrade | bool
+
 # Install Neutron
 - include: common/test-install-neutron.yml
+  when:
+    - (neutron_upgrade is not defined) or (not neutron_upgrade | bool)
 
 # Install and execute tempest
 - include: common/test-install-tempest.yml
+  when:
+    - (neutron_upgrade is not defined) or (not neutron_upgrade | bool)
 
 - include: test-calico-functional.yml
   when:
