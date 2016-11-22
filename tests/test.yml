@@ -30,8 +30,9 @@
 # Install Neutron
 - include: common/test-install-neutron.yml
 
-# Install Tempest
+# Install and execute tempest
 - include: common/test-install-tempest.yml
 
-# Run tests
-- include: test-neutron-functional.yml
+- include: test-calico-functional.yml
+  when:
+    - "{{ neutron_plugin_type == 'ml2.calico' }}"
