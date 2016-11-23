@@ -14,7 +14,7 @@
 
 - name: Install nuage neutron pip packages
   pip:
-    name: "{{ neutron_proprietary_nuage_pip_packages | join(' ') }}"
+    name: "{{ neutron_proprietary_nuage_pip_packages }}"
     state: "{{ neutron_pip_package_state }}"
     virtualenv: "{{ neutron_bin | dirname }}"
     virtualenv_site_packages: "no"
