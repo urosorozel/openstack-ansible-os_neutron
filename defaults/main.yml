@@ -340,7 +340,6 @@ neutron_driver_loadbalancer_pool_scheduler: neutron_lbaas.services.loadbalancer.
 neutron_driver_metering: neutron.services.metering.drivers.iptables.iptables_driver.IptablesMeteringDriver
 neutron_driver_dhcp: neutron.agent.linux.dhcp.Dnsmasq
 neutron_driver_quota: neutron.db.quota.driver.DbQuotaDriver
-neutron_driver_vpnaas: neutron_vpnaas.services.vpn.device_drivers.ipsec.OpenSwanDriver
 
 
 ## Quotas
