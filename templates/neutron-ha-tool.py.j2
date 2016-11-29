@@ -153,6 +153,9 @@ def run(args):
     kclient_kwargs['insecure'] = args.insecure
     kclient_kwargs['ca_cert'] = ca
     kclient_kwargs['auth_url'] = os.environ['OS_AUTH_URL']
+    # Set the region if one is defined
+    if 'OS_REGION_NAME' in os.environ:
+        kclient_kwargs['region_name'] = os.environ['OS_REGION_NAME']
 
     tenant_name = os.getenv('OS_TENANT_NAME')
     if tenant_name and auth_version != 3:
