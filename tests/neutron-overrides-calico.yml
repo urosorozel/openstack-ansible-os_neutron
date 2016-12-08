@@ -16,3 +16,8 @@
 neutron_plugin_type: ml2.calico
 neutron_provider_networks:
   network_types: ''
+
+tempest_private_net_provider_type: "local"
+tempest_private_net_seg_id: ''
+tempest_public_net_provider_type: "local"
+tempest_public_net_physical_type: ''
