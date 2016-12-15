@@ -17,7 +17,6 @@
   service:
     name: "{{ item.value.service_name }}"
     state: restarted
-    pattern: "{{ item.value.service_name }}"
   with_dict: "{{ neutron_services }}"
   failed_when: false
   notify:

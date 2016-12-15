@@ -24,8 +24,6 @@
   when:
     - neutron_services['calico-felix']['group'] in group_names
     - neutron_services['calico-felix'].service_en | bool
-  tags:
-    - upstart-init
 
 - include: neutron_init_common.yml
   vars:
@@ -38,5 +36,3 @@
   when:
     - neutron_services['calico-dhcp-agent']['group'] in group_names
     - neutron_services['calico-dhcp-agent'].service_en | bool
-  tags:
-    - upstart-init

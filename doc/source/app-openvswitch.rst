@@ -39,7 +39,7 @@ Configuring bridges (Linux Bridge)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The following is an example of how to configure a bridge (example: ``br-mgmt``)
-with a Linux Bridge on Ubuntu 14.04 or 16.04 LTS:
+with a Linux Bridge on Ubuntu 16.04 LTS:
 
 ``/etc/network/interfaces``
 
@@ -83,7 +83,7 @@ Another configuration method routes everything with Open vSwitch. The bridge
 (example: ``br-mgmt``) can be an Open vSwitch itself.
 
 The following is an example of how to configure a bridge (example: ``br-mgmt``)
-with Open vSwitch on Ubuntu 14.04 or 16.04 LTS: *
+with Open vSwitch on Ubuntu 16.04 LTS: *
 
 ``/etc/network/interfaces``
 

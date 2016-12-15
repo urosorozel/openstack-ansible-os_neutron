@@ -14,7 +14,7 @@ Neutron role for OpenStack-Ansible
 :tags: openstack, neutron, cloud, ansible
 :category: \*nix
 
-This role installs the following Upstart services:
+This role installs the following Systemd services:
 
   * neutron-server
   * neutron-agents
