@@ -122,7 +122,6 @@ quota_vip = {{ neutron_quota_vip }}
 [keystone_authtoken]
 insecure = {{ keystone_service_internaluri_insecure | bool }}
 auth_plugin = {{ neutron_keystone_auth_plugin }}
-signing_dir = /var/cache/neutron
 auth_url = {{ keystone_service_adminuri }}
 auth_uri = {{ keystone_service_internaluri }}
 project_domain_id = {{ neutron_service_project_domain_id }}
@@ -135,15 +134,10 @@ region_name = {{ keystone_service_region }}
 memcached_servers = {{ memcached_servers }}
 
 token_cache_time = 300
-revocation_cache_time = 60
 
 # Prevent cache poisoning if sharing a memcached server
 memcache_security_strategy = ENCRYPT
 memcache_secret_key = {{ memcached_encryption_key }}
-
-# Enable if your keystone deployment uses PKI and you prefer security over
-# performance (disable by default)
-check_revocations_for_cached = False
 
 # Database
 [database]
