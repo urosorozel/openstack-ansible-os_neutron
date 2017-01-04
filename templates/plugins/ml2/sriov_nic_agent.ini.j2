@@ -1,0 +1,9 @@
+# {{ ansible_managed }}
+
+[securitygroup]
+firewall_driver = neutron.agent.firewall.NoopFirewallDriver
+
+[sriov_nic]
+physical_device_mappings = "{{ neutron_provider_networks.network_sriov_mappings }}"
+exclude_devices = "{{ neutron_sriov_excluded_devices  }}"
+
