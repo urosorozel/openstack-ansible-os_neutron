@@ -132,3 +132,16 @@
   when:
     - neutron_services['neutron-vpnaas-agent']['group'] in group_names
     - neutron_services['neutron-vpnaas-agent'].service_en | bool
+
+- include: neutron_init_common.yml
+  vars:
+    program_name: "{{ neutron_services['neutron-sriov-nic-agent'].service_name }}"
+    program_config_options: "{{ neutron_services['neutron-sriov-nic-agent'].config_options }}"
+    service_name: "{{ neutron_service_name }}"
+    system_user: "{{ neutron_system_user_name }}"
+    system_group: "{{ neutron_system_group_name }}"
+    service_home: "{{ neutron_system_home_folder }}"
+  when:
+    - neutron_services['neutron-sriov-nic-agent']['group'] in group_names
+    - neutron_services['neutron-sriov-nic-agent'].service_en | bool
+

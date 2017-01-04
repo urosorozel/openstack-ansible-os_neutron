@@ -18,6 +18,11 @@ BGP Dynamic Routing service
   Provides a means for advertising self-service (private) network prefixes
   to physical network devices that support BGP.
 
+SR-IOV Support
+  Provides the ability to provision virtual or physical functions to guest
+  instances using SR-IOV and PCI passthrough. (Requires compatible NICs)
+
+
 Firewall service (optional)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -225,3 +230,131 @@ Routing plugin.
 
        # cd /opt/openstack-ansible/playbooks
        # openstack-ansible os-neutron-install.yml
+
+
+SR-IOV Support (optional)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The following procedure describes how to modify the OpenStack-Ansible
+configuration to enable Neutron SR-IOV support.
+
+.. _SR-IOV-Passthrough-For-Networking: https://wiki.openstack.org/wiki/SR-IOV-Passthrough-For-Networking
+
+
+#. Define SR-IOV capable physical host interface for a provider network
+
+  As part of every Openstack-Ansible installation, all provider networks
+  known to Neutron need to be configured inside the
+  ``/etc/openstack_deploy/openstack_user_config.yml`` file.
+  For each supported network type (e.g. vlan), the attribute
+  ``sriov_host_interfaces`` can be defined to map ML2 network names
+  (``net_name`` attribute) to one or many physical interfaces.
+  Additionally, the network will need to be assigned to the
+  ``neutron_sriov_nic_agent`` container group.
+
+Example configuration:
+
+   .. code-block:: yaml
+
+      provider_networks
+        - network:
+          container_bridge: "br-vlan"
+          container_type: "veth"
+          container_interface: "eth11"
+          type: "vlan"
+          range: "1000:2000"
+          net_name: "physnet1"
+          sriov_host_interfaces: "p1p1,p4p1"
+          group_binds:
+            - neutron_linuxbridge_agent
+            - neutron_sriov_nic_agent
+
+#. Configure Nova
+
+   With SR-IOV, Nova uses PCI passthrough to allocate VFs and PFs to guest
+   instances. Virtual Functions (VFs) represent a slice of a physical NIC,
+   and are passed as virtual NICs to guest instances. Physical Functions
+   (PFs), on the other hand, represent an entire physical interface and are
+   passed through to a single guest.
+
+   To use PCI passthrough in Nova, the ``PciPassthroughFilter`` filter
+   needs to be added to the `conf override`_
+   ``nova_scheduler_default_filters``.
+   Finally, PCI devices available for passthrough need to be allow via
+   the `conf override`_
+   ``nova_pci_passthrough_whitelist``.
+
+   Possible options which can be configured:
+
+   .. code-block:: yaml
+
+      # Single device configuration
+      nova_pci_passthrough_whitelist: '{ "physical_network":"physnet1", "devname":"p1p1" }'
+
+      # Multi device configuration
+      nova_pci_passthrough_whitelist: '[{"physical_network":"physnet1", "devname":"p1p1"}, {"physical_network":"physnet1", "devname":"p4p1"}]'
+
+      # Whitelisting by PCI Device Location
+      # The example pattern for the bus location '0000:04:*.*' is very wide. Make sure that
+      # no other, unintended devices, are whitelisted (see lspci -nn)
+      nova_pci_passthrough_whitelist: '{"address":"0000:04:*.*", "physical_network":"physnet1"}'
+
+      # Whitelisting by PCI Device Vendor
+      # The example pattern limits matches to PCI cards with vendor id 8086 (Intel) and
+      # product id 10ed (82599 Virtual Function)
+      nova_pci_passthrough_whitelist: '{"vendor_id":"8086", "product_id":"10ed", "physical_network":"physnet1"}'
+
+      # Additionally, devices can be matched by their type, VF or PF, using the dev_type parameter
+      # and type-VF or type-PF options
+      nova_pci_passthrough_whitelist: '{"vendor_id":"8086", "product_id":"10ed", "dev_type":"type-VF", physical_network":"physnet1"}'
+
+   It is recommended to use whitelisting by either the Linux device name
+   (devname attribute) or by the PCI vendor and product id combination
+   (``vendor_id`` and ``product_id`` attributes)
+
+#. Enable the SR-IOV ML2 plugin
+
+   The `conf override`_ ``neutron_plugin_type`` variable defines the core
+   ML2 plugin, and only one plugin can be defined at any given time.
+   The `conf override`_ ``neutron_plugin_types`` variable can contain a list
+   of additional ML2 plugins to load. Make sure that only compatible
+   ML2 plugins are loaded at all times.
+   The SR-IOV ML2 plugin is known to work with the linuxbridge (``ml2.lxb``)
+   and openvswitch (``ml2.ovs``) ML2 plugins.
+   ``ml2.lxb`` is the standard activated core ML2 plugin.
+
+      .. code-block:: yaml
+
+         neutron_plugin_types:
+           - ml2.sriov
+
+
+#. Execute the Neutron install playbook in order to update the configuration:
+
+   .. code-block:: shell-session
+
+       # cd /opt/openstack-ansible/playbooks
+       # openstack-ansible os-neutron-install.yml
+       # openstack-ansible os-nova-install.yml
+
+
+#. Check Neutron SR-IOV agent state
+
+   After the playbooks have finished configuring Neutron and Nova, the new
+   Neutron Agent state can be verified with:
+
+   .. code-block:: shell-session
+
+       # neutron agent-list --agent_type 'NIC Switch agent'
+       +--------------------------------------+------------------+-----------+-------+----------------+-------------------------+
+       | id                                   | agent_type       | host      | alive | admin_state_up | binary                  |
+       +--------------------------------------+------------------+-----------+-------+----------------+-------------------------+
+       | 3012ff0e-de35-447b-aff6-fdb55b04c518 | NIC Switch agent | compute01 | :-)   | True           | neutron-sriov-nic-agent |
+       | bb0c0385-394d-4e72-8bfe-26fd020df639 | NIC Switch agent | compute02 | :-)   | True           | neutron-sriov-nic-agent |
+       +--------------------------------------+------------------+-----------+-------+----------------+-------------------------+
+
+
+Deployers can make changes to the SR-IOV nic agent default configuration
+options via the ``neutron_sriov_nic_agent_ini_overrides`` dict.
+Review the documentation on the `conf override`_ mechanism for more details.
+
