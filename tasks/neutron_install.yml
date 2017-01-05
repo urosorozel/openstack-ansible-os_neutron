@@ -156,7 +156,7 @@
     dest: "/var/cache/{{ neutron_venv_download_url | basename }}"
     checksum: "sha1:{{ lookup('url', neutron_venv_download_url | replace('tgz', 'checksum')) }}"
   register: neutron_get_venv
-  when: not neutron_developer_mode | bool
+  when: neutron_venv_download | bool
 
 - name: Remove existing venv
   file:
@@ -178,7 +178,7 @@
     copy: "no"
   when:
     - not neutron_developer_mode | bool
-    - neutron_get_venv | changed or neutron_venv_dir | changed
+    - neutron_get_venv | changed
   notify: Restart neutron services
 
 - name: Install pip packages
@@ -195,7 +195,7 @@
   until: install_packages|success
   retries: 5
   delay: 2
-  when: neutron_developer_mode | bool
+  when: not neutron_get_venv | success or neutron_developer_mode | bool
   notify: Restart neutron services
 
 - name: CentOS remove python from path first
