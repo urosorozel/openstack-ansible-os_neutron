@@ -480,6 +480,7 @@ neutron_local_ip: 127.0.0.1
 neutron_uca_enable: True
 # Ubuntu Cloud Archive mirror URL
 uca_apt_repo_url: "http://ubuntu-cloud.archive.canonical.com/ubuntu"
+uca_apt_source_list_filename: "ubuntu_cloud_archive_canonical_com_ubuntu"
 
 # When running in an AIO, we need to implement an iptables rule in any
 # neutron_agent containers to that ensure instances can communicate with

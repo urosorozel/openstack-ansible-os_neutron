@@ -36,6 +36,7 @@
     repo: "{{ uca_repo }}"
     state: present
     update_cache: yes
+    filename: "{{ uca_apt_source_list_filename }}"
   register: neutron_uca_add_repo
   when:
     - neutron_uca_enable
