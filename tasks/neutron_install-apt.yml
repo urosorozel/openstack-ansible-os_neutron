@@ -24,6 +24,7 @@
   apt_repository:
     repo: "{{ uca_repo }}"
     state: present
+    filename: "{{ uca_apt_source_list_filename | default(omit) }}"
   register: add_uca_repo
   when: neutron_uca_enable | bool
 
