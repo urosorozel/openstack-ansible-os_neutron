@@ -28,6 +28,7 @@ neutron_distro_packages:
   - keepalived
   - libpqxx-devel
   - radvd
+  - which
 
 neutron_lxb_distro_packages:
   - bridge-utils
