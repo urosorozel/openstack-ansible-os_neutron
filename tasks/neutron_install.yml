@@ -196,7 +196,7 @@
   until: install_packages|success
   retries: 5
   delay: 2
-  when: not neutron_get_venv | success or neutron_developer_mode | bool
+  when: neutron_get_venv | failed or neutron_get_venv | skipped or neutron_developer_mode | bool
   notify: Restart neutron services
 
 - name: CentOS remove python from path first
@@ -206,14 +206,14 @@
   when:
     - ansible_pkg_mgr == 'yum'
     - not neutron_developer_mode | bool
-    - neutron_get_venv | changed or neutron_venv_dir | changed
+    - neutron_get_venv | changed
 
 - name: Update virtualenv path
   command: >
     virtualenv-tools --update-path=auto --reinitialize {{ neutron_bin | dirname }}
   when:
     - not neutron_developer_mode | bool
-    - neutron_get_venv | changed or neutron_venv_dir | changed
+    - neutron_get_venv | changed
 
 - name: Install optional pip packages
   pip:
