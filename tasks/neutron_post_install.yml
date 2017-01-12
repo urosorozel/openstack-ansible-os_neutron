@@ -122,7 +122,7 @@
 - name: Drop metadata iptables checksum fix
   copy:
     src: "post-up-metadata-checksum"
-    dest: "/etc/network/if-up.d/post-up-metadata-checksum"
+    dest: "{{ neutron_checksum_script }}"
     owner: "root"
     group: "root"
     mode: "0755"
@@ -130,8 +130,18 @@
     - neutron_metadata_checksum_fix | bool
     - neutron_services['neutron-linuxbridge-agent']['group'] in group_names
 
+- name: Ensure the postup/postdown scripts are loaded (RedHat)
+  lineinfile:
+    dest: "/etc/sysconfig/network-scripts/ifup-post"
+    line: ". {{ neutron_checksum_script }}"
+    insertbefore: "^exit 0"
+  when:
+    - neutron_metadata_checksum_fix | bool
+    - neutron_services['neutron-linuxbridge-agent']['group'] in group_names
+    - ansible_pkg_mgr == 'yum'
+
 - name: Run metadata iptables checksum fix
-  command: /etc/network/if-up.d/post-up-metadata-checksum
+  command: "{{ neutron_checksum_script }}"
   when:
     - neutron_metadata_checksum_fix | bool
     - neutron_services['neutron-linuxbridge-agent']['group'] in group_names
