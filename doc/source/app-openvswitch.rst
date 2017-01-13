@@ -15,7 +15,7 @@ Recommended reading
 We recommend that you read the following documents before proceeding:
 
  * Neutron documentation on Open vSwitch OpenStack deployments:
-   `<http://docs.openstack.org/mitaka/networking-guide/scenario-classic-ovs.html>`_
+   `<http://docs.openstack.org/liberty/networking-guide/scenario-classic-ovs.html>`_
  * Blog post on how OpenStack-Ansible works with Open vSwitch:
    `<https://medium.com/@travistruman/configuring-openstack-ansible-for-open-vswitch-b7e70e26009d>`_
 
@@ -30,7 +30,7 @@ All compute nodes must have bridges configured:
 - ``br-storage`` (optional - used for certain storage devices)
 
 For more information see:
-`<http://docs.openstack.org/developer/openstack-ansible/install-guide-revised-draft/targethosts-networkconfig.html>`_
+`<http://docs.openstack.org/project-deploy-guide/openstack-ansible/newton/targethosts-networkconfig.html>`_
 
 These bridges may be configured as either a Linux Bridge (which would connect
 to the Open vSwitch controlled by neutron) or as an Open vSwitch.
