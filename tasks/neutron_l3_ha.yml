@@ -23,6 +23,8 @@
     owner: "root"
     group: "root"
     mode: "0755"
+  tags:
+    - neutron-install
 
 - name: Convert the hostname to an int
   name2int:
