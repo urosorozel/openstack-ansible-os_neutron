@@ -170,16 +170,14 @@
     path: "{{ neutron_bin | dirname }}"
     state: directory
   register: neutron_venv_dir
-  when: not neutron_developer_mode | bool
+  when: neutron_get_venv | bool
 
 - name: Unarchive pre-built venv
   unarchive:
     src: "/var/cache/{{ neutron_venv_download_url | basename }}"
     dest: "{{ neutron_bin | dirname }}"
     copy: "no"
-  when:
-    - not neutron_developer_mode | bool
-    - neutron_get_venv | changed
+  when: neutron_get_venv | changed
   notify: Restart neutron services
 
 - name: Install pip packages
@@ -196,7 +194,7 @@
   until: install_packages|success
   retries: 5
   delay: 2
-  when: neutron_get_venv | failed or neutron_get_venv | skipped or neutron_developer_mode | bool
+  when: neutron_get_venv | failed or neutron_get_venv | skipped
   notify: Restart neutron services
 
 - name: CentOS remove python from path first
@@ -205,15 +203,12 @@
     state: "absent"
   when:
     - ansible_pkg_mgr == 'yum'
-    - not neutron_developer_mode | bool
     - neutron_get_venv | changed
 
 - name: Update virtualenv path
   command: >
     virtualenv-tools --update-path=auto --reinitialize {{ neutron_bin | dirname }}
-  when:
-    - not neutron_developer_mode | bool
-    - neutron_get_venv | changed
+  when: neutron_get_venv | changed
 
 - name: Install optional pip packages
   pip:
