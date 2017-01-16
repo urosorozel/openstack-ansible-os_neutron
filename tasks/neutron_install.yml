@@ -169,7 +169,6 @@
   file:
     path: "{{ neutron_bin | dirname }}"
     state: directory
-  register: neutron_venv_dir
   when: neutron_get_venv | changed
 
 - name: Unarchive pre-built venv
