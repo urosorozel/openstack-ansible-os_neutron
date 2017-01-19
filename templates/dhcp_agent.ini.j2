@@ -1,13 +1,10 @@
 # {{ ansible_managed }}
 
-{% set _api_threads = ansible_processor_vcpus|default(2) // 2 %}
-{% set api_threads = _api_threads if _api_threads > 0 else 1 %}
-
 # General
 [DEFAULT]
 debug = {{ debug }}
 
-num_sync_threads = {{ neutron_num_sync_threads | default(api_threads) }}
+num_sync_threads = {{ neutron_num_sync_threads | default(neutron_api_threads) }}
 
 # Drivers
 interface_driver = {{ neutron_plugins[neutron_plugin_type].driver_interface }}

@@ -1,8 +1,5 @@
 # {{ ansible_managed }}
 
-{% set _api_threads = ansible_processor_vcpus|default(2) // 2 %}
-{% set api_threads = _api_threads if _api_threads > 0 else 1 %}
-
 # General, applies to all host groups
 [DEFAULT]
 # Disable stderr logging
@@ -78,7 +75,7 @@ bind_port = 9696
 bind_host = 0.0.0.0
 
 # Workers
-api_workers = {{ neutron_api_workers | default(api_threads) }}
+api_workers = {{ neutron_api_workers | default(neutron_api_threads) }}
 rpc_workers = {{ neutron_rpc_workers }}
 
 {% set dhcp_agents_max = num_agent if num_agent > 2 else 2 %}
