@@ -27,12 +27,5 @@
 # Install Keystone
 - include: common/test-install-keystone.yml
 
-# Install Neutron
-- include: common/test-install-neutron.yml
-
-# Install and execute tempest
-- include: common/test-install-tempest.yml
-
-- include: test-calico-functional.yml
-  when:
-    - "{{ neutron_plugin_type == 'ml2.calico' }}"
+# Install previous Neutron
+- include: test-install-previous-neutron.yml
