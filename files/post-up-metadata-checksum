@@ -26,6 +26,9 @@ if [ ! -z "${IPTABLES}" ]; then
     if ! ${IPTABLES} -C POSTROUTING -t mangle -p tcp --sport 80 -j CHECKSUM --checksum-fill 2> /dev/null; then
         ${IPTABLES} -A POSTROUTING -t mangle -p tcp --sport 80 -j CHECKSUM --checksum-fill
     fi
+    if ! ${IPTABLES} -C POSTROUTING -t mangle -p tcp --sport 8000 -j CHECKSUM --checksum-fill 2> /dev/null; then
+        ${IPTABLES} -A POSTROUTING -t mangle -p tcp --sport 8000 -j CHECKSUM --checksum-fill
+    fi
 fi
 
 # Ip6tables path, used for ipv6 firewall.
@@ -33,5 +36,8 @@ IP6TABLES=$(which ip6tables)
 if [ ! -z "${IP6TABLES}" ]; then
     if ! ${IP6TABLES} -C POSTROUTING -t mangle -p udp --sport 80 -j CHECKSUM --checksum-fill 2> /dev/null; then
         ${IP6TABLES} -A POSTROUTING -t mangle -p udp --sport 80 -j CHECKSUM --checksum-fill
+    fi
+    if ! ${IP6TABLES} -C POSTROUTING -t mangle -p udp --sport 8000 -j CHECKSUM --checksum-fill 2> /dev/null; then
+        ${IP6TABLES} -A POSTROUTING -t mangle -p udp --sport 8000 -j CHECKSUM --checksum-fill
     fi
 fi
