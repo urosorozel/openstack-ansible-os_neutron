@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Copy neutron config
+- name: Copy common neutron config
   config_template:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
@@ -47,6 +47,17 @@
       config_type: "json"
   notify:
     - Restart neutron services
+
+- name: Copy neutron ml2 plugin config
+  config_template:
+    src: "{{ neutron_plugins[item].plugin_ini }}.j2"
+    dest: "{{ neutron_conf_dir }}/{{ neutron_plugins[item].plugin_ini }}"
+    owner: "{{ neutron_system_user_name }}"
+    group: "{{ neutron_system_group_name }}"
+    mode: "0644"
+    config_overrides: "{{ neutron_plugins[item].plugin_conf_ini_overrides }}"
+    config_type: "ini"
+  with_items: "{{ neutron_plugin_types }}"
 
 - name: Generate neutron dnsmasq Config
   config_template:
