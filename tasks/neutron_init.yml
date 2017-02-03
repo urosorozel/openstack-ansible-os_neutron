@@ -108,6 +108,7 @@
   when:
     - neutron_services['neutron-lbaasv2-agent']['group'] in group_names
     - neutron_services['neutron-lbaasv2-agent'].service_en | bool
+    - neutron_lbaas_namespace | bool
 
 - include: neutron_init_common.yml
   vars:

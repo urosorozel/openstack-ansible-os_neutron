@@ -124,18 +124,23 @@ neutron_plugin_core: "{{ neutron_plugins[neutron_plugin_type].plugin_core }}"
 #   - router
 #   - firewall
 #   - lbaas
-#   - neutron_lbaas.services.loadbalancer.plugin.LoadBalancerPluginv2
 #   - neutron_dynamic_routing.services.bgp.bgp_plugin.BgpPlugin
 #   - vpnaas
 #   - metering
 #   - qos
+# Deprecated: instead of triggering lbaas through neutron_plugin_core it will be triggered when Octavia is installed, neutron_lbaas_namespace var is set to True, or both:
+#   - neutron_lbaas.services.loadbalancer.plugin.LoadBalancerPluginv2 or lbaasv2
+neutron_lbaas_namespace: "{% if 'neutron_lbaas.services.loadbalancer.plugin.LoadBalancerPluginv2' in neutron_plugin_base %}True{% else %}False{% endif %}"
+neutron_lbaas_octavia: False
+neutron_lbaasv2: "{% if (neutron_lbaas_namespace|bool) or (neutron_lbaas_octavia | bool) %}True{% else %}False{% endif %}"
+
 neutron_plugin_base:
   - router
   - metering
-neutron_plugin_loaded_base: "{% for plugin in neutron_plugin_base %}{{ plugin }}{% if not loop.last %},{% endif %}{% endfor %}"
+neutron_plugin_loaded_base: "{% for plugin in neutron_plugin_base %}{{ plugin }}{% if not loop.last %},{% endif %}{% endfor %}{% if (neutron_lbaasv2|bool) and ('neutron_lbaas.services.loadbalancer.plugin.LoadBalancerPluginv2' not in neutron_plugin_base) %},lbaasv2{% endif %}"
 
 # Neutron Plugins
-# The neutron core plugin (ML2) is defined with neutron_plugin_type,
+# The neutron core plugin (ML2) is defined with neutron_plug in_type,
 # you can not load multiple ML2 plugins as core.
 # Additional ML2 plugins can be loaded with neutron_plugin_types (as list)
 neutron_plugin_type: 'ml2.lxb'
@@ -280,7 +285,7 @@ neutron_services:
  neutron-lbaasv2-agent:
    group: neutron_lbaas_agent
    service_name: neutron-lbaasv2-agent
-   service_en: "{{ neutron_lbaasv2 | bool }}"
+   service_en: "{{ neutron_lbaas_namespace | bool }}"
    service_conf_path: "{{ neutron_conf_dir }}"
    service_conf: lbaas_agent.ini
    service_rootwrap: rootwrap.d/lbaas-haproxy.filters
@@ -371,15 +376,14 @@ neutron_metadata: "{% if neutron_plugin_type.split('.')[0] == 'ml2' %}True{% els
 ## Neutron LBaaS
 # See documentation section titled "Configuring the Network Load Balancing
 # Service (Optional)" for more details.
-#
-# To enable LBaaS v2, add the following item to the neutron_plugin_base list:
-#   neutron_lbaas.services.loadbalancer.plugin.LoadBalancerPluginv2
-#
-# NOTE(mhayden): neutron-lbaas doesn't have entry points and the full classpath
-#                is required.
-neutron_lbaasv2: "{% if 'neutron_lbaas.services.loadbalancer.plugin.LoadBalancerPluginv2' in neutron_plugin_base %}True{% else %}False{% endif %}"
+
+
+# This complex logic activates either Namespace or Octavia or both or none; if
+# Octavia is included it will be the default
+neutron_lbaasv2_service_provider: "{% if neutron_lbaas_namespace | bool %}LOADBALANCERV2:Haproxy:neutron_lbaas.drivers.haproxy.plugin_driver.HaproxyOnHostPluginDriver{% if neutron_lbaas_octavia | bool %},{% else %}:default'{% endif %}{% endif %}{% if neutron_lbaas_octavia | bool %}LOADBALANCERV2:Octavia:neutron_lbaas.drivers.octavia.driver.OctaviaDriver:default{% endif %}"
 neutron_lbaasv2_device_driver: neutron_lbaas.drivers.haproxy.namespace_driver.HaproxyNSDriver
-neutron_lbaasv2_service_provider: LOADBALANCERV2:Haproxy:neutron_lbaas.drivers.haproxy.plugin_driver.HaproxyOnHostPluginDriver:default
+neutron_octavia_request_poll_timeout: 100
+
 
 ## Neutron L3
 ## Please add 'router' to the neutron_plugin_base list
