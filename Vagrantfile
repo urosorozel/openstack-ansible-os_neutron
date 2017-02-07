@@ -19,7 +19,6 @@ Vagrant.configure(2) do |config|
   config.vm.provision "bootstrap", type: "shell", inline: <<-SHELL
     sudo su -
     cd /vagrant
-    apt-get update
     FUNCTIONAL_TEST=false ./run_tests.sh
   SHELL
   # Run functional tests
