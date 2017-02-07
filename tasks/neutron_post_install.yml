@@ -17,9 +17,9 @@
   config_template:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
-    owner: "{{ item.owner|default(neutron_system_user_name) }}"
+    owner: "root"
     group: "{{ item.group|default(neutron_system_group_name) }}"
-    mode: "0644"
+    mode: "0640"
     config_overrides: "{{ item.config_overrides }}"
     config_type: "{{ item.config_type }}"
   with_items:
@@ -37,8 +37,6 @@
       config_type: "ini"
     - src: "rootwrap.conf.j2"
       dest: "{{ neutron_conf_dir }}/rootwrap.conf"
-      owner: "root"
-      group: "root"
       config_overrides: "{{ neutron_rootwrap_conf_overrides }}"
       config_type: "ini"
     - src: "policy.json.j2"
@@ -52,9 +50,9 @@
   config_template:
     src: "{{ neutron_plugins[item].plugin_ini }}.j2"
     dest: "{{ neutron_conf_dir }}/{{ neutron_plugins[item].plugin_ini }}"
-    owner: "{{ neutron_system_user_name }}"
+    owner: "root"
     group: "{{ neutron_system_group_name }}"
-    mode: "0644"
+    mode: "0640"
     config_overrides: "{{ neutron_plugins[item].plugin_conf_ini_overrides }}"
     config_type: "ini"
   with_items: "{{ neutron_plugin_types }}"
@@ -63,9 +61,9 @@
   config_template:
     src: "dnsmasq-neutron.conf.j2"
     dest: "{{ neutron_conf_dir }}/dnsmasq-neutron.conf"
-    owner: "{{ neutron_system_user_name }}"
+    owner: "root"
     group: "{{ neutron_system_group_name }}"
-    mode: "0644"
+    mode: "0640"
     config_overrides: "{{ neutron_dnsmasq_neutron_conf_overrides }}"
     config_type: "ini"
   notify:
@@ -82,19 +80,19 @@
   config_template:
     src: "{{ item.value.service_conf }}.j2"
     dest: "{{ item.value.service_conf_path }}/{{ item.value.service_conf }}"
-    owner: "{{ neutron_system_user_name }}"
+    owner: "root"
     group: "{{ neutron_system_group_name }}"
-    mode: "0644"
+    mode: "0640"
     config_overrides: "{{ item.value.config_overrides }}"
     config_type: "{{ item.value.config_type }}"
   with_dict: "{{ neutron_services }}"
   notify:
     - Restart neutron services
   when:
-       - item.value.service_en | bool
-       - item.value.service_conf_path is defined
-       - item.value.service_conf is defined
-       - item.value.group in group_names
+    - item.value.service_en | bool
+    - item.value.service_conf_path is defined
+    - item.value.service_conf is defined
+    - item.value.group in group_names
 
 - name: Copy neutron rootwrap filters
   copy:
