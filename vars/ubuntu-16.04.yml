@@ -14,7 +14,7 @@
 # limitations under the License.
 
 # Ubuntu Cloud Archive variables
-uca_openstack_release: newton
+uca_openstack_release: ocata
 uca_repo_dist: "{{ ansible_lsb.codename }}-updates/{{ uca_openstack_release }}"
 uca_repo: "deb {{ uca_apt_repo_url }} {{ uca_repo_dist }} main"
 neutron_checksum_script: /etc/network/if-up.d/post-up-metadata-checksum
