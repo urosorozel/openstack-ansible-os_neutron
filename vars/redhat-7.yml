@@ -13,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-rdo_package: "https://rdoproject.org/repos/rdo-release.rpm"
 neutron_checksum_script: /etc/sysconfig/network-scripts/ifup-post-metadata-checksum
 
 neutron_ovs_distro_packages:
