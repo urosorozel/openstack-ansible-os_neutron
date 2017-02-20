@@ -1,0 +1,26 @@
+---
+# Copyright 2017, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+neutron_packages_list:
+  - packages: "{{ neutron_distro_packages }}"
+    enabled: yes
+  - packages: "{{ neutron_ovs_distro_packages }}"
+    enabled: "{{ (neutron_services['neutron-openvswitch-agent']['group'] in group_names and neutron_services['neutron-openvswitch-agent'].service_en | bool) or (neutron_services['dragonflow-controller-agent']['group'] in group_names and neutron_services['dragonflow-controller-agent'].service_en | bool) or (neutron_services['dragonflow-l3-agent']['group'] in group_names and neutron_services['dragonflow-l3-agent'].service_en | bool) }}"
+  - packages: "{{ neutron_lxb_distro_packages }}"
+    enabled: "{{ neutron_services['neutron-linuxbridge-agent']['group'] in group_names and neutron_services['neutron-linuxbridge-agent'].service_en | bool }}"
+  - packages: "{{ neutron_lbaas_distro_packages }}"
+    enabled: "{{ neutron_services['neutron-lbaasv2-agent']['group'] in group_names and neutron_lbaasv2 | bool }}"
+  - packages: "{{ neutron_vpnaas_distro_packages }}"
+    enabled: "{{ neutron_services['neutron-vpnaas-agent']['group'] in group_names and neutron_vpnaas | bool }}"
