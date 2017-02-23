@@ -1,8 +1,5 @@
 # {{ ansible_managed }}
 
-{% set _api_threads = ansible_processor_vcpus|default(2) // 2 %}
-{% set api_threads = _api_threads if _api_threads > 0 else 1 %}
-
 # General
 [DEFAULT]
 debug = {{ debug }}
@@ -27,7 +24,7 @@ nova_metadata_port = {{ nova_metadata_port }}
 metadata_proxy_shared_secret = {{ nova_metadata_proxy_secret }}
 
 # Workers and backlog requests
-metadata_workers = {{ neutron_metadata_workers | default(api_threads) }}
+metadata_workers = {{ neutron_metadata_workers | default(neutron_api_threads) }}
 metadata_backlog = {{ neutron_metadata_backlog }}
 
 # Caching
