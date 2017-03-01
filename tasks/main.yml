@@ -26,6 +26,11 @@
   tags:
     - always
 
+- name: Gather variables that apply to all operating systems
+  include_vars: common.yml
+  tags:
+    - always
+
 - name: Get CPU info content and store as var
   shell: cat /proc/cpuinfo
   register: cpuinfo_contents
