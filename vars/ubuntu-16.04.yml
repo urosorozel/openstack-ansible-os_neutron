@@ -33,7 +33,6 @@ neutron_distro_packages:
   - ipset
   - iputils-arping
   - keepalived
-  - libpq-dev
   - radvd
 
 neutron_lxb_distro_packages:
