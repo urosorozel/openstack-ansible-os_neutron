@@ -1,5 +1,5 @@
 ---
-# Copyright 2016, Logan Vig <logan2211@gmail.com>
+# Copyright 2017, Rackspace US, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,7 +22,3 @@ tempest_plugins:
 
 tempest_test_whitelist:
   - neutron.tests.tempest.api.test_networks*
-
-neutron_plugin_type: ml2.calico
-neutron_provider_networks:
-  network_types: ''

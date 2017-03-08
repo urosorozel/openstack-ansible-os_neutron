@@ -43,7 +43,7 @@ networking_calico_git_repo: https://git.openstack.org/openstack/networking-calic
 networking_calico_git_install_branch: stable/ocata
 
 dragonflow_git_repo: https://git.openstack.org/openstack/dragonflow
-dragonflow_git_install_branch: master
+dragonflow_git_install_branch: stable/ocata
 
 neutron_developer_mode: false
 neutron_developer_constraints:

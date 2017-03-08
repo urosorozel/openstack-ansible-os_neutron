@@ -26,7 +26,6 @@ neutron_distro_packages:
   - ipset
   - iputils
   - keepalived
-  - libpqxx-devel
   - radvd
   - which
 
