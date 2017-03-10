@@ -380,7 +380,12 @@ neutron_metadata: "{% if neutron_plugin_type.split('.')[0] == 'ml2' %}True{% els
 
 # This complex logic activates either Namespace or Octavia or both or none; if
 # Octavia is included it will be the default
-neutron_lbaasv2_service_provider: "{% if neutron_lbaas_namespace | bool %}LOADBALANCERV2:Haproxy:neutron_lbaas.drivers.haproxy.plugin_driver.HaproxyOnHostPluginDriver{% if neutron_lbaas_octavia | bool %},{% else %}:default'{% endif %}{% endif %}{% if neutron_lbaas_octavia | bool %}LOADBALANCERV2:Octavia:neutron_lbaas.drivers.octavia.driver.OctaviaDriver:default{% endif %}"
+neutron_lbaasv2_plugin_drivers:
+  - "{% if neutron_lbaas_namespace | bool %}LOADBALANCERV2:Haproxy:neutron_lbaas.drivers.haproxy.plugin_driver.HaproxyOnHostPluginDriver{% else %}none{% endif %}"
+  - "{% if neutron_lbaas_octavia | bool %}LOADBALANCERV2:Octavia:neutron_lbaas.drivers.octavia.driver.OctaviaDriver{% else %}none{% endif %}"
+
+neutron_lbaasv2_service_provider: "{{ neutron_lbaasv2_plugin_drivers | reject('equalto','none') | join(',') }}{% if neutron_lbaasv2 %}:default{% endif %}"
+
 neutron_lbaasv2_device_driver: neutron_lbaas.drivers.haproxy.namespace_driver.HaproxyNSDriver
 neutron_octavia_request_poll_timeout: 100
 
