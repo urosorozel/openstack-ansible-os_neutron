@@ -128,6 +128,7 @@ neutron_plugin_core: "{{ neutron_plugins[neutron_plugin_type].plugin_core }}"
 #   - vpnaas
 #   - metering
 #   - qos
+#   - dns
 # Deprecated: instead of triggering lbaas through neutron_plugin_core it will be triggered when Octavia is installed, neutron_lbaas_namespace var is set to True, or both:
 #   - neutron_lbaas.services.loadbalancer.plugin.LoadBalancerPluginv2 or lbaasv2
 neutron_lbaas_namespace: "{% if 'neutron_lbaas.services.loadbalancer.plugin.LoadBalancerPluginv2' in neutron_plugin_base %}True{% else %}False{% endif %}"
