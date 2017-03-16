@@ -30,6 +30,7 @@ neutron_distro_packages:
   - dnsmasq-base
   - dnsmasq-utils
   - ebtables
+  - haproxy
   - ipset
   - iputils-arping
   - keepalived
