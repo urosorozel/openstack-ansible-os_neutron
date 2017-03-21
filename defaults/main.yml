@@ -132,7 +132,6 @@ neutron_plugin_core: "{{ neutron_plugins[neutron_plugin_type].plugin_core }}"
 neutron_plugin_base:
   - router
   - metering
-neutron_plugin_loaded_base: "{% for plugin in neutron_plugin_base %}{{ plugin }}{% if not loop.last %},{% endif %}{% endfor %}"
 
 # Neutron Plugins
 # The neutron core plugin (ML2) is defined with neutron_plugin_type,
