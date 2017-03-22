@@ -95,7 +95,7 @@ notify_nova_on_port_data_changes = True
 send_events_interval = 2
 
 [nova]
-auth_plugin = {{ nova_keystone_auth_plugin }}
+auth_type = {{ nova_keystone_auth_plugin }}
 auth_url = {{ keystone_service_adminurl }}
 region_name = {{ nova_service_region }}
 project_domain_id = {{ nova_service_project_domain_id }}
@@ -127,7 +127,7 @@ quota_vip = {{ neutron_quota_vip }}
 # Keystone authentication
 [keystone_authtoken]
 insecure = {{ keystone_service_internaluri_insecure | bool }}
-auth_plugin = {{ neutron_keystone_auth_plugin }}
+auth_type = {{ neutron_keystone_auth_plugin }}
 auth_url = {{ keystone_service_adminuri }}
 auth_uri = {{ keystone_service_internaluri }}
 project_domain_id = {{ neutron_service_project_domain_id }}
