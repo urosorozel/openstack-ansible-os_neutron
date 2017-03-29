@@ -1,5 +1,12 @@
 # {{ ansible_managed }}
 
+{% set system_user = item.value.system_user | default(neutron_system_user_name) %}
+{% set system_group = item.value.system_group | default(neutron_system_group_name) %}
+{% set service_home = item.value.system_home | default(neutron_system_home_folder) %}
+{% set program_name = item.value.program_binary | default(item.value.service_name) %}
+{% set program_override = item.value.program_override | default("") %}
+{% set program_config_options = item.value.config_options | default("") %}
+
 description "{{ program_name }}"
 author "Kevin Carter <kevin.carter@rackspace.com>"
 
@@ -10,7 +17,11 @@ respawn
 respawn limit 10 5
 
 # Set the RUNBIN environment variable
+{% if program_override == "" %}
 env RUNBIN="{{ neutron_bin }}/{{ program_name }}"
+{% else %}
+env RUNBIN="{{ program_override }}"
+{% endif %}
 
 # Change directory to service users home
 chdir "{{ service_home }}"
@@ -38,5 +49,5 @@ exec start-stop-daemon --start \
                        --chuid {{ system_user }} \
                        --make-pidfile \
                        --pidfile /var/run/{{ program_name }}/{{ program_name }}.pid \
-                       --exec "{{ program_override|default('$RUNBIN') }}" \
-                       -- {{ program_config_options|default('') }}
+                       --exec $RUNBIN \
+                       -- {{ program_config_options }}

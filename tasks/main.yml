@@ -65,14 +65,12 @@
   tags:
     - neutron-config
 
-# neutron system services
-- include: neutron_init.yml
-  tags:
-    - neutron-config
-
 - include: calico_init.yml
   static: no
   when: neutron_plugin_type == 'ml2.calico'
+
+# neutron system services
+- include: neutron_init_common.yml
   tags:
     - neutron-config
 

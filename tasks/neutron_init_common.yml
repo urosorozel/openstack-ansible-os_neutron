@@ -1,5 +1,5 @@
 ---
-# Copyright 2016, Rackspace US, Inc.
+# Copyright 2014, Rackspace US, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,17 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: neutron_init_upstart.yml
-  when:
-    - ansible_service_mgr == 'upstart'
-
-- include: neutron_init_systemd.yml
-  when:
-    - ansible_service_mgr == 'systemd'
+- include: "neutron_init_{{ ansible_service_mgr }}.yml"
 
 - name: Load service
   service:
-   name: "{{ program_name }}"
+   name: "{{ item.value.service_name }}"
    enabled: "yes"
+  with_dict: "{{ neutron_services }}"
+  when:
+    - inventory_hostname in groups[item.value.group] | default([])
+    - "{{ item.value.service_en | default(true) }}"
   notify:
     - Restart neutron services

@@ -188,6 +188,20 @@ neutron_plugins:
     plugin_ini: plugins/ml2/sriov_nic_agent.ini
     plugin_conf_ini_overrides: "{{ neutron_sriov_nic_agent_ini_overrides }}"
 
+neutron_dhcp_agent_init_overrides: {}
+neutron_openvswitch_agent_init_overrides: {}
+neutron_linuxbridge_agent_init_overrides: {}
+neutron_metadata_agent_init_overrides: {}
+neutron_metering_agent_init_overrides: {}
+neutron_l3_agent_init_overrides: {}
+neutron_lbaas_agent_init_overrides: {}
+neutron_bgp_dragent_init_overrides: {}
+neutron_vpn_agent_init_overrides: {}
+neutron_server_init_overrides: {}
+neutron_calico_felix_init_overrides: {}
+neutron_calico_dhcp_agent_init_overrides: {}
+neutron_sriov_nic_agent_init_overrides: {}
+
 neutron_services:
  neutron-dhcp-agent:
    group: neutron_dhcp_agent
@@ -199,6 +213,7 @@ neutron_services:
    config_options: "--config-file {{ neutron_conf_dir }}/neutron.conf --config-file {{ neutron_conf_dir }}/dhcp_agent.ini --log-file=/var/log/neutron/neutron-dhcp-agent.log"
    config_overrides: "{{ neutron_dhcp_agent_ini_overrides }}"
    config_type: "ini"
+   init_config_overrides: "{{ neutron_dhcp_agent_init_overrides }}"
  neutron-openvswitch-agent:
    group: neutron_openvswitch_agent
    service_name: neutron-openvswitch-agent
@@ -209,6 +224,7 @@ neutron_services:
    config_options: "--config-file {{ neutron_conf_dir }}/neutron.conf --config-file {{ neutron_conf_dir }}/plugins/ml2/ml2_conf.ini --config-file {{ neutron_conf_dir }}/plugins/ml2/openvswitch_agent.ini --log-file=/var/log/neutron/neutron-openvswitch-agent.log"
    config_overrides: "{{ neutron_openvswitch_agent_ini_overrides }}"
    config_type: "ini"
+   init_config_overrides: "{{ neutron_openvswitch_agent_init_overrides }}"
  neutron-linuxbridge-agent:
    group: neutron_linuxbridge_agent
    service_name: neutron-linuxbridge-agent
@@ -219,6 +235,7 @@ neutron_services:
    config_options: "--config-file {{ neutron_conf_dir }}/neutron.conf --config-file {{ neutron_conf_dir }}/plugins/ml2/ml2_conf.ini --config-file {{ neutron_conf_dir }}/plugins/ml2/linuxbridge_agent.ini --log-file=/var/log/neutron/neutron-linuxbridge-agent.log"
    config_overrides: "{{ neutron_linuxbridge_agent_ini_overrides }}"
    config_type: "ini"
+   init_config_overrides: "{{ neutron_linuxbridge_agent_init_overrides }}"
  neutron-metadata-agent:
    group: neutron_metadata_agent
    service_name: neutron-metadata-agent
@@ -228,6 +245,7 @@ neutron_services:
    config_options: "--config-file {{ neutron_conf_dir }}/neutron.conf --config-file {{ neutron_conf_dir }}/metadata_agent.ini --log-file=/var/log/neutron/neutron-metadata-agent.log"
    config_overrides: "{{ neutron_metadata_agent_ini_overrides }}"
    config_type: "ini"
+   init_config_overrides: "{{ neutron_metadata_agent_init_overrides }}"
  neutron-metering-agent:
    group: neutron_metering_agent
    service_name: neutron-metering-agent
@@ -237,6 +255,7 @@ neutron_services:
    config_options: "--config-file {{ neutron_conf_dir }}/neutron.conf --config-file {{ neutron_conf_dir }}/metering_agent.ini --log-file=/var/log/neutron/neutron-metering-agent.log"
    config_overrides: "{{ neutron_metering_agent_ini_overrides }}"
    config_type: "ini"
+   init_config_overrides: "{{ neutron_metering_agent_init_overrides }}"
    # Other agents will use neutron_plugins[neutron_plugin_type].driver_interface
    # for the interface_driver, but that uses a stevedore alias. Metering agent
    # hasn't been updated to use stevedore alises so that fails. To work around
@@ -255,6 +274,7 @@ neutron_services:
    config_options: "--config-file {{ neutron_conf_dir }}/neutron.conf --config-file {{ neutron_conf_dir }}/l3_agent.ini --log-file=/var/log/neutron/neutron-l3-agent.log"
    config_overrides: "{{ neutron_l3_agent_ini_overrides }}"
    config_type: "ini"
+   init_config_overrides: "{{ neutron_l3_agent_init_overrides }}"
  neutron-lbaasv2-agent:
    group: neutron_lbaas_agent
    service_name: neutron-lbaasv2-agent
@@ -265,6 +285,7 @@ neutron_services:
    config_options: "--config-file {{ neutron_conf_dir }}/neutron.conf --config-file {{ neutron_conf_dir }}/lbaas_agent.ini --log-file=/var/log/neutron/neutron-lbaasv2-agent.log"
    config_overrides: "{{ neutron_lbaas_agent_ini_overrides }}"
    config_type: "ini"
+   init_config_overrides: "{{ neutron_lbaas_agent_init_overrides }}"
  neutron-bgp-dragent:
    group: neutron_bgp_dragent
    service_name: neutron-bgp-dragent
@@ -274,6 +295,7 @@ neutron_services:
    config_options: "--config-file {{ neutron_conf_dir }}/neutron.conf --config-file {{ neutron_conf_dir }}/bgp_dragent.ini --log-file=/var/log/neutron/neutron-bgp-dragent.log"
    config_overrides: "{{ neutron_bgp_dragent_ini_overrides }}"
    config_type: "ini"
+   init_config_overrides: "{{ neutron_bgp_dragent_init_overrides }}"
  neutron-vpnaas-agent:
    group: neutron_l3_agent
    service_name: neutron-vpn-agent
@@ -284,13 +306,17 @@ neutron_services:
    config_options: "--config-file {{ neutron_conf_dir }}/neutron.conf --config-file {{ neutron_conf_dir }}/vpnaas_agent.ini --log-file=/var/log/neutron/neutron-vpn-agent.log"
    config_overrides: "{{ neutron_vpnaas_agent_ini_overrides }}"
    config_type: "ini"
+   init_config_overrides: "{{ neutron_vpn_agent_init_overrides }}"
  neutron-server:
    group: neutron_server
    service_name: neutron-server
    service_en: True
    config_options: "--config-file {{ neutron_conf_dir }}/neutron.conf --config-file {{ neutron_conf_dir }}/{{ neutron_plugins[neutron_plugin_type].plugin_ini }} --log-file=/var/log/neutron/neutron-server.log"
+   init_config_overrides: "{{ neutron_server_init_overrides }}"
  calico-felix:
    group: neutron_calico_dhcp_agent
+   system_user: root
+   system_group: root
    service_name: calico-felix
    service_en: "{{ neutron_plugin_type == 'ml2.calico' }}"
    service_conf_path: /etc/calico
@@ -298,14 +324,18 @@ neutron_services:
    config_options: --config-file /etc/calico/felix.cfg
    config_overrides: "{{ neutron_calico_felix_ini_overrides }}"
    config_type: "ini"
+   init_config_overrides: "{{ neutron_calico_felix_init_overrides }}"
  calico-dhcp-agent:
    group: neutron_calico_dhcp_agent
+   system_user: root
+   system_group: root
    service_name: calico-dhcp-agent
    service_en: "{{ neutron_plugin_type == 'ml2.calico' }}"
    service_rootwrap: rootwrap.d/dhcp.filters
    config_options: "--config-file {{ neutron_conf_dir }}/neutron.conf"
    config_overrides: "{{ neutron_calico_dhcp_agent_ini_overrides }}"
    config_type: "ini"
+   init_config_overrides: "{{ neutron_calico_dhcp_agent_init_overrides }}"
  neutron-sriov-nic-agent:
    group: neutron_sriov_nic_agent
    service_name: neutron-sriov-nic-agent
@@ -315,6 +345,7 @@ neutron_services:
    config_options: "--config-file {{ neutron_conf_dir }}/neutron.conf --config-file {{ neutron_conf_dir }}/plugins/ml2/ml2_conf.ini --config-file {{ neutron_conf_dir }}/plugins/ml2/sriov_nic_agent.ini --log-file=/var/log/neutron/neutron-sriov-nic-agent.log"
    config_overrides: "{{ neutron_sriov_nic_agent_ini_overrides }}"
    config_type: "ini"
+   init_config_overrides: "{{ neutron_sriov_nic_agent_init_overrides }}"
 
 ## Neutron DHCP Agent
 neutron_dhcp: "{% if neutron_plugin_type.split('.')[0] == 'ml2' %}True{% else %}False{% endif %}"
