@@ -1,5 +1,5 @@
 ---
-# Copyright 2016, Rackspace US, Inc.
+# Copyright 2014, Rackspace US, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,44 +13,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: "Create TEMP run dir for {{ program_name }}"
-  file:
-    path: "/var/run/{{ program_name }}"
-    state: directory
-    owner: "{{ system_user }}"
-    group: "{{ system_group }}"
-    mode: "02755"
+- include: neutron_init_systemd.yml
+  static: no
+  when:
+    - ansible_service_mgr == 'systemd'
 
-- name: "Create TEMP lock dir for {{ program_name }}"
-  file:
-    path: "/var/lock/{{ program_name }}"
-    state: directory
-    owner: "{{ system_user }}"
-    group: "{{ system_group }}"
-    mode: "02755"
-
-- name: "Create tmpfiles.d entry for {{ program_name }}"
-  template:
-    src: "neutron-systemd-tmpfiles.j2"
-    dest: "/etc/tmpfiles.d/openstack-{{ program_name }}.conf"
-    mode: "0644"
-    owner: "root"
-    group: "root"
-
-- name: "Place the systemd init script for {{ program_name }}"
-  template:
-    src: "neutron-systemd-init.j2"
-    dest: "/etc/systemd/system/{{ program_name }}.service"
-    mode: "0644"
-    owner: "root"
-    group: "root"
-  register: systemd_init
-
-- name: "Load {{ program_name }} service"
+- name: Load service
   service:
-    name: "{{ program_name }}"
-    enabled: yes
-    state: started
-    daemon_reload: yes
+   name: "{{ item.value.service_name }}"
+   enabled: "yes"
+  with_dict: "{{ neutron_services }}"
+  when:
+    - inventory_hostname in groups[item.value.group] | default([])
+    - "{{ item.value.service_en | default(true) }}"
   notify:
     - Restart neutron services
