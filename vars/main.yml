@@ -24,3 +24,12 @@ neutron_packages_list:
     enabled: "{{ neutron_services['neutron-lbaasv2-agent']['group'] in group_names and neutron_lbaasv2 | bool }}"
   - packages: "{{ neutron_vpnaas_distro_packages }}"
     enabled: "{{ neutron_services['neutron-vpnaas-agent']['group'] in group_names and neutron_vpnaas | bool }}"
+
+filtered_neutron_services: >
+  {%- set services = neutron_services.copy() %}
+  {%- for key,value in neutron_services.items() %}
+  {%- if value.group not in group_names or not value.service_en %}
+  {%- set _ = services.pop(key) %}
+  {%- endif %}
+  {%- endfor %}
+  {{- services -}}
