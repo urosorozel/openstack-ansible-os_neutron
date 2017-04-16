@@ -1,7 +1,7 @@
 ---
 openstack_host_specific_kernel_modules:
   - name: "openvswitch"
-    pattern: "CONFIG_OPENVSWITCH="
+    pattern: "CONFIG_OPENVSWITCH"
     group: "physical_host"
 
 tempest_run: yes
