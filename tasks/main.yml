@@ -41,6 +41,19 @@
   tags:
     - always
 
+- name: Set filtered dictionary of neutron services
+  set_fact:
+    filtered_neutron_services: >
+      {%- set services = neutron_services.copy() %}
+      {%- for key,value in neutron_services.items() %}
+      {%- if value.group not in group_names or not value.service_en %}
+      {%- set _ = services.pop(key) %}
+      {%- endif %}
+      {%- endfor %}
+      {{- services -}}
+  tags:
+    - always
+
 - include: neutron_ml2_ovs_powervm.yml
   static: no
   when:

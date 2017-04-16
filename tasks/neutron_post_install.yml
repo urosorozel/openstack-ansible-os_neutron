@@ -85,14 +85,12 @@
     mode: "0640"
     config_overrides: "{{ item.value.config_overrides }}"
     config_type: "{{ item.value.config_type }}"
-  with_dict: "{{ neutron_services }}"
+  with_dict: "{{ filtered_neutron_services }}"
   notify:
     - Restart neutron services
   when:
-    - item.value.service_en | bool
     - item.value.service_conf_path is defined
     - item.value.service_conf is defined
-    - item.value.group in group_names
 
 - name: Copy neutron rootwrap filters
   copy:
@@ -111,9 +109,8 @@
     dest: "{{ neutron_conf_dir }}/{{ item.value.service_rootwrap }}"
     owner: "root"
     group: "root"
-  with_dict: "{{ neutron_services }}"
+  with_dict: "{{ filtered_neutron_services }}"
   when:
-      - item.value.service_en | bool
       - item.value.service_rootwrap is defined
   notify:
     - Restart neutron services

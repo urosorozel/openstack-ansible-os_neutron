@@ -22,9 +22,6 @@
   service:
    name: "{{ item.value.service_name }}"
    enabled: "yes"
-  with_dict: "{{ neutron_services }}"
-  when:
-    - inventory_hostname in groups[item.value.group] | default([])
-    - "{{ item.value.service_en | default(true) }}"
+  with_dict: "{{ filtered_neutron_services }}"
   notify:
     - Restart neutron services
