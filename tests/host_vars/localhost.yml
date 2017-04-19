@@ -18,4 +18,3 @@ bridges:
     ip_addr: "10.1.0.1"
 
 ansible_python_interpreter: "/usr/bin/python2"
-ansible_become: True
