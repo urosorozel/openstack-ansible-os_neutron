@@ -68,8 +68,7 @@
   tags:
     - neutron-install
 
-# neutron system services
-- include: neutron_init_common.yml
+- include: "neutron_init_{{ ansible_service_mgr }}.yml"
   tags:
     - neutron-config
 

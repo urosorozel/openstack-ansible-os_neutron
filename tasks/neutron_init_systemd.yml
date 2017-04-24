@@ -52,6 +52,8 @@
     group: "root"
   with_dict: "{{ neutron_services }}"
   when: inventory_hostname in groups[item.value.group] | default([])
+  notify:
+    - Restart neutron services
 
 - name: Place the systemd init script
   config_template:
@@ -65,4 +67,4 @@
   with_dict: "{{ neutron_services }}"
   when: inventory_hostname in groups[item.value.group] | default([])
   notify:
-    - Reload systemd daemon
+    - Restart neutron services
