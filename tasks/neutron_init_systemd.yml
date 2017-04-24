@@ -48,6 +48,8 @@
     owner: "root"
     group: "root"
   with_dict: "{{ filtered_neutron_services }}"
+  notify:
+    - Restart neutron services
 
 - name: Place the systemd init script
   config_template:
@@ -60,4 +62,4 @@
     config_type: "ini"
   with_dict: "{{ filtered_neutron_services }}"
   notify:
-    - Reload systemd daemon
+    - Restart neutron services

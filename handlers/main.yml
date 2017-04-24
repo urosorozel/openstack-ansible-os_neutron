@@ -13,20 +13,29 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Reload systemd daemon
-  command: "systemctl daemon-reload"
-  notify:
-    - Restart neutron services
-
 - name: Restart neutron services
+  debug:
+    msg: "Restarting services"
+  changed_when: true
+  notify:
+    - Stop services
+    - Copy new policy file into place
+    - Start services
+
+- name: Stop services
   service:
     name: "{{ item.value.service_name }}"
-    state: restarted
+    enabled: yes
+    state: "stopped"
+    daemon_reload: "{{ (ansible_service_mgr == 'systemd') | ternary('yes', omit) }}"
   with_dict: "{{ neutron_services }}"
-  failed_when: false
+  when: item.value.service_en | bool
+  register: _stop
+  until: _stop | success
+  retries: 5
+  delay: 2
   notify:
     - Run ns-metadata-proxy process cleanup
-  when: item.value.service_en | bool
 
 # NOTE(cloudnull):
 # When installing or upgrading it is possible that an old metadata proxy process will not
@@ -45,3 +54,30 @@
       fi
     done
   when: neutron_services['neutron-metadata-agent'].service_en | bool
+
+# Note (odyssey4me):
+# The policy.json file is currently read continually by the services
+# and is not only read on service start. We therefore cannot template
+# directly to the file read by the service because the new policies
+# may not be valid until the service restarts. This is particularly
+# important during a major upgrade. We therefore only put the policy
+# file in place after the service has been stopped.
+#
+- name: Copy new policy file into place
+  copy:
+    src: "{{ neutron_conf_dir }}/policy.json-{{ neutron_venv_tag }}"
+    dest: "{{ neutron_conf_dir }}/policy.json"
+    remote_src: yes
+
+- name: Start services
+  service:
+    name: "{{ item.value.service_name }}"
+    enabled: yes
+    state: "started"
+    daemon_reload: "{{ (ansible_service_mgr == 'systemd') | ternary('yes', omit) }}"
+  with_dict: "{{ neutron_services }}"
+  when: item.value.service_en | bool
+  register: _start
+  until: _start | success
+  retries: 5
+  delay: 2
