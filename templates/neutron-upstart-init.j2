@@ -16,6 +16,8 @@ stop on runlevel [016]
 respawn
 respawn limit 10 5
 
+kill timeout 120
+
 # Set the RUNBIN environment variable
 {% if program_override == "" %}
 env RUNBIN="{{ neutron_bin }}/{{ program_name }}"
@@ -40,8 +42,10 @@ pre-start script
 end script
 
 # Post stop actions
+# Sleep configured number of seconds between restarts
 post-stop script
   rm "/var/run/{{ program_name }}/{{ program_name }}.pid"
+  sleep 2
 end script
 
 # Run the start up job
