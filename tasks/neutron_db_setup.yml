@@ -15,7 +15,7 @@
 
 - name: Get neutron migrations facts
   neutron_migrations_facts:
-    release: ocata
+    release: pike
     library_path: "{{ neutron_lib_dir }}"
     bin_path: "{{ neutron_bin }}"
   when: neutron_plugin_type.split('.')[0] == 'ml2'

@@ -131,7 +131,7 @@ MIGRATIONS = {
     'run_expand': True
 }
 
-RELEASES = ['ocata', 'newton', 'mitaka', 'liberty']
+RELEASES = ['pike', 'ocata', 'newton', 'mitaka', 'liberty']
 
 
 def get_branch(release, revision, library_path, project):
