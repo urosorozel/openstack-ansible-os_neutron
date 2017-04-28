@@ -28,8 +28,7 @@
     enabled: yes
     state: "stopped"
     daemon_reload: "{{ (ansible_service_mgr == 'systemd') | ternary('yes', omit) }}"
-  with_dict: "{{ neutron_services }}"
-  when: item.value.service_en | bool
+  with_dict: "{{ filtered_neutron_services }}"
   register: _stop
   until: _stop | success
   retries: 5
@@ -53,7 +52,7 @@
         fi
       fi
     done
-  when: neutron_services['neutron-metadata-agent'].service_en | bool
+  when: '"neutron-metadata-agent" in filtered_neutron_services'
 
 # Note (odyssey4me):
 # The policy.json file is currently read continually by the services
@@ -75,8 +74,7 @@
     enabled: yes
     state: "started"
     daemon_reload: "{{ (ansible_service_mgr == 'systemd') | ternary('yes', omit) }}"
-  with_dict: "{{ neutron_services }}"
-  when: item.value.service_en | bool
+  with_dict: "{{ filtered_neutron_services }}"
   register: _start
   until: _start | success
   retries: 5
