@@ -91,7 +91,6 @@
 - include: neutron_l3_ha.yml
   when:
     - neutron_services['neutron-l3-agent']['group'] in group_names
-    - neutron_legacy_ha_tool_enabled | bool
   tags:
     - neutron-config
 
