@@ -31,10 +31,7 @@
   package:
     name: "{{ item }}"
     state: "{{ neutron_package_state }}"
-  with_items:
-    - "{{ neutron_packages_list | selectattr('enabled') | sum(attribute='packages', start=[]) }}"
-  when:
-    - item != ''
+  with_items: "{{ neutron_package_list }}"
 
 - name: Remove known problem packages
   package:
