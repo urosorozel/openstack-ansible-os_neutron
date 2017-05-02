@@ -15,14 +15,10 @@
 
 - name: Install neutron role packages
   package:
-    name: "{{ item }}"
+    name: "{{ neutron_package_list }}"
     state: "{{ neutron_package_state }}"
     update_cache: "{{ (ansible_pkg_mgr == 'apt') | ternary('yes', omit) }}"
     cache_valid_time: "{{ (ansible_pkg_mgr == 'apt') | ternary(cache_timeout, omit) }}"
-  with_items:
-    - "{{ neutron_packages_list | selectattr('enabled') | sum(attribute='packages', start=[]) }}"
-  when:
-    - item != ''
 
 - name: Remove known problem packages
   package:
