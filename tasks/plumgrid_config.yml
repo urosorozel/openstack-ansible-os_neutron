@@ -29,10 +29,12 @@
     group: "{{ neutron_system_group_name }}"
 
 - name: Install networking-plumgrid
-  apt:
+  package:
     name: networking-plumgrid
     state: "{{ neutron_package_state }}"
-    force: yes
+    update_cache: "{{ (ansible_pkg_mgr == 'apt') | ternary('yes', omit) }}"
+    cache_valid_time: "{{ (ansible_pkg_mgr == 'apt') | ternary(cache_timeout, omit) }}"
+    force: "{{ (ansible_pkg_mgr == 'apt') | ternary('yes', omit) }}"
   register: install_packages
   until: install_packages|success
   retries: 5
