@@ -180,10 +180,6 @@ neutron_plugins:
     plugin_conf_ini_overrides: "{{ neutron_ml2_conf_ini_overrides }}"
     l3_agent_mode: "legacy"
     driver_interface: "openvswitch"
-  plumgrid:
-    plugin_conf_ini_overrides: "{{ neutron_plumgrid_conf_ini_overrides }}"
-    plugin_core: networking_plumgrid.neutron.plugins.plugin.NeutronPluginPLUMgridV2
-    plugin_ini: plugins/plumgrid/plumgrid.ini
   nuage:
     plugin_core: neutron.plugins.nuage.plugin.NuagePlugin
     plugin_ini: plugins/nuage/nuage.ini

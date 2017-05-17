@@ -206,7 +206,7 @@ auth_version = 3
 
 {% endif %}
 
-{% if neutron_fwaas | bool and neutron_plugin_type != 'plumgrid' %}
+{% if neutron_fwaas | bool %}
 [fwaas]
 enabled = true
 driver = neutron_fwaas.services.firewall.drivers.linux.iptables_fwaas.IptablesFwaasDriver

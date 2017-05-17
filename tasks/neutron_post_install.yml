@@ -115,11 +115,6 @@
   notify:
     - Restart neutron services
 
-- name: Setup PLUMgrid config
-  include: plumgrid_config.yml
-  static: no
-  when: neutron_plugin_type == 'plumgrid'
-
 - name: Setup Nuage neutron config
   include: nuage_neutron_config.yml
   static: no

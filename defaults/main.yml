@@ -127,8 +127,6 @@ neutron_neutron_conf_overrides: {}
 neutron_nuage_conf_ini_overrides: {}
 neutron_openvswitch_agent_ini_overrides: {}
 neutron_openvswitch_agent_init_overrides: {}
-neutron_plumgrid_conf_ini_overrides: {}
-neutron_plumlib_ini_overrides: {}
 # Provide a list of access controls to update the default policy.json with.
 # These changes will be merged
 # with the access controls in the default policy.json. E.g.
