@@ -139,3 +139,10 @@
   retries: 5
   delay: 2
   notify: Restart neutron services
+
+- name: Record the venv tag deployed
+  ini_file:
+    dest: "/etc/ansible/facts.d/openstack_ansible.fact"
+    section: neutron
+    option: venv_tag
+    value: "{{ neutron_venv_tag }}"
