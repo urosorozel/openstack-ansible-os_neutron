@@ -33,8 +33,8 @@
 
 - include: test-calico-functional.yml
   when:
-    - "{{ neutron_plugin_type == 'ml2.calico' }}"
+    - "neutron_plugin_type == 'ml2.calico'"
 
 - include: test-dragonflow-functional.yml
   when:
-    - "{{ neutron_plugin_type == 'ml2.dragonflow' }}"
+    - "neutron_plugin_type == 'ml2.dragonflow'"
