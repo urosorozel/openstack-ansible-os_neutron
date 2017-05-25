@@ -64,6 +64,9 @@
   copy:
     src: "{{ neutron_conf_dir }}/policy.json-{{ neutron_venv_tag }}"
     dest: "{{ neutron_conf_dir }}/policy.json"
+    owner: "root"
+    group: "{{ neutron_system_group_name }}"
+    mode: "0640"
     remote_src: yes
 
 - name: Start services
