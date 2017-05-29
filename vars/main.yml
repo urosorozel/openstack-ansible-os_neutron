@@ -181,7 +181,7 @@ neutron_plugins:
     l3_agent_mode: "legacy"
     driver_interface: "openvswitch"
   nuage:
-    plugin_core: neutron.plugins.nuage.plugin.NuagePlugin
+    plugin_core: nuage_neutron.plugins.nuage.plugin.NuagePlugin
     plugin_ini: plugins/nuage/nuage.ini
     plugin_conf_ini_overrides: "{{ neutron_nuage_conf_ini_overrides }}"
   ml2.sriov:
