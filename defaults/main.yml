@@ -174,7 +174,6 @@ neutron_db_pool_timeout: 30
 ### RPC (RabbitMQ) integration
 ###
 
-neutron_rpc_backend: rabbit
 neutron_rabbitmq_userid: neutron
 neutron_rabbitmq_vhost: /neutron
 neutron_rabbitmq_port: 5672
