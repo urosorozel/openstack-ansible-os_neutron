@@ -86,7 +86,7 @@ export ANSIBLE_LOG_PATH="${ANSIBLE_LOG_DIR}/ansible-execute-newton-neutron-insta
 execute_ansible_playbook
 
 # Prepare environment for the upgrade of Neutron
-export TEST_PLAYBOOK="${COMMON_TESTS_PATH}/test-install-neutron.yml"
+export TEST_PLAYBOOK="${WORKING_DIR}/tests/benchmark-upgrade.yml"
 export ANSIBLE_LOG_PATH="${ANSIBLE_LOG_DIR}/ansible-execute-newton-upgrade.log"
 
 # Excute the upgrade of Neutron
