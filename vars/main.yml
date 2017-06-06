@@ -46,12 +46,12 @@ neutron_requires_pip_packages:
   - httplib2
 
 neutron_pip_packages:
-  - configobj
   - cliff
+  - configobj
+  - cryptography
   - keystonemiddleware
   - PyMySQL
   - neutron
-  - pycrypto
   - python-glanceclient
   - python-keystoneclient
   - python-memcached
