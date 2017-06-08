@@ -17,23 +17,28 @@
 ### Packages
 ###
 
-neutron_packages_list: >
-  {% set packages = neutron_distro_packages -%}
+#
+# Compile a list of the distro packages to install based on
+# whether the host is in the host group and the service is
+# enabled.
+#
+neutron_package_list: |-
+  {% set packages = neutron_distro_packages %}
   {% if (neutron_services['neutron-openvswitch-agent']['group'] in group_names and neutron_services['neutron-openvswitch-agent'].service_en | bool)
       or (neutron_services['dragonflow-controller-agent']['group'] in group_names and neutron_services['dragonflow-controller-agent'].service_en | bool)
-      or (neutron_services['dragonflow-l3-agent']['group'] in group_names and neutron_services['dragonflow-l3-agent'].service_en | bool) -%}
-  {% set _ = packages.extend(neutron_ovs_distro_packages) -%}
-  {% endif -%}
-  {% if neutron_services['neutron-linuxbridge-agent']['group'] in group_names and neutron_services['neutron-linuxbridge-agent'].service_en | bool -%}
-  {% set _ = packages.extend(neutron_lxb_distro_packages) -%}
-  {% endif -%}
-  {% if neutron_services['neutron-lbaasv2-agent']['group'] in group_names and neutron_lbaasv2 | bool -%}
-  {% set _ = packages.extend(neutron_lbaas_distro_packages) -%}
-  {% endif -%}
-  {% if neutron_services['neutron-vpnaas-agent']['group'] in group_names and neutron_vpnaas | bool -%}
-  {% set _ = packages.extend(neutron_vpnaas_distro_packages) -%}
-  {% endif -%}
-  {{ packages -}}
+      or (neutron_services['dragonflow-l3-agent']['group'] in group_names and neutron_services['dragonflow-l3-agent'].service_en | bool) %}
+  {% set _ = packages.extend(neutron_ovs_distro_packages) %}
+  {% endif %}
+  {% if neutron_services['neutron-linuxbridge-agent']['group'] in group_names and neutron_services['neutron-linuxbridge-agent'].service_en | bool %}
+  {% set _ = packages.extend(neutron_lxb_distro_packages) %}
+  {% endif %}
+  {% if neutron_services['neutron-lbaasv2-agent']['group'] in group_names and neutron_lbaasv2 | bool %}
+  {% set _ = packages.extend(neutron_lbaas_distro_packages) %}
+  {% endif %}
+  {% if neutron_services['neutron-vpnaas-agent']['group'] in group_names and neutron_vpnaas | bool %}
+  {% set _ = packages.extend(neutron_vpnaas_distro_packages) %}
+  {% endif %}
+  {{ packages }}
 
 ###
 ### Python code details
