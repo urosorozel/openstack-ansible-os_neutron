@@ -22,10 +22,6 @@
 # PURPOSE:
 # This script executes test Ansible playbooks required for performing
 # an upgrade test of the os_neutron role.
-# Due to the way Ansible caches and handles modules, we need to run
-# separate Ansible runs to ensure the "upgrade" uses the new
-# "neutron_migrations_facts" module, instead of the cached version
-# used when deploying the previous Neutron version.
 
 ## Shell Opts ----------------------------------------------------------------
 

@@ -77,6 +77,7 @@
   file:
     path: "{{ neutron_bin | dirname }}"
     state: directory
+  register: neutron_venv_dir
   when: neutron_get_venv | changed
 
 - name: Unarchive pre-built venv
@@ -98,7 +99,7 @@
       {{ (pip_install_upper_constraints is defined) | ternary('--constraint ' + pip_install_upper_constraints | default(''),'') }}
       {{ pip_install_options | default('') }}
   register: install_packages
-  until: install_packages|success
+  until: install_packages | success
   retries: 5
   delay: 2
   when: neutron_get_venv | failed or neutron_get_venv | skipped
@@ -135,11 +136,27 @@
         neutron_fwaas | bool or
         neutron_lbaasv2 | bool or
         neutron_vpnaas | bool
-  register: install_packages
-  until: install_packages|success
+  register: install_optional_packages
+  until: install_optional_packages | success
   retries: 5
   delay: 2
   notify: Restart neutron services
+
+- name: Initialise the db sync local facts
+  ini_file:
+    dest: "/etc/ansible/facts.d/openstack_ansible.fact"
+    section: neutron
+    option: "{{ item.name }}"
+    value: "{{ item.state }}"
+  with_items:
+    - name: "need_db_expand"
+      state: "True"
+    - name: "need_db_contract"
+      state: "True"
+  when: neutron_get_venv | changed or
+        neutron_venv_dir | changed or
+        install_packages | changed or
+        install_optional_packages | changed
 
 - name: Record the venv tag deployed
   ini_file:
