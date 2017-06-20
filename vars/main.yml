@@ -39,12 +39,17 @@ neutron_package_list: |-
 #
 # Compile a list of the services on a host based on whether
 # the host is in the host group and the service is enabled.
+# The service list is provided in the defined start order.
 #
-filtered_neutron_services: >
-  {%- set services = neutron_services.copy() %}
-  {%- for key,value in neutron_services.items() %}
-  {%- if value.group not in group_names or not value.service_en %}
-  {%- set _ = services.pop(key) %}
-  {%- endif %}
-  {%- endfor %}
-  {{- services -}}
+filtered_neutron_services: |-
+  {% set services = [] %}
+  {% for key, value in neutron_services.items() %}
+  {%   if (value['group'] in group_names) and
+          (('service_en' not in value) or
+           ('service_en' in value and value['service_en'])) %}
+  {%     set _ = value.update({'service_key': key}) %}
+  {%     set _ = services.append(value) %}
+  {%   endif %}
+  {% endfor %}
+  {{ services | sort(attribute='start_order') }}
+
