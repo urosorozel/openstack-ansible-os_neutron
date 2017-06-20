@@ -20,14 +20,12 @@
 
 - name: Restart neutron services
   service:
-    name: "{{ item.value.service_name }}"
+    name: "{{ item.service_name }}"
     state: restarted
-    pattern: "{{ item.value.service_name }}"
-  with_dict: "{{ neutron_services }}"
-  failed_when: false
+    pattern: "{{ item.service_name }}"
+  with_items: "{{ filtered_neutron_services }}"
   notify:
     - Run ns-metadata-proxy process cleanup
-  when: item.value.service_en | bool
 
 # NOTE(cloudnull):
 # When installing or upgrading it is possible that an old metadata proxy process will not
@@ -45,4 +43,4 @@
         fi
       fi
     done
-  when: neutron_services['neutron-metadata-agent'].service_en | bool
+  when: "'neutron-metadata-agent' in (filtered_neutron_services | map(attribute='service_key') | list)"

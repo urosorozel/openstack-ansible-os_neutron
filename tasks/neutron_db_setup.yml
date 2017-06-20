@@ -56,13 +56,7 @@
   when:
     - "ansible_local['openstack_ansible']['neutron']['need_db_contract'] | bool"
   run_once: yes
-
-- name: Start Neutron server
-  service:
-    name: "neutron-server"
-    state: started
-  when:
-    - "ansible_local['openstack_ansible']['neutron']['need_db_contract'] | bool"
+  notify: Restart neutron services
 
 - name: Disable the db sync local facts
   ini_file:
