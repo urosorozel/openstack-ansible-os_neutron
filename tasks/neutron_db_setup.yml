@@ -13,68 +13,65 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Get neutron migrations facts
-  neutron_migrations_facts:
-    release: ocata
-    library_path: "{{ neutron_lib_dir }}"
-    bin_path: "{{ neutron_bin }}"
-  when: neutron_plugin_type.split('.')[0] == 'ml2'
-
-- name: Print neutron migrations facts
-  debug:
-    var: neutron_migrations
-  when: neutron_plugin_type.split('.')[0] == 'ml2'
-
-- name: Perform a Neutron DB online upgrade (expand)
-  command: |
-    {{ neutron_bin }}/neutron-db-manage
-                      --config-file {{ neutron_db_config }}
-                      --config-file {{ neutron_db_plugin }}
-                      upgrade --expand
+- name: Perform a DB expand
+  command: "{{ neutron_bin }}/neutron-db-manage upgrade --expand"
   become: yes
   become_user: "{{ neutron_system_user_name }}"
   when:
-    - (neutron_migrations is defined and neutron_migrations['run_expand']|bool)
-    - neutron_plugin_type.split('.')[0] == 'ml2'
+    - "ansible_local['openstack_ansible']['neutron']['need_db_expand'] | bool"
+  run_once: yes
+
+- name: Check for available offline migrations
+  command: "{{ neutron_bin }}/neutron-db-manage has_offline_migrations"
+  register: _offline_migrations_check
+  changed_when: false
+  failed_when:
+    - "_offline_migrations_check.rc == 1"
+    - "'Need to apply migrations from neutron contract branch' not in _offline_migrations_check.stdout"
+  run_once: yes
+
+- name: Set the fact for the required offline migrations
+  ini_file:
+    dest: "/etc/ansible/facts.d/openstack_ansible.fact"
+    section: neutron
+    option: "need_db_contract"
+    value: "{{ ('Need to apply migrations from neutron contract branch' in _offline_migrations_check.stdout) | bool }}"
+
+- name: Refresh local facts
+  setup:
+    filter: ansible_local
+    gather_subset: "!all"
 
 - name: Stop Neutron server
   service:
     name: "neutron-server"
     state: stopped
-  delegate_to: "{{ item }}"
-  with_items: "{{ groups[neutron_services['neutron-server']['group']] }}"
-  when: (neutron_migrations is defined and neutron_migrations['run_contract']|bool) or neutron_plugin_type.split('.')[0] != 'ml2'
+  when:
+    - "ansible_local['openstack_ansible']['neutron']['need_db_contract'] | bool"
 
-- name: Perform a Neutron DB offline upgrade (contract)
-  command: |
-    {{ neutron_bin }}/neutron-db-manage
-                      --config-file {{ neutron_db_config }}
-                      --config-file {{ neutron_db_plugin }}
-                      upgrade --contract
+- name: Perform a DB contract
+  command: "{{ neutron_bin }}/neutron-db-manage upgrade --contract"
   become: yes
   become_user: "{{ neutron_system_user_name }}"
   when:
-    - (neutron_migrations is defined and neutron_migrations['run_contract']|bool)
-    - neutron_plugin_type.split('.')[0] == 'ml2'
+    - "ansible_local['openstack_ansible']['neutron']['need_db_contract'] | bool"
+  run_once: yes
 
-# NOTE: We have to handle neutron_plugin_type.split('.')[0] != 'ml2' because not all neutron
-#       plugins have contract/expand branches which breaks neutron-db-manage.
-#       This can be reverted once all plugins are conformant.
-- name: Perform a Neutron DB offline upgrade (heads)
-  command: |
-    {{ neutron_bin }}/neutron-db-manage
-                      --config-file {{ neutron_db_config }}
-                      --config-file {{ neutron_db_plugin }}
-                      upgrade heads
-  become: yes
-  become_user: "{{ neutron_system_user_name }}"
-  when:
-    - neutron_plugin_type.split('.')[0] != 'ml2'
-
-- name: Start neutron server
+- name: Start Neutron server
   service:
     name: "neutron-server"
     state: started
-  delegate_to: "{{ item }}"
-  with_items: "{{ groups[neutron_services['neutron-server']['group']] }}"
-  when: (neutron_migrations is defined and neutron_migrations['run_contract']|bool) or neutron_plugin_type.split('.')[0] != 'ml2'
+  when:
+    - "ansible_local['openstack_ansible']['neutron']['need_db_contract'] | bool"
+
+- name: Disable the db sync local facts
+  ini_file:
+    dest: "/etc/ansible/facts.d/openstack_ansible.fact"
+    section: neutron
+    option: "{{ item.name }}"
+    value: "{{ item.state }}"
+  with_items:
+    - name: "need_db_expand"
+      state: "False"
+    - name: "need_db_contract"
+      state: "False"
