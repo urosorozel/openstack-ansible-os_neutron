@@ -73,19 +73,19 @@
 
 - name: Generate neutron agent only Config
   config_template:
-    src: "{{ item.value.service_conf }}.j2"
-    dest: "{{ item.value.service_conf_path }}/{{ item.value.service_conf }}"
+    src: "{{ item.service_conf }}.j2"
+    dest: "{{ item.service_conf_path }}/{{ item.service_conf }}"
     owner: "root"
     group: "{{ neutron_system_group_name }}"
     mode: "0640"
-    config_overrides: "{{ item.value.config_overrides }}"
-    config_type: "{{ item.value.config_type }}"
-  with_dict: "{{ filtered_neutron_services }}"
+    config_overrides: "{{ item.config_overrides }}"
+    config_type: "{{ item.config_type }}"
+  with_items: "{{ filtered_neutron_services }}"
   notify:
     - Restart neutron services
   when:
-    - item.value.service_conf_path is defined
-    - item.value.service_conf is defined
+    - "'service_conf_path' in item"
+    - "'service_conf' in item"
 
 - name: Copy neutron rootwrap filters
   copy:
@@ -100,13 +100,13 @@
 
 - name: Drop neutron agent rootwrap filters
   copy:
-    src: "{{ item.value.service_rootwrap }}"
-    dest: "{{ neutron_conf_dir }}/{{ item.value.service_rootwrap }}"
+    src: "{{ item.service_rootwrap }}"
+    dest: "{{ neutron_conf_dir }}/{{ item.service_rootwrap }}"
     owner: "root"
     group: "root"
-  with_dict: "{{ filtered_neutron_services }}"
+  with_items: "{{ filtered_neutron_services }}"
   when:
-      - item.value.service_rootwrap is defined
+      - "'service_rootwrap' in item"
   notify:
     - Restart neutron services
 

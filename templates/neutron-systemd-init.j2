@@ -7,13 +7,13 @@ After=network.target
 
 [Service]
 Type=simple
-User={{ item.value.system_user | default(neutron_system_user_name) }}
-Group={{ item.value.system_group | default(neutron_system_group_name) }}
+User={{ item.system_user | default(neutron_system_user_name) }}
+Group={{ item.system_group | default(neutron_system_group_name) }}
 
-{% if item.value.program_override is defined %}
-ExecStart={{ item.value.program_override }} {{ item.value.config_options|default('') }}
+{% if item.program_override is defined %}
+ExecStart={{ item.program_override }} {{ item.config_options | default('') }}
 {% else %}
-ExecStart={{ neutron_bin }}/{{ item.value.program_binary | default(item.value.service_name) }} {{ item.value.config_options|default('') }}
+ExecStart={{ neutron_bin }}/{{ item.program_binary | default(item.service_name) }} {{ item.config_options | default('') }}
 {% endif %}
 
 # Give a reasonable amount of time for the server to start up/shut down
