@@ -16,6 +16,9 @@
 # Setup the user ssh keys, host and containers
 - include: common/test-setup-host.yml
 
+# Install haproxy
+- include: common/test-install-haproxy.yml
+
 # Install RabbitMQ/MariaDB
 - include: common/test-install-infra.yml
 

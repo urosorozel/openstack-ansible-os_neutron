@@ -17,14 +17,25 @@
   command: "{{ neutron_bin }}/neutron-db-manage upgrade --expand"
   become: yes
   become_user: "{{ neutron_system_user_name }}"
+  delegate_to: "{{ groups[neutron_services['neutron-server']['group']][0] }}"
   when:
     - "ansible_local['openstack_ansible']['neutron']['need_db_expand'] | bool"
   run_once: yes
 
+- name: Disable the db expand fact
+  ini_file:
+    dest: "/etc/ansible/facts.d/openstack_ansible.fact"
+    section: neutron
+    option: "need_db_expand"
+    value: "False"
+
 - name: Check for available offline migrations
   command: "{{ neutron_bin }}/neutron-db-manage has_offline_migrations"
-  register: _offline_migrations_check
+  become: yes
+  become_user: "{{ neutron_system_user_name }}"
+  delegate_to: "{{ groups[neutron_services['neutron-server']['group']][0] }}"
   changed_when: false
+  register: _offline_migrations_check
   failed_when:
     - "_offline_migrations_check.rc == 1"
     - "'Need to apply migrations from neutron contract branch' not in _offline_migrations_check.stdout"
@@ -35,37 +46,13 @@
     dest: "/etc/ansible/facts.d/openstack_ansible.fact"
     section: neutron
     option: "need_db_contract"
-    value: "{{ ('Need to apply migrations from neutron contract branch' in _offline_migrations_check.stdout) | bool }}"
+    value: "True"
+  when:
+    - "'stdout' in _offline_migrations_check"
+    - "'Need to apply migrations from neutron contract branch' in _offline_migrations_check.stdout"
+  notify: Restart neutron services
 
 - name: Refresh local facts
   setup:
     filter: ansible_local
     gather_subset: "!all"
-
-- name: Stop Neutron server
-  service:
-    name: "neutron-server"
-    state: stopped
-  when:
-    - "ansible_local['openstack_ansible']['neutron']['need_db_contract'] | bool"
-
-- name: Perform a DB contract
-  command: "{{ neutron_bin }}/neutron-db-manage upgrade --contract"
-  become: yes
-  become_user: "{{ neutron_system_user_name }}"
-  when:
-    - "ansible_local['openstack_ansible']['neutron']['need_db_contract'] | bool"
-  run_once: yes
-  notify: Restart neutron services
-
-- name: Disable the db sync local facts
-  ini_file:
-    dest: "/etc/ansible/facts.d/openstack_ansible.fact"
-    section: neutron
-    option: "{{ item.name }}"
-    value: "{{ item.state }}"
-  with_items:
-    - name: "need_db_expand"
-      state: "False"
-    - name: "need_db_contract"
-      state: "False"

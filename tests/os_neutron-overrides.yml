@@ -22,3 +22,19 @@ tempest_plugins:
 
 tempest_test_whitelist:
   - neutron.tests.tempest.api.test_networks*
+
+haproxy_ssl: false
+external_lb_vip_address: 10.1.0.1
+internal_lb_vip_address: 10.1.0.1
+
+test_neutron_server_host: "{{ external_lb_vip_address }}"
+
+haproxy_default_services:
+  - service:
+      haproxy_service_name: neutron_server
+      haproxy_backend_nodes: "{{ groups['neutron_server'] | default([]) }}"
+      haproxy_port: 9696
+      haproxy_ssl: "{{ haproxy_ssl }}"
+      haproxy_balance_type: http
+      haproxy_backend_options:
+        - "httpchk GET /"

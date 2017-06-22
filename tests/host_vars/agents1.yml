@@ -1,5 +1,5 @@
 ---
-# Copyright 2015, Rackspace US, Inc.
+# Copyright 2016, Rackspace US, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,22 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Setup the user ssh keys, host and containers
-- include: common/test-setup-host.yml
-
-# Install haproxy
-- include: common/test-install-haproxy.yml
-
-# Install RabbitMQ/MariaDB
-- include: common/test-install-infra.yml
-
-# Install etcd
-- include: common/test-install-etcd.yml
-  when:
-    - groups['neutron_calico_dhcp_agent'] | length > 0
-
-# Install Keystone
-- include: common/test-install-keystone.yml
-
-# Install previous Neutron
-- include: test-install-previous-neutron.yml
+ansible_host: 10.1.0.5
+ansible_become: True
+ansible_user: root
