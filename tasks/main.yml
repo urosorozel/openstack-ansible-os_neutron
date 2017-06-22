@@ -86,14 +86,11 @@
     - neutron-config
 
 - include: neutron_db_setup.yml
-  when:
-    - "neutron_services['neutron-server']['group'] in group_names"
   tags:
     - neutron-config
 
 - include: neutron_service_setup.yml
-  when:
-    - "neutron_services['neutron-server']['group'] in group_names"
+  run_once: yes
   tags:
     - neutron-config
 

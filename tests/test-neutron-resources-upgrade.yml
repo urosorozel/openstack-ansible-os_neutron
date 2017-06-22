@@ -17,9 +17,7 @@
   hosts: localhost
   user: root
   become: true
-  # TODO: remove the static reference to openstack1
   vars:
-    test_keystone_host: openstack1
     working_dir: "{{ lookup('env', 'WORKING_DIR') }}"
   tasks:
     - name: Install openstack sdk
