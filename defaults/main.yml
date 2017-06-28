@@ -36,14 +36,17 @@ neutron_vpnaas_git_install_branch: stable/ocata
 neutron_dynamic_routing_git_repo: https://git.openstack.org/openstack/neutron-dynamic-routing
 neutron_dynamic_routing_git_install_branch: stable/ocata
 
-calico_git_repo: https://github.com/projectcalico/felix
-calico_git_install_branch: stable/ocata
-
 networking_calico_git_repo: https://git.openstack.org/openstack/networking-calico
-networking_calico_git_install_branch: stable/ocata
+networking_calico_git_install_branch: master
 
 dragonflow_git_repo: https://git.openstack.org/openstack/dragonflow
 dragonflow_git_install_branch: stable/ocata
+
+# Calico Felix agent upstream settings
+calico_felix_url: "https://github.com/projectcalico/felix/releases/download/{{ calico_felix_version }}/calico-felix"
+calico_felix_version: 2.3.0
+calico_felix_sha256: 6cc538d6d93d2b5e732841769f427ce61a4e7d9a6eedf4ca8d33c4df42cf6419
+calico_felix_validate_certs: yes
 
 neutron_developer_mode: false
 neutron_developer_constraints:
@@ -52,7 +55,6 @@ neutron_developer_constraints:
   - "git+{{ neutron_lbaas_git_repo }}@{{ neutron_lbaas_git_install_branch }}#egg=neutron-lbaas"
   - "git+{{ neutron_vpnaas_git_repo }}@{{ neutron_vpnaas_git_install_branch }}#egg=neutron-vpnaas"
   - "git+{{ neutron_dynamic_routing_git_repo }}@{{ neutron_dynamic_routing_git_install_branch }}#egg=neutron-dynamic-routing"
-  - "git+{{ calico_git_repo }}@{{ calico_git_install_branch }}#egg=felix"
   - "git+{{ networking_calico_git_repo }}@{{ networking_calico_git_install_branch }}#egg=networking-calico"
   - "git+{{ dragonflow_git_repo }}@{{ dragonflow_git_install_branch }}#egg=dragonflow"
 
@@ -352,6 +354,7 @@ neutron_services:
    group: neutron_calico_dhcp_agent
    system_user: root
    system_group: root
+   program_override: "{{ calico_felix_bin }}"
    service_name: calico-felix
    service_en: "{{ neutron_plugin_type == 'ml2.calico' }}"
    service_conf_path: /etc/calico
@@ -673,7 +676,6 @@ neutron_optional_bgp_pip_packages:
   - neutron_dynamic_routing
 
 neutron_optional_calico_pip_packages:
-  - felix
   - networking-calico
   - python-etcd
 

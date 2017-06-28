@@ -14,7 +14,7 @@
 # limitations under the License.
 
 - name: Test calico
-  hosts: neutron_all
+  hosts: neutron_calico_dhcp_agent
   user: root
   gather_facts: true
   tasks:
@@ -24,14 +24,17 @@
         - calico-felix
         - calico-dhcp-age
     - name: Ensure that the Calico Felix agent is alive
-      shell: |
-        . /root/openrc
-        neutron agent-list | grep calico-felix
+      command: openstack --os-cloud default network agent list -f json
       register: calico_felix_agent
-      until: calico_felix_agent.stdout.find(':-)') != -1
-      when:
-        - groups['neutron_calico_dhcp_agent'] | length > 0
+      until: |-
+        ansible_nodename in (calico_felix_agent.stdout
+                            | from_json
+                            | selectattr('Binary', 'equalto', 'calico-felix')
+                            | map(attribute='Host') | list)
       retries: 5
       delay: 10
+      with_items: "{{ ansible_play_hosts }}"
+      delegate_to: "{{ groups['utility_all'][0] }}"
+      run_once: yes
   vars_files:
     - common/test-vars.yml

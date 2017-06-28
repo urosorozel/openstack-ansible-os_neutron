@@ -36,6 +36,9 @@ neutron_package_list: |-
   {% endif %}
   {{ packages }}
 
+# Set the Calico Felix agent executable destination path
+calico_felix_bin: /usr/local/bin/calico-felix
+
 #
 # Compile a list of the services on a host based on whether
 # the host is in the host group and the service is enabled.
@@ -52,4 +55,3 @@ filtered_neutron_services: |-
   {%   endif %}
   {% endfor %}
   {{ services | sort(attribute='start_order') }}
-

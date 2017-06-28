@@ -1,14 +1,20 @@
 [all]
 localhost
 infra1
-openstack1
+server1
+server2
+agents1
+agents2
 
 [physical_host]
 localhost
 
 [all_containers]
 infra1
-openstack1
+server1
+server2
+agents1
+agents2
 
 [rabbitmq_all]
 infra1
@@ -32,19 +38,22 @@ memcached_all
 etcd_all
 
 [keystone_all]
-openstack1
+infra1
 
 [neutron_server]
-openstack1
+server1
+server2
 
 [dragonflow_pubsub_agent]
-openstack1
+server1
+server2
 
 [dragonflow_controller_agent]
 localhost
 
 [dragonflow_l3_agent]
-openstack1
+agents1
+agents2
 
 [neutron_agent]
 [neutron_dhcp_agent]
@@ -70,4 +79,4 @@ dragonflow_pubsub_agent
 dragonflow_l3_agent
 
 [utility_all]
-openstack1
+infra1
