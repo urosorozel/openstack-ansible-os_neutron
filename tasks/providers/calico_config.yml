@@ -36,6 +36,23 @@
     - calico-install
     - calico-pip-packages
 
+- name: Install Calico Felix agent
+  get_url:
+    url: "{{ calico_felix_url }}"
+    dest: "{{ calico_felix_bin }}"
+    sha256sum: "{{ calico_felix_sha256 }}"
+    validate_certs: "{{ calico_felix_validate_certs }}"
+    mode: '0755'
+  register: install_packages
+  until: install_packages|success
+  retries: 5
+  delay: 2
+  when:
+    - "neutron_services['calico-felix']['group'] in group_names"
+  notify: Restart neutron services
+  tags:
+    - calico-install
+
 - name: Ensure calico config directory exists
   file:
     path: "/etc/calico"
@@ -46,4 +63,4 @@
   when:
     - neutron_services['calico-felix']['group'] in group_names
   tags:
-    - calico-felix-config
+    - calico-config
