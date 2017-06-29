@@ -66,10 +66,6 @@
   tags:
     - neutron-config
 
-- include: neutron_post_install.yml
-  tags:
-    - neutron-config
-
 # Include provider specific config(s)
 - include: "{{ item }}"
   with_first_found:
@@ -80,6 +76,10 @@
         - "providers/"
   tags:
     - neutron-install
+
+- include: neutron_post_install.yml
+  tags:
+    - neutron-config
 
 - include: "neutron_init_{{ ansible_service_mgr }}.yml"
   tags:

@@ -1,14 +1,20 @@
 [all]
 localhost
 infra1
-openstack1
+server1
+server2
+agents1
+agents2
 
 [physical_host]
 localhost
 
 [all_containers]
 infra1
-openstack1
+server1
+server2
+agents1
+agents2
 
 [rabbitmq_all]
 infra1
@@ -32,13 +38,15 @@ memcached_all
 etcd_all
 
 [keystone_all]
-openstack1
+infra1
 
 [neutron_calico_dhcp_agent]
-openstack1
+agents1
+agents2
 
 [neutron_server]
-openstack1
+server1
+server2
 
 [neutron_agent]
 [neutron_dhcp_agent]
@@ -62,4 +70,4 @@ neutron_server
 neutron_calico_dhcp_agent
 
 [utility_all]
-openstack1
+infra1
