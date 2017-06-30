@@ -346,6 +346,12 @@ neutron_octavia_request_poll_timeout: 100
 # neutron-server
 neutron_management_ip: 127.0.0.1
 
+# Calico Felix agent upstream settings
+calico_felix_url: "https://github.com/projectcalico/felix/releases/download/{{ calico_felix_version }}/calico-felix"
+calico_felix_version: 2.3.0
+calico_felix_sha256: 6cc538d6d93d2b5e732841769f427ce61a4e7d9a6eedf4ca8d33c4df42cf6419
+calico_felix_validate_certs: yes
+
 # Database specific configuration
 dragonflow_remote_db_ip: 127.0.0.1 # etcd has local proxy installed
 dragonflow_remote_db_port: 4001
