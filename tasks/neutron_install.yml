@@ -143,7 +143,7 @@
   delay: 2
   notify: Restart neutron services
 
-- name: Initialise the db sync local facts
+- name: Initialise the upgrade facts
   ini_file:
     dest: "/etc/ansible/facts.d/openstack_ansible.fact"
     section: neutron
@@ -154,10 +154,15 @@
       state: "True"
     - name: "need_db_contract"
       state: "True"
-  when: neutron_get_venv | changed or
-        neutron_venv_dir | changed or
-        install_packages | changed or
-        install_optional_packages | changed
+  when: (neutron_get_venv | changed) or
+        (neutron_venv_dir | changed) or
+        (install_packages | changed) or
+        (install_optional_packages | changed) or
+        (ansible_local is not defined) or
+        ('openstack_ansible' not in ansible_local) or
+        ('neutron' not in ansible_local['openstack_ansible']) or
+        ('need_db_expand' not in ansible_local['openstack_ansible']['neutron']) or
+        ('need_db_contract' not in ansible_local['openstack_ansible']['neutron'])
 
 - name: Record the venv tag deployed
   ini_file:
