@@ -86,15 +86,22 @@
     - neutron-config
 
 - include: neutron_db_setup.yml
+  static: no
+  when:
+    - "neutron_services['neutron-server']['group'] in group_names"
   tags:
     - neutron-config
 
 - include: neutron_service_setup.yml
-  run_once: yes
+  static: no
+  when:
+    - "neutron_services['neutron-server']['group'] in group_names"
+    - "inventory_hostname == ansible_play_hosts[0]"
   tags:
     - neutron-config
 
 - include: neutron_l3_ha.yml
+  static: no
   when:
     - "neutron_services['neutron-l3-agent']['group'] in group_names"
   tags:
