@@ -70,7 +70,8 @@
   delegate_to: "{{ groups[neutron_services['neutron-server']['group']][0] }}"
   when:
     - "ansible_local['openstack_ansible']['neutron']['need_db_contract'] | bool"
-  run_once: yes
+    - "neutron_services['neutron-server']['group'] in group_names"
+    - "inventory_hostname == (groups[neutron_services['neutron-server']['group']] | intersect(ansible_play_hosts))[0]"
   listen: "Restart neutron services"
 
 - name: Start services
