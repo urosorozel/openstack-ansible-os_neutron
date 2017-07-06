@@ -96,7 +96,7 @@
   static: no
   when:
     - "neutron_services['neutron-server']['group'] in group_names"
-    - "inventory_hostname == ansible_play_hosts[0]"
+    - "inventory_hostname == (groups[neutron_services['neutron-server']['group']] | intersect(ansible_play_hosts))[0]"
   tags:
     - neutron-config
 
