@@ -29,7 +29,6 @@
   until: add_service|success
   retries: 5
   delay: 2
-  run_once: yes
 
 # Create an admin user
 - name: Ensure neutron user
@@ -48,7 +47,6 @@
   until: add_service|success
   retries: 5
   delay: 10
-  run_once: yes
 
 # Add a role to the user
 - name: Ensure neutron user to admin role
@@ -67,7 +65,6 @@
   until: add_service|success
   retries: 5
   delay: 10
-  run_once: yes
 
 # Create an endpoint
 - name: Ensure neutron endpoint
@@ -92,4 +89,3 @@
   until: add_service|success
   retries: 5
   delay: 10
-  run_once: yes
