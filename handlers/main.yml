@@ -71,7 +71,7 @@
   when:
     - "ansible_local['openstack_ansible']['neutron']['need_db_contract'] | bool"
     - "neutron_services['neutron-server']['group'] in group_names"
-    - "inventory_hostname == ansible_play_hosts[0]"
+    - "inventory_hostname == (groups[neutron_services['neutron-server']['group']] | intersect(ansible_play_hosts))[0]"
   listen: "Restart neutron services"
 
 - name: Start services
