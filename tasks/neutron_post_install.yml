@@ -131,6 +131,15 @@
     - neutron_services['neutron-linuxbridge-agent']['group'] in group_names
     - ansible_pkg_mgr == 'yum'
 
+- name: Ensure the postup/postdown scripts are loaded (SUSE)
+  lineinfile:
+    dest: "/etc/sysconfig/network/config"
+    line: "POST_UP_SCRIPT='wicked:{{ neutron_checksum_script }}'"
+  when:
+    - neutron_metadata_checksum_fix | bool
+    - neutron_services['neutron-linuxbridge-agent']['group'] in group_names
+    - ansible_pkg_mgr == 'zypper'
+
 - name: Run metadata iptables checksum fix
   command: "{{ neutron_checksum_script }}"
   when:
