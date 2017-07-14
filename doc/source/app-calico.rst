@@ -17,7 +17,7 @@ networking with OpenStack-Ansible (OSA). These steps include:
 For additional configuration about Project Calico and its architecture, please
 reference the `networking-calico`_ and `Project Calico`_ documentation.
 
-.. _networking-calico: http://docs.openstack.org/developer/networking-calico/
+.. _networking-calico: https://docs.openstack.org/networking-calico/latest/
 .. _Project Calico: http://docs.projectcalico.org/en/latest/index.html
 
 Prerequisites

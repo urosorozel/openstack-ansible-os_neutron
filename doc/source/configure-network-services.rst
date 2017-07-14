@@ -193,7 +193,7 @@ The VPNaaS default configuration options are changed through the
 `conf override`_ mechanism using the ``neutron_neutron_conf_overrides``
 dict.
 
-.. _conf override: http://docs.openstack.org/developer/openstack-ansible/install-guide/configure-openstack.html
+.. _conf override: https://docs.openstack.org/openstack-ansible/latest/admin/openstack-operations.html
 
 BGP Dynamic Routing service (optional)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -204,8 +204,8 @@ as routers. This is especially useful when coupled with the `subnet pools`_
 feature, which enables neutron to be configured in such a way as to allow users
 to create self-service `segmented IPv6 subnets`_.
 
-.. _BGP Dynamic Routing: http://docs.openstack.org/networking-guide/config-bgp-dynamic-routing.html
-.. _subnet pools: http://docs.openstack.org/networking-guide/config-subnet-pools.html
+.. _BGP Dynamic Routing: https://docs.openstack.org/networking-guide/config-bgp-dynamic-routing.html
+.. _subnet pools: https://docs.openstack.org/networking-guide/config-subnet-pools.html
 .. _segmented IPv6 subnets: https://cloudbau.github.io/openstack/neutron/networking/2016/05/17/neutron-ipv6.html
 
 The following procedure describes how to modify the
