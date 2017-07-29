@@ -32,24 +32,20 @@ Prerequisites
 Configure OSA Environment for Project Calico
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Copy the etcd container definition to ``/etc/openstack_deploy/env.d/etcd.yml``
-to enable the creation of the etcd cluster.
+Add hosts to the ``/etc/openstack_deploy/conf.d/etcd.conf`` configuration file
+to add container hosts for the etcd cluster. See
+``etc/openstack_deploy/conf.d/etcd.conf.example`` in the openstack-ansible repo
+or adjust the example below to match your infrastructure hosts:
 
 .. code-block:: yaml
 
-  component_skel:
-    etcd:
-      belongs_to:
-        - etcd_all
-  container_skel:
-    etcd_container:
-      belongs_to:
-        - infra_containers
-        - shared-infra_containers
-      contains:
-        - etcd
-      properties:
-        service_name: etcd
+  etcd_hosts:
+    infra1:
+      ip: 172.20.236.111
+    infra2:
+      ip: 172.20.236.112
+    infra3:
+      ip: 172.20.236.113
 
 Copy the neutron environment overrides to
 ``/etc/openstack_deploy/env.d/neutron.yml`` to disable the creation of the
