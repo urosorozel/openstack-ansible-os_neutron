@@ -3,7 +3,7 @@
 # Linux bridge agent physical interface mappings
 [linux_bridge]
 
-{% if neutron_provider_networks.network_mappings is defined %}
+{% if neutron_provider_networks.network_mappings is defined and ((neutron_provider_networks.network_mappings | length) > 0) %}
 physical_interface_mappings = {{ neutron_provider_networks.network_mappings }}
 {% endif %}
 

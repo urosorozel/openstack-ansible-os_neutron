@@ -4,7 +4,7 @@
 {% if neutron_tunnel_types | length > 0 %}
 local_ip = {{ neutron_local_ip }}
 {% endif %}
-{% if neutron_provider_networks.network_mappings is defined %}
+{% if neutron_provider_networks.network_mappings is defined and ((neutron_provider_networks.network_mappings | length) > 0) %}
 bridge_mappings = {{ neutron_provider_networks.network_mappings }}
 {% endif %}
 
