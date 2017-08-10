@@ -342,6 +342,15 @@ neutron_metadata_checksum_fix: False
 neutron_octavia_request_poll_timeout: 100
 
 ###
+### VPNaaS Configuration
+###
+
+# See VPNaaS documentation for driver/service provider selection
+# in case you want to override it.
+neutron_driver_vpnaas: neutron_vpnaas.services.vpn.device_drivers.strongswan_ipsec.StrongSwanDriver
+neutron_vpnaas_service_provider: VPN:strongswan:neutron_vpnaas.services.vpn.service_drivers.ipsec.IPsecVPNDriver:default
+
+###
 ### Dragonflow Configuration
 ###
 
