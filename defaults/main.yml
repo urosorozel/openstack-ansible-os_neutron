@@ -119,6 +119,8 @@ neutron_rabbitmq_telemetry_port: "{{ neutron_rabbitmq_port }}"
 neutron_rabbitmq_telemetry_servers: "{{ neutron_rabbitmq_servers }}"
 neutron_rabbitmq_telemetry_use_ssl: "{{ neutron_rabbitmq_use_ssl }}"
 
+neutron_dns_domain: "openstacklocal."
+
 ## Plugins
 neutron_plugin_core: "{{ neutron_plugins[neutron_plugin_type].plugin_core }}"
 # Other plugins can be added to the system by simply extending the list `neutron_plugin_base`.
@@ -590,7 +592,6 @@ neutron_vxlan_enabled: true
 
 neutron_sriov_excluded_devices: ""
 
-neutron_dns_domain: openstacklocal
 # Comma-separated list of DNS servers which will be used by dnsmasq as forwarders.
 neutron_dnsmasq_dns_servers: ""
 # Limit number of leases to prevent a denial-of-service.
