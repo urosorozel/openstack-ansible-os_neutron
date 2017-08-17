@@ -245,6 +245,7 @@ neutron_notifications_designate: notifications_designate
 #   - router
 #   - firewall
 #   - lbaas
+#   - neutron_lbaas.services.loadbalancer.plugin.LoadBalancerPluginv2
 #   - neutron_dynamic_routing.services.bgp.bgp_plugin.BgpPlugin
 #   - vpnaas
 #   - metering
