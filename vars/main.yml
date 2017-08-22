@@ -27,7 +27,7 @@ neutron_package_list: |-
   {% if (neutron_services['neutron-openvswitch-agent']['group'] in group_names and neutron_services['neutron-openvswitch-agent'].service_en | bool)
       or (neutron_services['dragonflow-controller-agent']['group'] in group_names and neutron_services['dragonflow-controller-agent'].service_en | bool)
       or (neutron_services['dragonflow-l3-agent']['group'] in group_names and neutron_services['dragonflow-l3-agent'].service_en | bool)
-      or (neutron_plugin_type == 'ml2.opendaylight') %}
+      or ((inventory_hostname in groups['neutron_agents_container'] or inventory_hostname in groups['compute_hosts']) and neutron_plugin_type == 'ml2.opendaylight') %}
   {% set _ = packages.extend(neutron_ovs_distro_packages) %}
   {% endif %}
   {% if neutron_services['neutron-linuxbridge-agent']['group'] in group_names and neutron_services['neutron-linuxbridge-agent'].service_en | bool %}
