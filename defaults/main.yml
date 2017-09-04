@@ -334,6 +334,13 @@ neutron_metadata_backlog: 4096
 # metadata requests, and this results in the checksums being incorrect.
 neutron_metadata_checksum_fix: False
 
+# The protocol used by neutron to access the nova metadata service.
+nova_metadata_protocol: http
+
+# If the nova_metadata_protocol is using a self-signed cert, then
+# this flag should be set to a boolean True.
+nova_metadata_insecure: False
+
 ###
 ### LBaaS Configuration
 ###
