@@ -549,6 +549,15 @@ neutron_agent_down_time: 120
 neutron_agent_polling_interval: 5
 neutron_report_interval: "{{ neutron_agent_down_time | int / 2 | int }}"
 
+## Designate integration
+neutron_designate_enabled: False
+neutron_allow_reverse_dns_lookup: True
+neutron_ipv4_ptr_zone_prefix_size: 24
+neutron_ipv6_ptr_zone_prefix_size: 116
+
+# Notifications topic for designate
+neutron_notifications_designate: notifications_designate
+
 # L3HA configuration options.
 neutron_ha_vrrp_auth_type: PASS
 neutron_l3_ha_net_cidr: 169.254.192.0/18
