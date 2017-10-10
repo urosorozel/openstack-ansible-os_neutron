@@ -54,3 +54,11 @@
     voting: false
     vars:
       tox_env: ssl
+
+
+- job:
+    name: openstack-ansible-odl-sfc-ubuntu-xenial
+    parent: openstack-ansible-functional-ubuntu-xenial
+    voting: false
+    vars:
+      tox_env: odl-sfc

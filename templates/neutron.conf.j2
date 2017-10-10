@@ -271,3 +271,12 @@ transport_url = rabbit://{% for host in neutron_rabbitmq_telemetry_servers.split
 # Concurrency (locking mechanisms)
 [oslo_concurrency]
 lock_path = {{ neutron_lock_path }}
+
+{% if neutron_services['neutron-server']['group'] in group_names and 'networking_sfc.services.sfc.plugin.SfcPlugin' in neutron_plugin_base %}
+# ODL-SFC
+[sfc]
+drivers = odl
+
+[flowclassifier]
+drivers = odl
+{% endif %}
