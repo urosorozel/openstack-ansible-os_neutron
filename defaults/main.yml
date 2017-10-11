@@ -37,19 +37,22 @@ neutron_pip_package_state: "latest"
 
 # Source git repo/branch settings
 neutron_git_repo: https://git.openstack.org/openstack/neutron
-neutron_git_install_branch: master
+neutron_git_install_branch: stable/pike
 neutron_fwaas_git_repo: https://git.openstack.org/openstack/neutron-fwaas
-neutron_fwaas_git_install_branch: master
+neutron_fwaas_git_install_branch: stable/pike
 neutron_lbaas_git_repo: https://git.openstack.org/openstack/neutron-lbaas
-neutron_lbaas_git_install_branch: master
+neutron_lbaas_git_install_branch: stable/pike
 neutron_vpnaas_git_repo: https://git.openstack.org/openstack/neutron-vpnaas
-neutron_vpnaas_git_install_branch: master
+neutron_vpnaas_git_install_branch: stable/pike
 neutron_dynamic_routing_git_repo: https://git.openstack.org/openstack/neutron-dynamic-routing
-neutron_dynamic_routing_git_install_branch: master
+neutron_dynamic_routing_git_install_branch: stable/pike
 networking_calico_git_repo: https://git.openstack.org/openstack/networking-calico
+# networking_calico_git_install_branch is backwards compatible and should continue
+# to be rolling. On top of it, it's only used for developer mode.
 networking_calico_git_install_branch: master
 dragonflow_git_repo: https://git.openstack.org/openstack/dragonflow
-dragonflow_git_install_branch: master
+# TODO(evrardjp): use stable/pike when branched.
+dragonflow_git_install_branch: dbc8af36bc5970cc804fb711e79f18c01d0a71ce
 
 # Developer mode
 neutron_developer_mode: false

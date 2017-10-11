@@ -18,7 +18,7 @@ tempest_run: yes
 tempest_plugins:
   - name: neutron
     repo: https://git.openstack.org/openstack/neutron
-    branch: master
+    branch: stable/pike
 
 tempest_test_whitelist:
   - neutron.tests.tempest.api.test_networks*
