@@ -34,6 +34,9 @@ neutron_distro_packages:
   - radvd
   - which
 
+neutron_developer_mode_distro_packages:
+  - git-core
+
 neutron_lxb_distro_packages:
   - bridge-utils
 
