@@ -21,7 +21,7 @@
         - openstack-ansible-functional-centos-7
         - openstack-ansible-functional-opensuse-423
         - openstack-ansible-functional-ubuntu-xenial
-        # - openstack-ansible-upgrade-ubuntu-xenial
+        - openstack-ansible-upgrade-ubuntu-xenial
         - openstack-ansible-ovs-ubuntu-xenial-nv
         - openstack-ansible-calico-ubuntu-xenial-nv
         - openstack-ansible-dragonflow-ubuntu-xenial-nv
@@ -33,5 +33,5 @@
         - openstack-ansible-functional-centos-7
         - openstack-ansible-functional-opensuse-423
         - openstack-ansible-functional-ubuntu-xenial
-        # - openstack-ansible-upgrade-ubuntu-xenial
+        - openstack-ansible-upgrade-ubuntu-xenial
 
