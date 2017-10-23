@@ -31,9 +31,13 @@ neutron_distro_packages:
   - dnsmasq-utils
   - ebtables
   - ipset
+  - iptables
   - iputils-arping
   - keepalived
   - radvd
+
+neutron_developer_mode_distro_packages:
+  - git-core
 
 neutron_lxb_distro_packages:
   - bridge-utils
