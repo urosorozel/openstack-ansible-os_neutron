@@ -233,8 +233,6 @@ neutron_l3: "{% if 'router' in neutron_plugin_base or 'neutron.services.l3_route
 ###
 
 neutron_dhcp: "{% if neutron_plugin_type.split('.')[0] == 'ml2' %}True{% else %}False{% endif %}"
-neutron_dhcp_config:
-  log-facility: "/var/log/neutron/neutron-dnsmasq.log"
 
 ###
 ### Metadata Agent Plugin Configuration
