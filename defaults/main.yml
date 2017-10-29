@@ -312,6 +312,10 @@ neutron_l3_ha_net_cidr: 169.254.192.0/18
 ### DHCP Agent Plugin Configuration
 ###
 
+# key=value options provided to dnsmasq
+neutron_dhcp_config:
+  log-facility: "/var/log/neutron/neutron-dnsmasq.log"
+
 # Comma-separated list of DNS servers which will be used by dnsmasq as forwarders.
 neutron_dnsmasq_dns_servers: ""
 
