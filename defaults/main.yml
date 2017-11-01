@@ -91,6 +91,14 @@ neutron_dns_domain: "openstacklocal."
 # neutron_num_sync_threads: 4
 
 ###
+### DNSMasq configuration
+###
+# Dnsmasq doesn't work with config_template override, a deployer
+# should instead configure its own neutron_dhcp_config key/values
+neutron_dhcp_config:
+  log-facility: "/var/log/neutron/neutron-dnsmasq.log"
+
+###
 ### Tunable Overrides (Sorted alphabetically)
 ###
 
@@ -107,7 +115,6 @@ neutron_calico_felix_ini_overrides: {}
 neutron_calico_felix_init_overrides: {}
 neutron_dhcp_agent_ini_overrides: {}
 neutron_dhcp_agent_init_overrides: {}
-neutron_dnsmasq_neutron_conf_overrides: {}
 neutron_dragonflow_controller_agent_init_overrides: {}
 neutron_dragonflow_ini_overrides: {}
 neutron_dragonflow_l3_agent_init_overrides: {}
