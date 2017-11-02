@@ -394,3 +394,9 @@ dragonflow_ex_peer_patch_port: patch-int
 dragonflow_int_peer_patch_port: patch-ex
 dragonflow_external_network_bridge: br-ex
 dragonflow_publisher_bind_address: "*"
+
+# Install Openvswitch without NSH support
+ovs_nsh_support: False
+
+# Set higher priority to mardim PPA when ovs_nsh_support is True
+ovs_nsh_apt_pinned_packages: [{ package: "*", release: "LP-PPA-mardim-mardim-ppa"}]

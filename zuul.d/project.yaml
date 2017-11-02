@@ -26,6 +26,7 @@
         - openstack-ansible-calico-ubuntu-xenial-nv
         - openstack-ansible-dragonflow-ubuntu-xenial-nv
         - openstack-ansible-opendaylight-ubuntu-xenial-nv
+        - openstack-ansible-ovs-nsh-ubuntu-xenial
     gate:
       jobs:
         - openstack-ansible-linters

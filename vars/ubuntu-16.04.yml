@@ -21,6 +21,11 @@ neutron_ovs_distro_packages:
 
 neutron_ovs_service_name: openvswitch-switch
 
+neutron_ovs_nsh_required_packages:
+  - openvswitch-common
+  - openvswitch-switch
+  - python-openvswitch
+
 ## APT Cache options
 cache_timeout: 600
 

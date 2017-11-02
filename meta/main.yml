@@ -39,7 +39,10 @@ galaxy_info:
     - openstack
 dependencies:
   - pip_install
-  - apt_package_pinning
+  - role: apt_package_pinning
+    apt_pinned_packages: "{{ ovs_nsh_support | ternary(ovs_nsh_apt_pinned_packages, omit) }}"
+    when:
+      - ansible_pkg_mgr == 'apt'
   - galera_client
   - openstack_openrc
   - role: etcd

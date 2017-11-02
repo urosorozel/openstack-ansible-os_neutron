@@ -40,3 +40,10 @@
     voting: false
     vars:
       tox_env: opendaylight
+
+- job:
+    name: openstack-ansible-ovs-nsh-ubuntu-xenial
+    parent: openstack-ansible-functional-ubuntu-xenial
+    voting: false
+    vars:
+      tox_env: ovs-nsh
