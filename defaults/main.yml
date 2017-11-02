@@ -21,19 +21,19 @@ debug: False
 neutron_package_state: "latest"
 
 neutron_git_repo: https://git.openstack.org/openstack/neutron
-neutron_git_install_branch: stable/newton
+neutron_git_install_branch: newton-eol
 
 neutron_fwaas_git_repo: https://git.openstack.org/openstack/neutron-fwaas
-neutron_fwaas_git_install_branch: stable/newton
+neutron_fwaas_git_install_branch: newton-eol
 
 neutron_lbaas_git_repo: https://git.openstack.org/openstack/neutron-lbaas
-neutron_lbaas_git_install_branch: stable/newton
+neutron_lbaas_git_install_branch: newton-eol
 
 neutron_vpnaas_git_repo: https://git.openstack.org/openstack/neutron-vpnaas
-neutron_vpnaas_git_install_branch: stable/newton
+neutron_vpnaas_git_install_branch: newton-eol
 
 neutron_dynamic_routing_git_repo: https://git.openstack.org/openstack/neutron-dynamic-routing
-neutron_dynamic_routing_git_install_branch: stable/newton
+neutron_dynamic_routing_git_install_branch: newton-eol
 
 calico_git_repo: https://github.com/projectcalico/felix
 calico_git_install_branch: '1.4.5'
