@@ -14,15 +14,13 @@
 # limitations under the License.
 
 - job:
-    name: openstack-ansible-ovs-ubuntu-xenial-nv
-    parent: openstack-ansible-functional-ubuntu-xenial
-    voting: false
+    name: openstack-ansible-ovs-ubuntu-trusty
+    parent: openstack-ansible-functional-ubuntu-trusty
     vars:
       tox_env: func_ovs
 
 - job:
-    name: openstack-ansible-calico-ubuntu-xenial-nv
+    name: openstack-ansible-ovs-ubuntu-xenial
     parent: openstack-ansible-functional-ubuntu-xenial
-    voting: false
     vars:
-      tox_env: calico
+      tox_env: func_ovs

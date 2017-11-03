@@ -20,10 +20,12 @@
         - openstack-ansible-linters
         - openstack-ansible-functional-ubuntu-trusty
         - openstack-ansible-functional-ubuntu-xenial
-        - openstack-ansible-ovs-ubuntu-xenial-nv
-        - openstack-ansible-calico-ubuntu-xenial-nv
+        - openstack-ansible-ovs-ubuntu-trusty
+        - openstack-ansible-ovs-ubuntu-xenial
     gate:
       jobs:
         - openstack-ansible-linters
         - openstack-ansible-functional-ubuntu-trusty
         - openstack-ansible-functional-ubuntu-xenial
+        - openstack-ansible-ovs-ubuntu-trusty
+        - openstack-ansible-ovs-ubuntu-xenial
