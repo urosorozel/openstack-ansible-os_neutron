@@ -29,7 +29,7 @@
   when: ovs_manager.stdout == ""
 
 - name: Configure hosts for networking-odl, force kernel datapath
-  command: "{{ neutron_bin }}/neutron-odl-ovs-hostconfig --noovs_dpdk {% if 'odl-router' in neutron_plugin_base %}--datapath_type=system --bridge_mappings={{ neutron_provider_networks.network_mappings }}"
+  command: "{{ neutron_bin }}/neutron-odl-ovs-hostconfig --noovs_dpdk {% if 'odl-router' in neutron_plugin_base %}--datapath_type=system --bridge_mappings={{ neutron_provider_networks.network_mappings }} {% endif %}"
   when: ovs_manager.stdout == ""
 
 - name: Retrieve current OvS local ip
