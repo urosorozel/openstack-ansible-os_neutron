@@ -56,8 +56,6 @@ server2
 [neutron_l3_agent]
 [neutron_lbaas_agent]
 [neutron_metadata_agent]
-[neutron_agents_container]
-[compute_hosts]
 
 [neutron_all:children]
 neutron_agent

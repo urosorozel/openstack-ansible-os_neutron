@@ -32,4 +32,4 @@
     - opendaylight-pip-packages
 
 - include: setup_ovs_opendaylight.yml
-  when: (inventory_hostname in groups['neutron_agents_container'] or inventory_hostname in groups['compute_hosts'])
+  when: neutron_services['neutron-server']['group'] not in group_names
