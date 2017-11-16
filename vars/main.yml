@@ -241,12 +241,10 @@ opendaylight_install_method: "{{ (ansible_os_family=='Debian') | ternary('deb_re
 
 ovs_manager_list: |-
   {% set ovs_managers_odls = [] %}
-  {% for host in neutron_services['neutron-server']['group'] %}
-     {% set odl_ip_address =  hostvars[host]['container_address']|string %}
-     {% set _ = ovs_managers_odls.append('tcp:' + odl_ip_address + ':6640') %}
-  {% endfor %}
+  {% for odl_ip_address in groups[neutron_services['neutron-server']['group']] | map('extract', hostvars, 'ansible_host') | list -%}
+    {% set _ = ovs_managers_odls.append('tcp:' ~ odl_ip_address ~ ':6640') %}
+  {%- endfor %}
   {{ ovs_managers_odls | join(' ') }}
-
 ###
 ### L3 Agent Plugin Configuration
 ###
