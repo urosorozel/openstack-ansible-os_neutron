@@ -57,6 +57,7 @@ router_auto_schedule = True
 
 # Distributed virtual routing
 router_distributed = {{ neutron_plugins[neutron_plugin_type].router_distributed | default('False') }}
+enable_dvr = {{ neutron_plugins[neutron_plugin_type].router_distributed | default('False') }}
 
 # Agents
 agent_down_time = {{ neutron_agent_down_time }}
