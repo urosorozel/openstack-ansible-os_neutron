@@ -167,5 +167,5 @@ Set the following user variables in your
 
 Customization is needed to support additional network types such as vxlan,
 GRE or Geneve. Refer to the `neutron agent configuration
-<http://docs.openstack.org/admin-guide/networking-config-agents.html>`_ for
+<https://docs.openstack.org/neutron/latest/configuration/#configuration-reference>`_ for
 more information on these attributes.

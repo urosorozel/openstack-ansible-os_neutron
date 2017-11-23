@@ -244,8 +244,8 @@ as routers. This is especially useful when coupled with the `subnet pools`_
 feature, which enables neutron to be configured in such a way as to allow users
 to create self-service `segmented IPv6 subnets`_.
 
-.. _BGP Dynamic Routing: https://docs.openstack.org/networking-guide/config-bgp-dynamic-routing.html
-.. _subnet pools: https://docs.openstack.org/networking-guide/config-subnet-pools.html
+.. _BGP Dynamic Routing: https://docs.openstack.org/neutron/latest/admin/config-bgp-dynamic-routing.html
+.. _subnet pools: https://docs.openstack.org/neutron/latest/admin/config-subnet-pools.html
 .. _segmented IPv6 subnets: https://cloudbau.github.io/openstack/neutron/networking/2016/05/17/neutron-ipv6.html
 
 The following procedure describes how to modify the
