@@ -103,6 +103,7 @@ neutron_optional_dragonflow_pip_packages:
 
 neutron_optional_opendaylight_pip_packages:
   - networking-odl
+  - networking-bgpvpn
 
 neutron_optional_opendaylight_sfc_pip_packages:
   - networking-sfc
@@ -122,6 +123,7 @@ neutron_developer_constraints:
   - "git+{{ dragonflow_git_repo }}@{{ dragonflow_git_install_branch }}#egg=dragonflow"
   - "git+{{ networking_odl_git_repo }}@{{ networking_odl_git_install_branch }}#egg=networking-odl"
   - "git+{{ networking_sfc_git_repo }}@{{ networking_sfc_git_install_branch }}#egg=networking-sfc"
+  - "git+{{ networking_bgpvpn_git_repo }}@{{ networking_bgpvpn_git_install_branch }}#egg=networking-bgpvpn"
 
 neutron_bin: "/openstack/venvs/neutron-{{ neutron_venv_tag }}/bin"
 
