@@ -56,6 +56,8 @@ networking_odl_git_repo: https://git.openstack.org/openstack/networking-odl
 networking_odl_git_install_branch: "stable/queens"
 networking_sfc_git_repo: https://git.openstack.org/openstack/networking-sfc
 networking_sfc_git_install_branch: "stable/queens"
+networking_bgpvpn_git_repo: https://git.openstack.org/openstack/networking-bgpvpn
+networking_bgpvpn_git_install_branch: "stable/queens"
 
 # Developer mode
 neutron_developer_mode: false

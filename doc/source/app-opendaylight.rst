@@ -122,6 +122,26 @@ When using this configuration, networking-sfc will be deployed and SFC features
 will be activated in ODL. A SFC topology could be then set up through the
 networking-sfc API or through an orchestrator like tacker (if deployed).
 
+
+BGPVPN configuration
+~~~~~~~~~~~~~~~~~~~~
+
+ODL provides support for extending L3 services over DC-GW by BGPVPN. This way
+Openstack configures ODL as BGP speaker to exchange the routes with DC-GW to
+establish the communication between Tenant VMs and external world in the
+data path.
+
+To activate BGPVPN service, you should add the following variables in addition
+to the OpenStack-Ansible user variables mentioned above.
+
+.. code-block:: yaml
+
+ # Activate the BGPVPN capabilities of ODL
+ neutron_plugin_base:
+  - odl-router_v2
+  - bgpvpn
+
+
 Security information
 ~~~~~~~~~~~~~~~~~~~~
 

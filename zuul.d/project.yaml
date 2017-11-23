@@ -27,6 +27,7 @@
         - openstack-ansible-ovs-nsh-ubuntu-xenial
         - openstack-ansible-neutron-ssl-nv
         - openstack-ansible-odl-sfc-ubuntu-xenial
+        - openstack-ansible-opendaylight-bgpvpn-ubuntu-xenial
     experimental:
       jobs:
         - openstack-ansible-integrated-deploy-aio
