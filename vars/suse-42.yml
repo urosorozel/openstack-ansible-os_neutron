@@ -21,6 +21,16 @@ neutron_ovs_distro_packages:
 
 neutron_ovs_service_name: openvswitch
 
+neutron_ovs_nsh_required_packages:
+  - openvswitch-switch
+
+neutron_repos:
+  - repo: https://download.opensuse.org/repositories/home:/mosquetero/openSUSE_Leap_{{ ansible_distribution_version }}/
+    name: ovs-nsh
+    autorefresh: yes
+    auto_import_keys: yes
+    priority: 98
+
 neutron_distro_packages:
   - conntrack-tools
   - dnsmasq
