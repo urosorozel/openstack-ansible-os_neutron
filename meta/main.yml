@@ -58,6 +58,7 @@ dependencies:
   - role: opendaylight
     install_method: "{{ opendaylight_install_method }}"
     extra_features: "{{ opendaylight_extra_features }}"
+    nb_rest_port: "{{ opendaylight_port | default('8180') }}"
     when:
      - neutron_plugin_type == "ml2.opendaylight"
      - "'opendaylight' in group_names"
