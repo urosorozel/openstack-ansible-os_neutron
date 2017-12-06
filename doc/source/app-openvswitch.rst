@@ -139,7 +139,7 @@ Set the following user variables in your
   # Ensure the openvswitch kernel module is loaded
   openstack_host_specific_kernel_modules:
     - name: "openvswitch"
-      pattern: "CONFIG_OPENVSWITCH="
+      pattern: "CONFIG_OPENVSWITCH"
       group: "network_hosts"
 
   ### neutron specific config
