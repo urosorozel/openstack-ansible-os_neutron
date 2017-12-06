@@ -356,6 +356,9 @@ nova_metadata_insecure: False
 # Service (Optional)" for more details.
 neutron_octavia_request_poll_timeout: 100
 
+# Use the Octavia proxy
+neutron_octavia_proxy_plugin: False
+
 ###
 ### VPNaaS Configuration
 ###
