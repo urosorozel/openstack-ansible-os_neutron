@@ -19,9 +19,12 @@ tempest_plugins:
   - name: neutron
     repo: https://git.openstack.org/openstack/neutron
     branch: master
+  - name: neutron-plugins
+    repo: https://git.openstack.org/openstack/neutron-tempest-plugin
+    branch: master
 
 tempest_test_whitelist:
-  - neutron.tests.tempest.api.test_networks*
+  - "neutron_tempest_plugin.api.test_networks*"
 
 haproxy_ssl: false
 external_lb_vip_address: 10.1.0.1

@@ -17,8 +17,6 @@
   hosts: physical_host
   user: root
   gather_facts: true
-  roles:
-    - role: "{{ tempest_rolename | default('os_tempest') }}"
   post_tasks:
     - name: Run Dragonflow fullstack tests
       shell: |
@@ -33,11 +31,15 @@
       register: dragonflow_fullstack_tests
       tags:
         - skip_ansible_lint
+      when:
+        - "neutron_plugin_type == 'ml2.dragonflow'"
 
     - name: Ensure etc folder exists in logs
       file:
         path: /var/log/etc
         state: directory
+      when:
+        - "neutron_plugin_type == 'ml2.dragonflow'"
 
     - name: Copy config files
       shell: |
@@ -45,6 +47,8 @@
       register: dragonflow_fullstack_log_copy
       tags:
         - skip_ansible_lint
+      when:
+        - "neutron_plugin_type == 'ml2.dragonflow'"
 
     - name: Verify tests have passed
       shell: |
@@ -53,6 +57,8 @@
         exit $?
       tags:
         - skip_ansible_lint
+      when:
+        - "neutron_plugin_type == 'ml2.dragonflow'"
 
   vars_files:
     - common/test-vars.yml

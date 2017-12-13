@@ -29,9 +29,12 @@ tempest_plugins:
   - name: dragonflow
     repo: https://git.openstack.org/openstack/dragonflow
     branch: master
+  - name: neutron-plugins
+    repo: https://git.openstack.org/openstack/neutron-tempest-plugin
+    branch: master
 
 tempest_test_whitelist:
-  - neutron.tests.tempest.api.test_networks*
+  - "neutron_tempest_plugin.api.test_networks*"
 
 dragonflow_fullstack_failing_tests:
   - dragonflow.tests.fullstack.test_db_consistent.TestDbConsistent.test_db_consistent

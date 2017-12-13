@@ -25,6 +25,8 @@
         - calico-dhcp-age
       tags:
         - skip_ansible_lint
+      when:
+        - "neutron_plugin_type == 'ml2.calico'"
 
     - name: Ensure that the Calico Felix agent is alive
       command: openstack --os-cloud default network agent list -f json
@@ -41,6 +43,8 @@
       run_once: yes
       tags:
         - skip_ansible_lint
+      when:
+        - "neutron_plugin_type == 'ml2.calico'"
 
   vars_files:
     - common/test-vars.yml
