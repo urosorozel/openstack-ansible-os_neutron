@@ -47,3 +47,10 @@
     voting: false
     vars:
       tox_env: ovs-nsh
+
+- job:
+    name: openstack-ansible-neutron-ssl-nv
+    parent: openstack-ansible-functional-ubuntu-xenial
+    voting: false
+    vars:
+      tox_env: ssl

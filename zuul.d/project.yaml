@@ -27,6 +27,7 @@
         - openstack-ansible-dragonflow-ubuntu-xenial-nv
         - openstack-ansible-opendaylight-ubuntu-xenial-nv
         - openstack-ansible-ovs-nsh-ubuntu-xenial
+        - openstack-ansible-neutron-ssl-nv
     experimental:
       jobs:
         - openstack-ansible-integrated-deploy-aio
@@ -37,4 +38,4 @@
         - openstack-ansible-functional-opensuse-423
         - openstack-ansible-functional-ubuntu-xenial
         - openstack-ansible-upgrade-ubuntu-xenial
-
+        - openstack-ansible-neutron-ssl-nv
