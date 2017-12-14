@@ -4,12 +4,6 @@
 [DEFAULT]
 debug = {{ debug }}
 
-# While this option is deprecated in Liberty, if we remove it then it takes
-# a default value of 'br-ex', which we do not want. We therefore leave it
-# in place for now and can remove it in Mitaka.
-external_network_bridge = {{ neutron_external_network_bridge }}
-gateway_external_network_id = {{ neutron_gateway_external_network_id }}
-
 # Drivers
 interface_driver = {{ neutron_plugins[neutron_plugin_type].driver_interface }}
 

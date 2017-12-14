@@ -82,6 +82,8 @@ neutron_agent_down_time: 120
 neutron_agent_polling_interval: 5
 neutron_report_interval: "{{ neutron_agent_down_time | int / 2 | int }}"
 
+# TODO(evrardjp): Remove this when vpnaas/Dragonflow don't use it anymore.
+# This was deprecated in Pike cycle.
 neutron_external_network_bridge: ""
 
 neutron_dns_domain: "openstacklocal."
@@ -157,15 +159,15 @@ neutron_default_quota: -1
 neutron_quota_floatingip: 50
 neutron_quota_health_monitor: -1
 neutron_quota_member: -1
-neutron_quota_network: 10
+neutron_quota_network: 100
 neutron_quota_network_gateway: 5
 neutron_quota_packet_filter: 100
 neutron_quota_pool: 10
-neutron_quota_port: 50
+neutron_quota_port: 500
 neutron_quota_router: 10
 neutron_quota_security_group: 10
 neutron_quota_security_group_rule: 100
-neutron_quota_subnet: 10
+neutron_quota_subnet: 100
 neutron_quota_vip: 10
 
 ###
@@ -307,8 +309,6 @@ neutron_local_ip: 127.0.0.1
 ###
 ### L3 Agent Plugin Configuration
 ###
-
-neutron_gateway_external_network_id: ""
 
 # Set this option to "true" to enable legacy neutron L3HA tool support
 # TODO(cloudnull): Remove this in the Ocata cycle
