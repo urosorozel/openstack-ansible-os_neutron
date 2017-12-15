@@ -17,9 +17,9 @@ Since this is an extension of the basic Open vSwitch scenario, it is worth
 reading that scenario to get some background. It is also recommended to be
 familiar with OpenDaylight and networking-odl projects and their configuration.
 
- * `Scenario: Open vSwitch <app-openvswitch.html>`_
- * `OpenDaylight SDN Controller <http://docs.opendaylight.org/en/latest/>`_
- * `Networking-odl <https://github.com/openstack/networking-odl>`_
+* `Scenario: Open vSwitch <app-openvswitch.html>`_
+* `OpenDaylight SDN Controller <http://docs.opendaylight.org/en/latest/>`_
+* `Networking-odl <https://github.com/openstack/networking-odl>`_
 
 Prerequisites
 ~~~~~~~~~~~~~
@@ -62,10 +62,10 @@ in the example.
 After that, some configuration is needed to integrate OpenDaylight and Neutron,
 using the ``ml2_odl`` section.
 
- * **url**: OpenDaylight's northbound url. This is automatically retrieved from
-   the deployment configuration, so just need to copy the example line.
- * **username**: OpenDaylight northbound API username
- * **password**: OpenDaylight northbound API password for <username>
+* **url**: OpenDaylight's northbound url. This is automatically retrieved from
+  the deployment configuration, so just need to copy the example line.
+* **username**: OpenDaylight northbound API username
+* **password**: OpenDaylight northbound API password for <username>
 
 Apart from these options, the deployer might want to change the installation
 method for OpenDaylight Ansible role. This role uses pre-packaged binaries,
