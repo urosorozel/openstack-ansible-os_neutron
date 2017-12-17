@@ -126,8 +126,8 @@ the  `conf override`_ mechanism for more details.
 .. _neutron-lbaas: https://wiki.openstack.org/wiki/Neutron/LBaaS
 .. _HAProxy: http://www.haproxy.org/
 
-Deploying LBaaS v2
-------------------
+Deploying LBaaS v2 namespace driver
+-----------------------------------
 
 #. Add the LBaaS v2 plugin to the ``neutron_plugin_base`` variable
    in ``/etc/openstack_deploy/user_variables.yml``:
@@ -146,6 +146,9 @@ Deploying LBaaS v2
    the Dashboard panels for LBaaS v2 when the ``os_horizon`` role is
    redeployed (see the following step).
 
+   Alternatively you can set the ``neutron_lbaasv2`` flag to ``True`` which
+   will add the LBaaS v2 plugin by itself.
+
 #. Run the neutron playbook to deploy the LBaaS v2 agent and enable the
    Dashboard panels for LBaaSv2:
 
@@ -155,7 +158,52 @@ Deploying LBaaS v2
        # openstack-ansible os-neutron-install.yml
        # openstack-ansible os-horizon-install.yml
 
-.. _lbaas-special-notes:
+Deploying LBaaS v2 with Octavia
+-------------------------------
+
+The namespace driver and Octavia can both run at the same time and the
+end user can choose which type of load balancer to create with the
+``--provider`` flag on load balanceer create.
+
+#. Activate the LBaaS v2 plugin together with the Octavia driver by setting
+   ``neutron_lbaas_octavia`` to ``True``. This will automatically be
+   triggered if Octavia is installed.
+
+#. (optional) To make sure the namespace driver is available set
+   ``neutron_lbaas_namespace`` to ``True`` or if you want
+   Octavia installed stand-alone to ``False``.
+
+#. Run the neutron playbook to deploy the LBaaS v2 agent and enable the
+   Dashboard panels for LBaaSv2:
+
+   .. code-block:: console
+
+       # cd /opt/openstack-ansible/playbooks
+       # openstack-ansible os-neutron-install.yml
+       # openstack-ansible os-horizon-install.yml
+
+Deploying LBaaS v2 with Octavia proxy plugin
+--------------------------------------------
+
+Beginning Queens as part of the transition to the Octavia API endpoint
+LBaaS V2 supports the Octavia proxy driver which will send all LBaaS V2
+requests straight to Octavia and bypass the Neutron database and any
+installed third party LBaaS V2 drivers.
+
+#. Set ``neutron_lbaas_octavia`` to ``True`` to get the Octavia settings
+   along with LBaaS V2 being enabled.
+
+#. Set ``neutron_octavia_proxy_plugin`` to ``True`` to activate the
+   byapssing proxy.
+
+#. Run the neutron playbook to deploy the LBaaS v2 agent and enable the
+   Dashboard panels for LBaaSv2:
+
+   .. code-block:: console
+
+       # cd /opt/openstack-ansible/playbooks
+       # openstack-ansible os-neutron-install.yml
+       # openstack-ansible os-horizon-install.yml
 
 Special notes about LBaaS
 -------------------------
