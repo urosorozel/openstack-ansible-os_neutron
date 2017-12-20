@@ -103,6 +103,24 @@ Neutron network and set a gateway. Note that the br-vlan interface of the nodes
 could be a perfect interface for that gateway, although it depends on your
 network topology.
 
+SFC configuration
+~~~~~~~~~~~~~~~~~
+
+It is possible to have an openstack-ansible deployment with SFC capabilities.
+The following config needs to be added to the above described
+``/etc/openstack_deploy/user_variables.yml`` :
+
+.. code-block:: yaml
+
+ neutron_plugin_base:
+  - router
+  - metering
+  - networking_sfc.services.flowclassifier.plugin.FlowClassifierPlugin
+  - networking_sfc.services.sfc.plugin.SfcPlugin
+
+When using this configuration, networking-sfc will be deployed and SFC features
+will be activated in ODL. A SFC topology could be then set up through the
+networking-sfc API or through an orchestrator like tacker (if deployed).
 
 Security information
 ~~~~~~~~~~~~~~~~~~~~
