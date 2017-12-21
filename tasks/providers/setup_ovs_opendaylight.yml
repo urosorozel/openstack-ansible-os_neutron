@@ -23,6 +23,9 @@
   command: ovs-vsctl get-manager
   register: ovs_manager
   changed_when: False
+  until: ovs_manager.rc == 0
+  retries: 3
+  delay: 5
 
 - name: Set ODL as OvS manager
   command: ovs-vsctl set-manager {{ ovs_manager_list }}
