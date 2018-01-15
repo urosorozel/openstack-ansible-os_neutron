@@ -114,9 +114,12 @@
     - neutron_get_venv | changed
 
 - name: Update virtualenv path
-  command: >
-    virtualenv-tools --update-path=auto --reinitialize {{ neutron_bin | dirname }}
+  shell: |
+    find {{ neutron_bin }} -name \*.pyc -delete
+    sed -si '1s/^.*python.*$/#!{{ neutron_bin | replace ('/','\/') }}\/python/' {{ neutron_bin }}/*
   when: neutron_get_venv | changed
+  tags:
+    - skip_ansible_lint
 
 - name: Install optional pip packages
   pip:

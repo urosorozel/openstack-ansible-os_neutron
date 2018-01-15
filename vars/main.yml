@@ -59,7 +59,6 @@ calico_felix_bin: /usr/local/bin/calico-felix
 
 neutron_requires_pip_packages:
   - virtualenv
-  - virtualenv-tools
   - python-keystoneclient # Keystoneclient needed to OSA keystone lib
   - httplib2
 
