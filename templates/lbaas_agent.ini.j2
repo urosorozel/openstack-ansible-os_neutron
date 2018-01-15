@@ -29,7 +29,7 @@ device_driver = {{ neutron_lbaasv2_device_driver }}
 # loadbalancer_state_path = $state_path/lbaas
 
 # The user group
-user_group = nogroup
+user_group = {{ neutron_lbaasv2_user_group }}
 
 # When delete and re-add the same vip, send this many gratuitous ARPs to flush
 # the ARP cache in the Router. Set it below or equal to 0 to disable this feature.

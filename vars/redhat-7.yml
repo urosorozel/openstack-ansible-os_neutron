@@ -30,6 +30,7 @@ neutron_distro_packages:
   - iptables
   - iputils
   - keepalived
+  - net-tools
   - radvd
   - which
 
@@ -49,3 +50,4 @@ neutron_remove_distro_packages: []
 
 neutron_lbaasv2_initscript_path: "/etc/init/neutron-lbaasv2-agent.conf"
 neutron_lbaasv2_agent_servicename: "neutron-lbaasv2-agent"
+_neutron_lbaasv2_user_group: haproxy

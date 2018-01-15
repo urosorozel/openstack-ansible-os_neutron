@@ -102,6 +102,9 @@ neutron_dns_domain: "openstacklocal."
 neutron_dhcp_config:
   log-facility: "/var/log/neutron/neutron-dnsmasq.log"
 
+# Set the neutron lbaasv2 user group, defaults from os specific vars
+neutron_lbaasv2_user_group: "{{ _neutron_lbaasv2_user_group }}"
+
 ###
 ### Tunable Overrides (Sorted alphabetically)
 ###
