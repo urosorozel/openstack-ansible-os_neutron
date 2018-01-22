@@ -117,6 +117,7 @@
   shell: |
     find {{ neutron_bin }} -name \*.pyc -delete
     sed -si '1s/^.*python.*$/#!{{ neutron_bin | replace ('/','\/') }}\/python/' {{ neutron_bin }}/*
+    virtualenv {{ neutron_bin | dirname }}
   when: neutron_get_venv | changed
   tags:
     - skip_ansible_lint
