@@ -169,3 +169,10 @@
     section: neutron
     option: venv_tag
     value: "{{ neutron_venv_tag }}"
+
+- name: Ensure Open vSwitch service is started and enabled
+  service:
+    name: "{{ neutron_ovs_service_name }}"
+    state: started
+    enabled: yes
+  when: neutron_needs_openvswitch
