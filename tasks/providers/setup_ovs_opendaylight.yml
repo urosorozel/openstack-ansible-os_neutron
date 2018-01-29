@@ -13,12 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Ensure Open vSwitch service is started and enabled
-  service:
-    name: "{{ neutron_ovs_service_name }}"
-    state: started
-    enabled: yes
-
 - name: Retrieve current OvS manager
   command: ovs-vsctl get-manager
   register: ovs_manager
