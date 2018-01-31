@@ -31,7 +31,7 @@
 
 - name: Deploy SELinux policy source file
   copy:
-    src: "osa-neutron-selinux.te"
+    src: "osa-neutron.te"
     dest: "/tmp/osa-neutron-selinux/"
     owner: root
     group: root
@@ -46,9 +46,9 @@
   args:
     chdir: "/tmp/osa-neutron-selinux/"
   with_items:
-    - checkmodule -M -m -o osa-neutron-selinux.mod osa-neutron-selinux.te
-    - semodule_package -o osa-neutron-selinux.pp -m osa-neutron-selinux.mod
-    - semodule -i osa-neutron-selinux.pp
+    - checkmodule -M -m -o osa-neutron.mod osa-neutron.te
+    - semodule_package -o osa-neutron.pp -m osa-neutron.mod
+    - semodule -i osa-neutron.pp
   tags:
     - skip_ansible_lint
 
