@@ -1,0 +1,57 @@
+# Copyright 2017, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+module osa-neutron 1.0;
+
+require {
+        type unconfined_t;
+        type ifconfig_t;
+        type neutron_var_lib_t;
+        type haproxy_exec_t;
+        type var_run_t;
+        type iptables_t;
+        type dnsmasq_t;
+        type var_log_t;
+        type http_port_t;
+        class process setrlimit;
+        class capability { dac_override net_bind_service setgid setuid };
+        class tcp_socket { listen name_bind };
+        class file { create execute execute_no_trans getattr open read relabelto setattr unlink write };
+        class lnk_file read;
+        class dir { add_name remove_name write };
+}
+
+# NOTE(mhayden): This allows dnsmasq, when run under neutron, to write logs
+# within /var/log. This policy no longer exists in CentOS 7 since dnsmasq only
+# writes to the systemd journal.
+#============= dnsmasq_t ==============
+allow dnsmasq_t var_log_t:file { open setattr };
+allow dnsmasq_t var_log_t:lnk_file read;
+
+# NOTE(mhayden): Neutron starts haproxy within a network namespace, so the
+# process transitions to the ifconfig_t context after it starts. Normally,
+# haproxy should switch to the ifconfig_t context. This should be fixed in
+# the future.
+#============= ifconfig_t ==============
+allow ifconfig_t haproxy_exec_t:file { execute execute_no_trans open read };
+allow ifconfig_t http_port_t:tcp_socket name_bind;
+allow ifconfig_t neutron_var_lib_t:dir { add_name remove_name write };
+allow ifconfig_t neutron_var_lib_t:file { create getattr open read unlink write };
+allow ifconfig_t self:capability { dac_override net_bind_service setgid setuid };
+allow ifconfig_t self:process setrlimit;
+allow ifconfig_t self:tcp_socket listen;
+
+# NOTE(mhayden): This allows neutron to use /usr/sbin/xtables-multi to quickly
+# manage iptables/ip6tables rules.
+#============= iptables_t ==============
+allow iptables_t var_run_t:file read;
