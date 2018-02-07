@@ -30,7 +30,7 @@ All compute nodes must have bridges configured:
 - ``br-storage`` (optional - used for certain storage devices)
 
 For more information see:
-`<http://docs.openstack.org/project-deploy-guide/openstack-ansible/newton/targethosts-networkconfig.html>`_
+`<https://docs.openstack.org/project-deploy-guide/openstack-ansible/newton/targethosts-networkconfig.html>`_
 
 These bridges may be configured as either a Linux Bridge (which would connect
 to the Open vSwitch controlled by neutron) or as an Open vSwitch.
