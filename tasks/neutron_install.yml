@@ -179,3 +179,10 @@
     - ansible_pkg_mgr in ['dnf', 'yum']
     - ansible_selinux.status is defined
     - ansible_selinux.status == "enabled"
+
+- name: Ensure Open vSwitch service is started and enabled
+  service:
+    name: "{{ neutron_ovs_service_name }}"
+    state: started
+    enabled: yes
+  when: neutron_needs_openvswitch
