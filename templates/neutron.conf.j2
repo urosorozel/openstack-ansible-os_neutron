@@ -21,7 +21,7 @@
 use_stderr = False
 debug = {{ debug }}
 fatal_deprecations = {{ neutron_fatal_deprecations }}
-log_file = /var/log/neutron/neutron.log
+log_file = {{ neutron_log_dir }}/neutron.log
 
 ## Rpc all
 executor_thread_pool_size = {{ neutron_rpc_thread_pool_size }}

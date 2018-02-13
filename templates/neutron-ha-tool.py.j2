@@ -48,7 +48,7 @@ def load_local_logging():
 
     user = os.getuid()
     home = os.path.expanduser('~')
-    log_dir = '/var/log/neutron'
+    log_dir = '{{ neutron_log_dir }}'
     filename = '%s.log' % LOG_NAME
 
     if user == 0:

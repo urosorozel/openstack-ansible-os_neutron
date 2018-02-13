@@ -31,6 +31,8 @@ neutron_package_state: "latest"
 ### Python code details
 ###
 
+neutron_log_dir: "/var/log/neutron"
+
 # Set the package install state for pip_package
 # Options are 'present' and 'latest'
 neutron_pip_package_state: "latest"
@@ -100,7 +102,7 @@ neutron_dns_domain: "openstacklocal."
 # Dnsmasq doesn't work with config_template override, a deployer
 # should instead configure its own neutron_dhcp_config key/values
 neutron_dhcp_config:
-  log-facility: "/var/log/neutron/neutron-dnsmasq.log"
+  log-facility: "{{ neutron_log_dir }}/neutron-dnsmasq.log"
 
 # Set the neutron lbaasv2 user group, defaults from os specific vars
 neutron_lbaasv2_user_group: "{{ _neutron_lbaasv2_user_group }}"
