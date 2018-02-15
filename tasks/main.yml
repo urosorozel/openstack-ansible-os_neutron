@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: neutron_check.yml
+- include_tasks: neutron_check.yml
 
 
 - name: Gather variables for each operating system
@@ -44,8 +44,7 @@
   tags:
     - always
 
-- include: neutron_ml2_ovs_powervm.yml
-  static: no
+- include_tasks: neutron_ml2_ovs_powervm.yml
   when:
     - neutron_os_type is defined
     - neutron_os_type == 'powervm'
@@ -54,11 +53,11 @@
   tags:
     - neutron-config
 
-- include: neutron_pre_install.yml
+- include_tasks: neutron_pre_install.yml
   tags:
     - neutron-install
 
-- include: neutron_install.yml
+- include_tasks: neutron_install.yml
   tags:
     - neutron-install
 
@@ -70,7 +69,7 @@
     - neutron-config
 
 # Include provider specific config(s)
-- include: "{{ item }}"
+- include_tasks: "{{ item }}"
   with_first_found:
     - files:
         - "{{ neutron_plugin_type.split('.')[-1] }}_config.yml"
@@ -80,31 +79,28 @@
   tags:
     - neutron-install
 
-- include: neutron_post_install.yml
+- include_tasks: neutron_post_install.yml
   tags:
     - neutron-config
 
-- include: "neutron_init_{{ ansible_service_mgr }}.yml"
+- include_tasks: "neutron_init_{{ ansible_service_mgr }}.yml"
   tags:
     - neutron-config
 
-- include: neutron_db_setup.yml
-  static: no
+- include_tasks: neutron_db_setup.yml
   when:
     - "neutron_services['neutron-server']['group'] in group_names"
   tags:
     - neutron-config
 
-- include: neutron_service_setup.yml
-  static: no
+- include_tasks: neutron_service_setup.yml
   when:
     - "neutron_services['neutron-server']['group'] in group_names"
     - "inventory_hostname == ((groups[neutron_services['neutron-server']['group']] | intersect(ansible_play_hosts)) | list)[0]"
   tags:
     - neutron-config
 
-- include: neutron_l3_ha.yml
-  static: no
+- include_tasks: neutron_l3_ha.yml
   when:
     - "neutron_services['neutron-l3-agent']['group'] in group_names"
   tags:
