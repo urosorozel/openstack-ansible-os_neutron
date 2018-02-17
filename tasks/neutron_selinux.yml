@@ -64,12 +64,12 @@
 
 - name: Set SELinux file contexts for neutron's log directory
   sefcontext:
-    target: "{{ (neutron_log_dir_check.stat.islnk) | ternary(neutron_log_dir.stat.lnk_target, neutron_log_dir) }}(/.*)?"
+    target: "{{ (neutron_log_dir_check.stat.islnk) | ternary(neutron_log_dir_check.stat.lnk_target, neutron_log_dir) }}(/.*)?"
     setype: neutron_log_t
     state: present
   register: selinux_file_context_log_files
 
 - name: Apply updated SELinux contexts on neutron log directory
-  command: "restorecon -Rv {{ (neutron_log_dir_check.stat.islnk) | ternary(neutron_log_dir.stat.lnk_target, neutron_log_dir) }}"
+  command: "restorecon -Rv {{ (neutron_log_dir_check.stat.islnk) | ternary(neutron_log_dir_check.stat.lnk_target, neutron_log_dir) }}"
   when:
     - selinux_file_context_log_files | changed
