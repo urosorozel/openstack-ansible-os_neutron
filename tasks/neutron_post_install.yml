@@ -85,6 +85,18 @@
     - "'service_conf_path' in item"
     - "'service_conf' in item"
 
+- name: Generate neutron bgpvpn networking configuration
+  template:
+    src: "networking_bgpvpn.conf.j2"
+    dest: "{{ neutron_conf_dir }}/networking_bgpvpn.conf"
+    owner: "root"
+    group: "{{ neutron_system_group_name }}"
+    mode: "0640"
+  notify:
+    - Restart neutron services
+  when:
+    - "'bgpvpn' in neutron_plugin_base"
+
 - name: Copy neutron rootwrap filters
   copy:
     src: "{{ item }}"
