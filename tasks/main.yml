@@ -83,7 +83,7 @@
   tags:
     - neutron-config
 
-- include_tasks: "neutron_init_{{ ansible_service_mgr }}.yml"
+- include_tasks: neutron_init_systemd.yml
   tags:
     - neutron-config
 
