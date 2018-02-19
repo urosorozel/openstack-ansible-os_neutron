@@ -19,7 +19,7 @@ We recommend that you read the following documents before proceeding:
  * Neutron documentation on Open vSwitch DVR OpenStack deployments:
    `<https://docs.openstack.org/neutron/latest/admin/deploy-ovs-ha-dvr.html>`_
  * Blog post on how OpenStack-Ansible works with Open vSwitch:
-   `<http://trumant.github.io/openstack-ansible-dvr-with-openvswitch.html>`_
+   `<https://trumant.github.io/openstack-ansible-dvr-with-openvswitch.html>`_
 
 Prerequisites
 ~~~~~~~~~~~~~
