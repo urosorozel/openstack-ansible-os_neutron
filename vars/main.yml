@@ -16,10 +16,11 @@
 ###
 ### Open vSwitch
 ###
-neutron_needs_openvswitch: (neutron_services['neutron-openvswitch-agent']['group'] in group_names and neutron_services['neutron-openvswitch-agent'].service_en | bool)
-      or (neutron_services['dragonflow-controller-agent']['group'] in group_names and neutron_services['dragonflow-controller-agent'].service_en | bool)
-      or (neutron_services['dragonflow-l3-agent']['group'] in group_names and neutron_services['dragonflow-l3-agent'].service_en | bool)
-      or ((neutron_services['neutron-server']['group'] not in group_names) and neutron_plugin_type == 'ml2.opendaylight')
+neutron_needs_openvswitch: >-
+  {{ (neutron_services['neutron-openvswitch-agent']['group'] in group_names and neutron_services['neutron-openvswitch-agent'].service_en | bool)
+  or (neutron_services['dragonflow-controller-agent']['group'] in group_names and neutron_services['dragonflow-controller-agent'].service_en | bool)
+  or (neutron_services['dragonflow-l3-agent']['group'] in group_names and neutron_services['dragonflow-l3-agent'].service_en | bool)
+  or ((neutron_services['neutron-server']['group'] not in group_names) and neutron_plugin_type == 'ml2.opendaylight') }}
 
 ###
 ### Packages
@@ -32,7 +33,7 @@ neutron_needs_openvswitch: (neutron_services['neutron-openvswitch-agent']['group
 #
 neutron_package_list: |-
   {% set packages = neutron_distro_packages %}
-  {% if neutron_needs_openvswitch %}
+  {% if neutron_needs_openvswitch | bool %}
   {% if (ovs_nsh_support and ansible_pkg_mgr in ['apt', 'zypper']) %}
   {% set _ = packages.extend(neutron_ovs_nsh_required_packages) %}
   {% else %}
