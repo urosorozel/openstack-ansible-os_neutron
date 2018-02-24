@@ -16,15 +16,9 @@
     check:
       jobs:
         - openstack-ansible-linters
-        # TODO(odyssey4me):
-        # Temporarily set to non-voting to unblock the gates.
-        - openstack-ansible-functional-centos-7-nv
-        # TODO(odyssey4me):
-        # Temporarily set to non-voting to unblock the gates.
-        - openstack-ansible-functional-opensuse-423-nv
-        # TODO(odyssey4me):
-        # Temporarily set to non-voting to unblock the gates.
-        - openstack-ansible-functional-ubuntu-xenial-nv
+        - openstack-ansible-functional-centos-7
+        - openstack-ansible-functional-opensuse-423
+        - openstack-ansible-functional-ubuntu-xenial
         # TODO(odyssey4me):
         # Temporarily set to non-voting to unblock the gates.
         - openstack-ansible-upgrade-ubuntu-xenial-nv
@@ -41,9 +35,9 @@
     gate:
       jobs:
         - openstack-ansible-linters
+        - openstack-ansible-functional-centos-7
+        - openstack-ansible-functional-opensuse-423
+        - openstack-ansible-functional-ubuntu-xenial
         # TODO(odyssey4me):
         # Temporarily removed to unblock the gates.
-        #- openstack-ansible-functional-centos-7
-        #- openstack-ansible-functional-opensuse-423
-        #- openstack-ansible-functional-ubuntu-xenial
         #- openstack-ansible-upgrade-ubuntu-xenial
