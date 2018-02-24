@@ -14,13 +14,6 @@
 # limitations under the License.
 
 # TODO(odyssey4me):
-# Remove this once the job is passing again.
-- job:
-    name: openstack-ansible-functional-ubuntu-xenial-nv
-    parent: openstack-ansible-functional-ubuntu-xenial
-    voting: false
-
-# TODO(odyssey4me):
 # Remove this once the upgrade job is passing again.
 - job:
     name: openstack-ansible-upgrade-ubuntu-xenial-nv
