@@ -19,7 +19,10 @@
         - openstack-ansible-functional-centos-7
         - openstack-ansible-functional-opensuse-423
         - openstack-ansible-functional-ubuntu-xenial
-        - openstack-ansible-upgrade-ubuntu-xenial-nv
+        # TODO(odyssey4me):
+        # Return this once the non-voting standard
+        # test is established in the tests repo.
+        #- openstack-ansible-upgrade-ubuntu-xenial-nv
         - openstack-ansible-ovs-ubuntu-xenial-nv
         - openstack-ansible-calico-ubuntu-xenial-nv
         - openstack-ansible-dragonflow-ubuntu-xenial-nv

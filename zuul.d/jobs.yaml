@@ -14,13 +14,6 @@
 # limitations under the License.
 
 - job:
-    name: openstack-ansible-upgrade-ubuntu-xenial-nv
-    parent: openstack-ansible-upgrade-ubuntu-xenial
-    voting: false
-    vars:
-      tox_env: upgrade
-
-- job:
     name: openstack-ansible-ovs-ubuntu-xenial-nv
     parent: openstack-ansible-functional-ubuntu-xenial
     voting: false
