@@ -211,7 +211,7 @@ service_provider = {{ neutron_vpnaas_service_provider }}
 {% if neutron_lbaasv2 | bool %}
 {% if neutron_lbaas_octavia | bool %}
 [octavia]
-base_url= {{ octavia_service_url }}
+base_url= {{ octavia_service_internaluri }}
 request_poll_timeout = {{ neutron_octavia_request_poll_timeout }}
 {% endif %}
 
