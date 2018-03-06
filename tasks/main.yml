@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include_tasks: neutron_check.yml
 
+- include_tasks: neutron_check.yml
 
 - name: Gather variables for each operating system
   include_vars: "{{ item }}"
@@ -44,6 +44,7 @@
   tags:
     - always
 
+- include_tasks: dependent_neutron_roles.yml
 - include_tasks: neutron_ml2_ovs_powervm.yml
   when:
     - neutron_os_type is defined
