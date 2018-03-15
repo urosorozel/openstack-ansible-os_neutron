@@ -44,3 +44,9 @@
   when:
     - neutron_provider_networks.network_mappings is defined
     - (neutron_plugin_base == 'odl-router' or neutron_plugin_base == 'odl-router_v2')
+
+- name: Set the of-tunnel to true
+  command: "ovs-vsctl set Open_vSwitch . external_ids:of-tunnel=true"
+  when:
+    - neutron_plugin_base == 'networking_sfc.services.sfc.plugin.SfcPlugin'
+
