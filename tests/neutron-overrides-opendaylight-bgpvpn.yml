@@ -50,7 +50,8 @@ tempest_plugins:
   - name: neutron-plugins
     repo: https://git.openstack.org/openstack/neutron-tempest-plugin
     branch: 028c312ab0e32901c282c73fd402b8de874163fc
-  - name: https://git.openstack.org/openstack/networking-bgpvpn
+  - name: networking-bgpvpn
+    repo: https://git.openstack.org/openstack/networking-bgpvpn
     branch: stable/queens
 
 tempest_test_whitelist:
