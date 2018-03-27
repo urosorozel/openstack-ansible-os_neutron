@@ -97,3 +97,19 @@
   when:
     - ansible_pkg_mgr == 'zypper'
     - ovs_nsh_support | bool
+
+- name: Create ovs tempfiles directory
+  block:
+    - name: Create ovs tmpfiles file
+      lineinfile:
+        dest: "/etc/tmpfiles.d/openstack-openvswitch.conf"
+        line: "D /var/run/openvswitch 2755 root root"
+        create: true
+
+    - name: Create ovs tmp directory
+      file:
+        path: "/var/run/openvswitch"
+        state: directory
+        mode: "02755"
+  when:
+    - "'ovs' in neutron_plugin_type | lower"
