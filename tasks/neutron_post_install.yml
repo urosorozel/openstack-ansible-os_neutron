@@ -120,10 +120,20 @@
   notify:
     - Restart neutron services
 
+# NOTE: Remove this in S
+# This option has been removed with the implementation of networkd within the
+# host and container. Additionally the execution of this script is now
+# controlled by a systemd oneshot service so the legacy configs are no longer
+# needed.
+- name: Remove legacy checksum fix script
+  file:
+    path: "{{ neutron_checksum_script }}"
+    state: absent
+
 - name: Drop metadata iptables checksum fix
   copy:
     src: "post-up-metadata-checksum"
-    dest: "{{ neutron_checksum_script }}"
+    dest: "/usr/local/bin/post-up-metadata-checksum"
     owner: "root"
     group: "root"
     mode: "0755"
@@ -131,27 +141,26 @@
     - neutron_metadata_checksum_fix | bool
     - neutron_services['neutron-linuxbridge-agent']['group'] in group_names
 
-- name: Ensure the postup/postdown scripts are loaded (RedHat)
-  lineinfile:
-    dest: "/etc/sysconfig/network-scripts/ifup-post"
-    line: ". {{ neutron_checksum_script }}"
-    insertbefore: "^exit 0"
-  when:
-    - neutron_metadata_checksum_fix | bool
-    - neutron_services['neutron-linuxbridge-agent']['group'] in group_names
-    - ansible_pkg_mgr in ['yum', 'dnf']
-
-- name: Ensure the postup/postdown scripts are loaded (SUSE)
-  lineinfile:
-    dest: "/etc/sysconfig/network/config"
-    line: "POST_UP_SCRIPT='wicked:{{ neutron_checksum_script }}'"
-  when:
-    - neutron_metadata_checksum_fix | bool
-    - neutron_services['neutron-linuxbridge-agent']['group'] in group_names
-    - ansible_pkg_mgr == 'zypper'
-
-- name: Run metadata iptables checksum fix
-  command: "{{ neutron_checksum_script }}"
+- name: Run the systemd service role
+  include_role:
+    name: systemd_service
+    private: true
+  vars:
+    systemd_services:
+      - service_name: "neutron-post-up-metadata-checksum"
+        config_overrides:
+          Unit:
+            Description: networking-post-up
+            After: network-online.target
+            Wants: network-online.target
+          Service:
+            RemainAfterExit: yes
+        service_type: oneshot
+        execstarts:
+          - "/usr/local/bin/post-up-metadata-checksum"
+        enabled: yes
+        state: started
+    systemd_tempd_prefix: openstack
   when:
     - neutron_metadata_checksum_fix | bool
     - neutron_services['neutron-linuxbridge-agent']['group'] in group_names

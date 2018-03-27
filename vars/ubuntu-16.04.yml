@@ -13,6 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# NOTE: Remove this in S
+# This option has been removed with the implementation of networkd within the
+# host and container. Additionally the execution of this script is now
+# controlled by a systemd oneshot service so the legacy configs are no longer
+# needed.
 neutron_checksum_script: /etc/network/if-up.d/post-up-metadata-checksum
 
 neutron_ovs_distro_packages:
