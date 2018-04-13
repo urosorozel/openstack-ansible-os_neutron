@@ -57,4 +57,4 @@
 - name: os_previous_neutron
   src: https://git.openstack.org/openstack/openstack-ansible-os_neutron
   scm: git
-  version: stable/newton
+  version: newton-eol
