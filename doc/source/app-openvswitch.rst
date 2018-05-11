@@ -165,6 +165,16 @@ Set the following user variables in your
     network_vlan_ranges: "physnet1:102:199"
     network_mappings: "physnet1:br-provider"
 
+  # When using Open vSwitch, Tenant network is of type vxlan and want
+  # to provide the external network connectivity over flat provider
+  # network, then configure neutron_provider_networks like following.
+  neutron_provider_networks:
+    network_flat_networks: "*"
+    network_types: "vxlan"
+    network_vxlan_ranges: "1:1000"
+    network_mappings: "provider:br-provider"
+    network_interface: eth12
+
 Customization is needed to support additional network types such as vxlan,
 GRE or Geneve. Refer to the `neutron agent configuration
 <https://docs.openstack.org/neutron/latest/configuration/#configuration-reference>`_ for
