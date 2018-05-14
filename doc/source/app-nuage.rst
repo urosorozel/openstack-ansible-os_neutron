@@ -49,10 +49,10 @@ On the deployment host, copy the Nuage user variables file from
 ``/opt/nuage-openstack-ansible/etc/user_nuage_vars.yml`` to the
 ``/etc/openstack_deploy/`` folder.
 
-   .. code-block:: shell-session
+.. code-block:: console
 
-      # cp /opt/nuage-openstack-ansible/etc/user_nuage_vars.yml \
-        /etc/openstack_deploy/
+   # cp /opt/nuage-openstack-ansible/etc/user_nuage_vars.yml \
+     /etc/openstack_deploy/
 
 Next, modify the following parameters in that file as per your Nuage
 VCS environment:
@@ -138,11 +138,12 @@ Installation
    VRS playbooks in ``/opt/nuage-openstack-ansible/nuage_playbook`` on
    your deployment host:
 
-   .. code-block:: shell-session
+   .. code-block:: console
 
       # cd /opt/nuage-openstack-ansible/nuage_playbooks
       # openstack-ansible nuage_all.yml
 
- .. note:: To obtain Nuage Networks VSP software packages, user
-           documentation, and licenses, contact
-           info@nuagenetworks.net.
+   .. note::
+
+      To obtain Nuage Networks VSP software packages, user
+      documentation, and licenses, contact ``info@nuagenetworks.net``.

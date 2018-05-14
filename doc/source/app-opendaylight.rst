@@ -149,10 +149,8 @@ Communications between the OpenDaylight SDN Controller and Open vSwitch are not
 secured by default. For further information on securing this interface, see
 these manuals:
 
-TLS Support on OpenDaylight OpenFlow plugin:
+* `TLS Support on OpenDaylight OpenFlow plugin
+  <https://wiki.opendaylight.org/view/OpenDaylight_OpenFlow_Plugin:_TLS_Support>`__.
 
-    https://wiki.opendaylight.org/view/OpenDaylight_OpenFlow_Plugin:_TLS_Support
-
-Secure Communication Between OpenFlow Switches and Controllers
-
-    https://www.thinkmind.org/download.php?articleid=afin_2015_2_30_40047
+* `Secure Communication Between OpenFlow Switches and Controllers
+  <https://www.thinkmind.org/download.php?articleid=afin_2015_2_30_40047>`__.

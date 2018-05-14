@@ -16,8 +16,8 @@ Neutron role for OpenStack-Ansible
 
 This role installs the following Systemd services:
 
-  * neutron-server
-  * neutron-agents
+* neutron-server
+* neutron-agents
 
 To clone or view the source code for this repository, visit the role repository
 for `os_neutron <https://github.com/openstack/openstack-ansible-os_neutron>`_.

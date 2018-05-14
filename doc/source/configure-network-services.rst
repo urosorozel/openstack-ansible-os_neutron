@@ -331,16 +331,16 @@ configuration to enable Neutron SR-IOV support.
 
 #. Define SR-IOV capable physical host interface for a provider network
 
-  As part of every Openstack-Ansible installation, all provider networks
-  known to Neutron need to be configured inside the
-  ``/etc/openstack_deploy/openstack_user_config.yml`` file.
-  For each supported network type (e.g. vlan), the attribute
-  ``sriov_host_interfaces`` can be defined to map ML2 network names
-  (``net_name`` attribute) to one or many physical interfaces.
-  Additionally, the network will need to be assigned to the
-  ``neutron_sriov_nic_agent`` container group.
+   As part of every Openstack-Ansible installation, all provider networks
+   known to Neutron need to be configured inside the
+   ``/etc/openstack_deploy/openstack_user_config.yml`` file.
+   For each supported network type (e.g. vlan), the attribute
+   ``sriov_host_interfaces`` can be defined to map ML2 network names
+   (``net_name`` attribute) to one or many physical interfaces.
+   Additionally, the network will need to be assigned to the
+   ``neutron_sriov_nic_agent`` container group.
 
-Example configuration:
+   Example configuration:
 
    .. code-block:: yaml
 
@@ -411,10 +411,10 @@ Example configuration:
    and openvswitch (``ml2.ovs``) ML2 plugins.
    ``ml2.lxb`` is the standard activated core ML2 plugin.
 
-      .. code-block:: yaml
+   .. code-block:: yaml
 
-         neutron_plugin_types:
-           - ml2.sriov
+      neutron_plugin_types:
+        - ml2.sriov
 
 
 #. Execute the Neutron install playbook in order to update the configuration:
