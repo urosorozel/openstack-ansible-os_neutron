@@ -58,6 +58,8 @@ networking_sfc_git_repo: https://git.openstack.org/openstack/networking-sfc
 networking_sfc_git_install_branch: master
 networking_bgpvpn_git_repo: https://git.openstack.org/openstack/networking-bgpvpn
 networking_bgpvpn_git_install_branch: master
+openstack_ceilometer_git_repo: https://git.openstack.org/openstack/ceilometer
+openstack_ceilometer_git_install_branch: master
 
 # Developer mode
 neutron_developer_mode: false
