@@ -125,6 +125,7 @@ neutron_developer_constraints:
   - "git+{{ networking_odl_git_repo }}@{{ networking_odl_git_install_branch }}#egg=networking-odl"
   - "git+{{ networking_sfc_git_repo }}@{{ networking_sfc_git_install_branch }}#egg=networking-sfc"
   - "git+{{ networking_bgpvpn_git_repo }}@{{ networking_bgpvpn_git_install_branch }}#egg=networking-bgpvpn"
+  - "git+{{ openstack_ceilometer_git_repo }}@{{ openstack_ceilometer_git_install_branch }}#egg=ceilometer"
 
 neutron_bin: "/openstack/venvs/neutron-{{ neutron_venv_tag }}/bin"
 
