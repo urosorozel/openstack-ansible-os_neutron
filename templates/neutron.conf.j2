@@ -26,7 +26,7 @@ log_file = {{ neutron_log_dir }}/neutron.log
 ## Rpc all
 executor_thread_pool_size = {{ neutron_rpc_thread_pool_size }}
 rpc_response_timeout = {{ neutron_rpc_response_timeout }}
-transport_url = rabbit://{% for host in neutron_rabbitmq_servers.split(',') %}{{ neutron_rabbitmq_userid }}:{{ neutron_rabbitmq_password }}@{{ host }}:{{ neutron_rabbitmq_port }}{% if not loop.last %},{% else %}/{{ neutron_rabbitmq_vhost }}{% endif %}{% endfor %}
+transport_url = {{ neutron_oslomsg_rpc_transport }}://{% for host in neutron_oslomsg_rpc_servers.split(',') %}{{ neutron_oslomsg_rpc_userid }}:{{ neutron_oslomsg_rpc_password }}@{{ host }}:{{ neutron_oslomsg_rpc_port }}{% if not loop.last %},{% else %}/{{ neutron_oslomsg_rpc_vhost }}{% if neutron_oslomsg_rpc_use_ssl | bool %}?ssl=1{% else %}?ssl=0{% endif %}{% endif %}{% endfor %}
 
 # Domain to use for building hostnames
 dns_domain = {{ neutron_dns_domain }}
@@ -250,7 +250,6 @@ root_helper = sudo {{ neutron_bin }}/neutron-rootwrap {{ neutron_conf_dir }}/roo
 
 # Messaging
 [oslo_messaging_rabbit]
-ssl = {{ neutron_rabbitmq_use_ssl }}
 rpc_conn_pool_size = {{ neutron_rpc_conn_pool_size }}
 
 # Notifications
@@ -265,7 +264,7 @@ rpc_conn_pool_size = {{ neutron_rpc_conn_pool_size }}
 {% endif %}
 notification_topics = {{ notification_topics | join(',') }}
 driver = messagingv2
-transport_url = rabbit://{% for host in neutron_rabbitmq_telemetry_servers.split(',') %}{{ neutron_rabbitmq_telemetry_userid }}:{{ neutron_rabbitmq_telemetry_password }}@{{ host }}:{{ neutron_rabbitmq_telemetry_port }}{% if not loop.last %},{% else %}/{{ neutron_rabbitmq_telemetry_vhost }}{% endif %}{% endfor %}
+transport_url = {{ neutron_oslomsg_notify_transport }}://{% for host in neutron_oslomsg_notify_servers.split(',') %}{{ neutron_oslomsg_notify_userid }}:{{ neutron_oslomsg_notify_password }}@{{ host }}:{{ neutron_oslomsg_notify_port }}{% if not loop.last %},{% else %}/{{ neutron_oslomsg_notify_vhost }}{% if neutron_oslomsg_notify_use_ssl | bool %}?ssl=1{% else %}?ssl=0{% endif %}{% endif %}{% endfor %}
 {% endif %}
 
 # Concurrency (locking mechanisms)
