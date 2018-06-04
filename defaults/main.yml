@@ -185,6 +185,8 @@ neutron_quota_vip: 10
 ### DB (Galera) integration
 ###
 
+neutron_db_setup_host: "{{ ('galera_all' in groups) | ternary(groups['galera_all'][0], 'localhost') }}"
+neutron_galera_address: "{{ galera_address | default('127.0.0.1') }}"
 neutron_galera_user: neutron
 neutron_galera_database: neutron
 neutron_db_max_overflow: 20

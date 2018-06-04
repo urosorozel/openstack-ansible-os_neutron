@@ -6,3 +6,7 @@
     - { role: "os_neutron", tags: [ "neutron-install", "neutron-config" ] }
   vars:
     neutron_galera_address: "{{ internal_lb_vip_address }}"
+    galera_root_user: root
+  vars_prompt:
+    - name: "galera_root_password"
+      prompt: "What is galera_root_password?"
