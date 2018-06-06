@@ -47,6 +47,39 @@ neutron_distro_packages:
   - keepalived
   - radvd
 
+neutron_service_distro_packages:
+  - python-cliff
+  - python-keystonemiddleware
+  - neutron-server
+  - neutron-dhcp-agent
+  - neutron-l2gateway-agent
+  - neutron-l3-agent
+  - neutron-macvtap-agent
+  - neutron-metadata-agent
+  - neutron-plugin-ml2
+  - python-glanceclient
+  - python-keystoneclient
+  - python-memcache
+  - python-neutronclient
+  - python-novaclient
+
+neutron_optional_ovs_distro_packages:
+  - neutron-openvswitch-agent
+  - neutron-plugin-openvswitch-agent
+
+neutron_optional_lxb_distro_packages:
+  - neutron-linuxbridge-agent
+  - neutron-plugin-linuxbridge-agent
+
+neutron_optional_fwaas_distro_packages:
+  - python-neutron-fwaas
+
+neutron_optional_lbaas_distro_packages:
+  - neutron-lbaasv2-agent
+
+neutron_optional_vpnaas_distro_packages:
+  - neutron-vpnaas-agent
+
 neutron_developer_mode_distro_packages:
   - git-core
 

@@ -39,6 +39,35 @@ neutron_distro_packages:
   - radvd
   - which
 
+neutron_service_distro_packages:
+  - python-cliff
+  - python-keystonemiddleware
+  - openstack-neutron
+  - openstack-neutron-ml2
+  - openstack-neutron-macvtap-agent
+  - openstack-neutron-l2gw-agent
+  - python-glanceclient
+  - python-keystoneclient
+  - python-memcached
+  - python-neutronclient
+  - python-novaclient
+
+neutron_optional_ovs_distro_packages:
+  - openstack-neutron-openvswitch
+
+neutron_optional_lxb_distro_packages:
+  - openstack-neutron-linuxbridge
+
+neutron_optional_fwaas_distro_packages:
+  - openstack-neutron-fwaas
+
+neutron_optional_lbaas_distro_packages:
+  - openstack-neutron-lbaas
+  - openstack-neutron-lbaas-agent
+
+neutron_optional_vpnaas_distro_packages:
+  - openstack-neutron-vpnaas
+
 neutron_developer_mode_distro_packages:
   - git
 

@@ -13,12 +13,28 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+- name: Record the installation method
+  ini_file:
+    dest: "/etc/ansible/facts.d/openstack_ansible.fact"
+    section: "neutron"
+    option: "install_method"
+    value: "{{ neutron_install_method }}"
+
+- name: Refresh local facts to ensure the neutron section is present
+  setup:
+    filter: ansible_local
+    gather_subset: "!all"
+
 - name: Install neutron role packages
   package:
     name: "{{ neutron_package_list }}"
     state: "{{ neutron_package_state }}"
     update_cache: "{{ (ansible_pkg_mgr in ['apt', 'zypper']) | ternary('yes', omit) }}"
     cache_valid_time: "{{ (ansible_pkg_mgr == 'apt') | ternary(cache_timeout, omit) }}"
+  register: install_packages
+  until: install_packages|success
+  retries: 5
+  delay: 2
 
 - name: Remove known problem packages
   package:
@@ -30,134 +46,9 @@
   delay: 2
   with_items: "{{ neutron_remove_distro_packages }}"
 
-- name: Create developer mode constraint file
-  copy:
-    dest: "/opt/developer-pip-constraints.txt"
-    content: |
-      {% for item in neutron_developer_constraints %}
-      {{ item }}
-      {% endfor %}
-  when: neutron_developer_mode | bool
-
-- name: Install requires pip packages
-  pip:
-    name: "{{ neutron_requires_pip_packages }}"
-    state: "{{ neutron_pip_package_state }}"
-    extra_args: >-
-      {{ neutron_developer_mode | ternary(pip_install_developer_constraints | default('--constraint /opt/developer-pip-constraints.txt'), '') }}
-      {{ (pip_install_upper_constraints is defined) | ternary('--constraint ' + pip_install_upper_constraints | default(''),'') }}
-      {{ pip_install_options | default('') }}
-  register: install_packages
-  until: install_packages|success
-  retries: 5
-  delay: 2
-
-- name: Retrieve checksum for venv download
-  uri:
-    url: "{{ neutron_venv_download_url | replace('tgz', 'checksum') }}"
-    return_content: yes
-  register: neutron_venv_checksum
-  when: neutron_venv_download | bool
-
-- name: Attempt venv download
-  get_url:
-    url: "{{ neutron_venv_download_url }}"
-    dest: "/var/cache/{{ neutron_venv_download_url | basename }}"
-    checksum: "sha1:{{ neutron_venv_checksum.content | trim }}"
-  register: neutron_get_venv
-  when: neutron_venv_download | bool
-
-- name: Remove existing venv
-  file:
-    path: "{{ neutron_bin | dirname }}"
-    state: absent
-  when: neutron_get_venv | changed
-
-- name: Create neutron venv dir
-  file:
-    path: "{{ neutron_bin | dirname }}"
-    state: directory
-  register: neutron_venv_dir
-  when: neutron_get_venv | changed
-
-- name: Unarchive pre-built venv
-  unarchive:
-    src: "/var/cache/{{ neutron_venv_download_url | basename }}"
-    dest: "{{ neutron_bin | dirname }}"
-    copy: "no"
-  when: neutron_get_venv | changed
-  notify: Restart neutron services
-
-- name: Install pip packages
-  pip:
-    name: "{{ neutron_pip_packages }}"
-    state: "{{ neutron_pip_package_state }}"
-    virtualenv: "{{ neutron_bin | dirname }}"
-    virtualenv_site_packages: "no"
-    extra_args: >-
-      {{ neutron_developer_mode | ternary(pip_install_developer_constraints | default('--constraint /opt/developer-pip-constraints.txt'), '') }}
-      {{ (pip_install_upper_constraints is defined) | ternary('--constraint ' + pip_install_upper_constraints | default(''),'') }}
-      {{ pip_install_options | default('') }}
-  register: install_packages
-  until: install_packages | success
-  retries: 5
-  delay: 2
-  when: neutron_get_venv | failed or neutron_get_venv | skipped
-  notify: Restart neutron services
-
-- name: Remove python from path first (CentOS, openSUSE)
-  file:
-    path:  "{{ neutron_bin | dirname }}/bin/python2.7"
-    state: "absent"
-  when:
-    - ansible_pkg_mgr in ['yum', 'dnf', 'zypper']
-    - neutron_get_venv | changed
-
-# NOTE(odyssey4me):
-# We reinitialize the venv to ensure that the right
-# version of python is in the venv, but we do not
-# want virtualenv to also replace pip, setuptools
-# and wheel so we tell it not to.
-# We do not use --always-copy for CentOS/SuSE due
-# to https://github.com/pypa/virtualenv/issues/565
-- name: Update virtualenv path
-  shell: |
-    find {{ neutron_bin }} -name \*.pyc -delete
-    sed -si '1s/^.*python.*$/#!{{ neutron_bin | replace ('/','\/') }}\/python/' {{ neutron_bin }}/*
-    virtualenv {{ neutron_bin | dirname }} \
-        {{ (ansible_pkg_mgr == 'apt') | ternary('--always-copy', '') }} \
-        --no-pip \
-        --no-setuptools \
-        --no-wheel
-  when: neutron_get_venv | changed
-  tags:
-    - skip_ansible_lint
-
-- name: Install optional pip packages
-  pip:
-    name: >-
-      {{ (neutron_bgp | bool) | ternary(neutron_optional_bgp_pip_packages, []) +
-         (neutron_fwaas | bool) | ternary(neutron_optional_fwaas_pip_packages, []) +
-         (neutron_fwaas_v2 | bool) | ternary(neutron_optional_fwaas_pip_packages, []) +
-         (neutron_lbaasv2 | bool) | ternary(neutron_optional_lbaas_pip_packages, []) +
-         (neutron_vpnaas | bool) | ternary(neutron_optional_vpnaas_pip_packages, []) }}
-    state: "{{ neutron_pip_package_state }}"
-    virtualenv: "{{ neutron_bin | dirname }}"
-    virtualenv_site_packages: "no"
-    extra_args: >-
-      {{ neutron_developer_mode | ternary(pip_install_developer_constraints | default('--constraint /opt/developer-pip-constraints.txt'), '') }}
-      {{ (pip_install_upper_constraints is defined) | ternary('--constraint ' + pip_install_upper_constraints | default(''),'') }}
-      {{ pip_install_options | default('') }}
-  when: neutron_bgp | bool or
-        neutron_fwaas | bool or
-        neutron_fwaas_v2 | bool or
-        neutron_lbaasv2 | bool or
-        neutron_vpnaas | bool
-  register: install_optional_packages
-  until: install_optional_packages | success
-  retries: 5
-  delay: 2
-  notify: Restart neutron services
+- name: Install neutron packages from PIP
+  include_tasks: neutron_install_source.yml
+  when: neutron_install_method == 'source'
 
 - name: Initialise the upgrade facts
   ini_file:
@@ -170,22 +61,16 @@
       state: "True"
     - name: "need_db_contract"
       state: "True"
-  when: (neutron_get_venv | changed) or
-        (neutron_venv_dir | changed) or
+  when: (neutron_install_method == 'source' and
+         ((neutron_get_venv | changed) or
+          (neutron_venv_dir | changed) or
+          (install_optional_packages | changed))) or
         (install_packages | changed) or
-        (install_optional_packages | changed) or
         (ansible_local is not defined) or
         ('openstack_ansible' not in ansible_local) or
         ('neutron' not in ansible_local['openstack_ansible']) or
         ('need_db_expand' not in ansible_local['openstack_ansible']['neutron']) or
         ('need_db_contract' not in ansible_local['openstack_ansible']['neutron'])
-
-- name: Record the venv tag deployed
-  ini_file:
-    dest: "/etc/ansible/facts.d/openstack_ansible.fact"
-    section: neutron
-    option: venv_tag
-    value: "{{ neutron_venv_tag }}"
 
 - include: neutron_selinux.yml
   when:

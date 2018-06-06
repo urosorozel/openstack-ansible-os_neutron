@@ -27,6 +27,9 @@ debug: False
 # Options are 'present' and 'latest'
 neutron_package_state: "latest"
 
+# Set installation method.
+neutron_install_method: "source"
+
 ###
 ### Python code details
 ###
