@@ -36,8 +36,12 @@ neutron_distro_packages:
   - iputils
   - keepalived
   - net-tools
+  - python-keystoneclient
   - radvd
   - which
+
+neutron_devel_distro_packages:
+  - python-httplib2
 
 neutron_service_distro_packages:
   - python-cliff
@@ -47,7 +51,6 @@ neutron_service_distro_packages:
   - openstack-neutron-macvtap-agent
   - openstack-neutron-l2gw-agent
   - python-glanceclient
-  - python-keystoneclient
   - python-memcached
   - python-neutronclient
   - python-novaclient

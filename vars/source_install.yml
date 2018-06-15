@@ -43,12 +43,11 @@ neutron_package_list: |-
   {% if neutron_developer_mode | bool %}
   {%   set _ = packages.extend(neutron_developer_mode_distro_packages) %}
   {% endif %}
+  {% set _ = packages.extend(neutron_devel_distro_packages) %}
   {{ packages }}
 
 neutron_requires_pip_packages:
   - virtualenv
-  - python-keystoneclient # Keystoneclient needed to OSA keystone lib
-  - httplib2
 
 neutron_pip_packages:
   - cliff
