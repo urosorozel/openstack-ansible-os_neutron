@@ -45,7 +45,11 @@ neutron_distro_packages:
   - iputils-arping
   - net-tools
   - keepalived
+  - python-keystoneclient
   - radvd
+
+neutron_devel_distro_packages:
+  - python-httplib2
 
 neutron_service_distro_packages:
   - python-cliff
@@ -58,7 +62,6 @@ neutron_service_distro_packages:
   - neutron-metadata-agent
   - neutron-plugin-ml2
   - python-glanceclient
-  - python-keystoneclient
   - python-memcache
   - python-neutronclient
   - python-novaclient
