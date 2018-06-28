@@ -125,6 +125,7 @@
     loop_var: service_var
   tags:
     - neutron-config
+    - systemd-service
 
 - include_tasks: neutron_db_setup.yml
   when:
