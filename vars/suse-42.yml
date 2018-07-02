@@ -58,8 +58,10 @@ neutron_service_distro_packages:
   - python-cliff
   - python-keystonemiddleware
   - openstack-neutron
-  - openstack-neutron-server
   - openstack-neutron-dhcp-agent
+  - openstack-neutron-l3-agent
+  - openstack-neutron-metadata-agent
+  - openstack-neutron-server
   - python-glanceclient
   - python-memcached
   - python-neutronclient
