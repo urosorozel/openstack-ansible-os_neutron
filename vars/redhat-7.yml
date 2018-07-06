@@ -49,6 +49,7 @@ neutron_service_distro_packages:
   - openstack-neutron
   - openstack-neutron-ml2
   - openstack-neutron-macvtap-agent
+  - openstack-neutron-metering-agent
   - openstack-neutron-l2gw-agent
   - python-glanceclient
   - python-memcached

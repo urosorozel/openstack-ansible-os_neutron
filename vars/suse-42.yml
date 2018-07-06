@@ -61,6 +61,7 @@ neutron_service_distro_packages:
   - openstack-neutron-dhcp-agent
   - openstack-neutron-l3-agent
   - openstack-neutron-metadata-agent
+  - openstack-neutron-metering-agent
   - openstack-neutron-server
   - python-glanceclient
   - python-memcached
