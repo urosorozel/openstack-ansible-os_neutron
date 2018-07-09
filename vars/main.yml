@@ -44,6 +44,9 @@ neutron_package_list: |-
   {% if neutron_services['neutron-vpnaas-agent']['group'] in group_names and neutron_vpnaas | bool %}
   {% set _ = packages.extend(neutron_vpnaas_distro_packages) %}
   {% endif %}
+  {% if neutron_services['neutron-metadata-agent']['group'] in group_names %}
+  {% set _ = packages.extend(neutron_metadata_agent_distro_packages) %}
+  {% endif %}
   {% if neutron_developer_mode | bool %}
   {%   set _ = packages.extend(neutron_developer_mode_distro_packages) %}
   {% endif %}
