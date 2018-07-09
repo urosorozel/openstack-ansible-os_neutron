@@ -16,9 +16,10 @@
 ###
 ### Open vSwitch
 ###
-neutron_needs_openvswitch: (neutron_services['neutron-openvswitch-agent']['group'] in group_names and neutron_services['neutron-openvswitch-agent'].service_en | bool)
-      or (neutron_services['dragonflow-controller-agent']['group'] in group_names and neutron_services['dragonflow-controller-agent'].service_en | bool)
-      or (neutron_services['dragonflow-l3-agent']['group'] in group_names and neutron_services['dragonflow-l3-agent'].service_en | bool)
+neutron_needs_openvswitch: >-
+  {{ (neutron_services['neutron-openvswitch-agent']['group'] in group_names and neutron_services['neutron-openvswitch-agent'].service_en | bool)
+  or (neutron_services['dragonflow-controller-agent']['group'] in group_names and neutron_services['dragonflow-controller-agent'].service_en | bool)
+  or (neutron_services['dragonflow-l3-agent']['group'] in group_names and neutron_services['dragonflow-l3-agent'].service_en | bool) }}
 
 ###
 ### Packages

@@ -177,4 +177,4 @@
     name: "{{ neutron_ovs_service_name }}"
     state: started
     enabled: yes
-  when: neutron_needs_openvswitch
+  when: neutron_needs_openvswitch | bool
