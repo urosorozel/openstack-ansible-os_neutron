@@ -59,6 +59,7 @@ neutron_service_distro_packages:
   - neutron-l3-agent
   - neutron-macvtap-agent
   - neutron-metadata-agent
+  - neutron-metering-agent
   - neutron-plugin-ml2
   - python-glanceclient
   - python-memcache
