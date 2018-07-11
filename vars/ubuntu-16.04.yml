@@ -39,7 +39,6 @@ neutron_distro_packages:
   - dnsmasq-base
   - dnsmasq-utils
   - ebtables
-  - haproxy
   - ipset
   - iptables
   - iputils-arping
@@ -94,6 +93,9 @@ neutron_lbaas_distro_packages:
 
 neutron_vpnaas_distro_packages:
   - strongswan
+
+neutron_metadata_agent_distro_packages:
+  - haproxy
 
 neutron_remove_distro_packages:
   - conntrackd
