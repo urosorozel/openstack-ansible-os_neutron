@@ -49,9 +49,6 @@ neutron_package_list: |-
   {% set _ = packages.extend(neutron_devel_distro_packages) %}
   {{ packages }}
 
-neutron_requires_pip_packages:
-  - virtualenv
-
 neutron_pip_packages:
   - cliff
   - configobj
