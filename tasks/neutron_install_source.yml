@@ -112,7 +112,8 @@
          (neutron_fwaas | bool) | ternary(neutron_optional_fwaas_pip_packages, []) +
          (neutron_fwaas_v2 | bool) | ternary(neutron_optional_fwaas_pip_packages, []) +
          (neutron_lbaasv2 | bool) | ternary(neutron_optional_lbaas_pip_packages, []) +
-         (neutron_vpnaas | bool) | ternary(neutron_optional_vpnaas_pip_packages, []) }}
+         (neutron_vpnaas | bool) | ternary(neutron_optional_vpnaas_pip_packages, []) +
+         (neutron_oslomsg_amqp1_enabled | bool) | ternary(neutron_optional_oslomsg_amqp1_pip_packages, []) }}
     state: "{{ neutron_pip_package_state }}"
     virtualenv: "{{ neutron_bin | dirname }}"
     virtualenv_site_packages: "no"
@@ -124,7 +125,8 @@
         neutron_fwaas | bool or
         neutron_fwaas_v2 | bool or
         neutron_lbaasv2 | bool or
-        neutron_vpnaas | bool
+        neutron_vpnaas | bool or
+        neutron_oslomsg_amqp1_enabled | bool
   register: install_optional_packages
   until: install_optional_packages is success
   retries: 5
