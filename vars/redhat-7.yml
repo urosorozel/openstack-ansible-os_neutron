@@ -25,7 +25,6 @@ neutron_distro_packages:
   - dnsmasq
   - dnsmasq-utils
   - ebtables
-  - haproxy
   - ipset
   - iptables
   - iputils
@@ -45,6 +44,9 @@ neutron_lbaas_distro_packages:
 
 neutron_vpnaas_distro_packages:
   - openswan
+
+neutron_metadata_agent_distro_packages:
+  - haproxy
 
 neutron_remove_distro_packages: []
 
