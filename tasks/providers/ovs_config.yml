@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# This file is responsible for the L3 configuration
 - name: Setup External Network Provider Bridge
   openvswitch_bridge:
     bridge: "{{ neutron_provider_networks.network_mappings.split(':')[1] }}"
