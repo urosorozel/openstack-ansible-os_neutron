@@ -352,7 +352,7 @@ neutron_services:
  neutron-openvswitch-agent:
    group: neutron_openvswitch_agent
    service_name: neutron-openvswitch-agent
-   service_en: "{{ 'ml2.ovs' in neutron_plugin_type }}"
+   service_en: "{{ neutron_plugin_type in ['ml2.ovs', 'ml2.ovs.dvr'] }}"
    service_conf_path: "{{ neutron_conf_dir }}"
    service_conf: plugins/ml2/openvswitch_agent.ini
    service_rootwrap: rootwrap.d/openvswitch-plugin.filters
