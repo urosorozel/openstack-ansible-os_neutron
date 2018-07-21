@@ -54,6 +54,7 @@ neutron_pip_packages:
   - configobj
   - cryptography
   - keystonemiddleware
+  - osprofiler
   - PyMySQL
   - neutron
   - python-glanceclient
