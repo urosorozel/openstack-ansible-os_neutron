@@ -27,8 +27,7 @@
     - name: Use the unconfined aa profile
       lxc_container:
         name: "{{ container_name }}"
-        container_config:
-          - "lxc.aa_profile=unconfined"
+        container_config: "{{ lxc_container_config_list }}"
       delegate_to: "{{ physical_host }}"
 
     - name: Set mount path for kernel modules (Ubuntu)
