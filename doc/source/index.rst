@@ -9,6 +9,7 @@ Neutron role for OpenStack-Ansible
    app-openvswitch.rst
    app-openvswitch-asap.rst
    app-openvswitch-dvr.rst
+   app-openvswitch-dpdk.rst
    app-openvswitch-sfc.rst
    app-ovn.rst
    app-nuage.rst

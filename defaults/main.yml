@@ -450,3 +450,19 @@ ovs_nsh_support: False
 
 # Set higher priority to mardim PPA when ovs_nsh_support is True
 ovs_nsh_apt_pinned_packages: [{ package: "*", release: "LP-PPA-mardim-mardim-ppa"}]
+
+###
+### DPDK Configuration
+###
+
+ovs_datapath: "netdev"
+ovs_dpdk_pci_addresses: []
+ovs_dpdk_driver: vfio-pci
+ovs_dpdk_support: False
+ovs_dpdk_lcore_mask: 1
+ovs_dpdk_pmd_cpu_mask: 2
+ovs_dpdk_socket_mem: "1024"
+ovs_dpdk_nr_1g_pages: 0
+ovs_dpdk_nr_2m_pages: 0
+# (NOTE) (or "libvirtd", depending on your version of libvirt)
+vhost_socket_directory_group: "libvirt"

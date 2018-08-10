@@ -30,6 +30,12 @@ neutron_ovs_nsh_required_packages:
   - openvswitch-switch
   - python-openvswitch
 
+neutron_ovs_dpdk_required_packages:
+  - openvswitch-common
+  - openvswitch-switch-dpdk
+
+dpdk_service_name: dpdk
+
 ## APT Cache options
 cache_timeout: 600
 
