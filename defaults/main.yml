@@ -133,6 +133,11 @@ neutron_lbaasv2_user_group: "{{ _neutron_lbaasv2_user_group }}"
 # 'Overriding OpenStack configuration defaults' in the
 # 'Advanced configuration' appendix of the Deploy Guide.
 neutron_api_paste_ini_overrides: {}
+_neutron_api_paste_ini_overrides:
+  "composite:neutronapi_v2_0":
+    noauth: "cors http_proxy_to_wsgi request_id catch_errors osprofiler extensions neutronapiapp_v2_0"
+    keystone: "cors http_proxy_to_wsgi request_id catch_errors osprofiler authtoken keystonecontext extensions neutronapiapp_v2_0"
+
 neutron_bgp_dragent_ini_overrides: {}
 neutron_bgp_dragent_init_overrides: {}
 neutron_calico_dhcp_agent_ini_overrides: {}
@@ -168,7 +173,12 @@ neutron_openvswitch_agent_init_overrides: {}
 #  "create_subnet": "rule:admin_or_network_owner"
 #  "get_subnet": "rule:admin_or_owner or rule:shared"
 neutron_policy_overrides: {}
+_neutron_rootwrap_conf_overrides:
+  DEFAULT:
+    filters_path: "{{ neutron_conf_dir }}/rootwrap.d,/usr/share/neutron/rootwrap"
+    exec_dirs: "{{ neutron_bin }},/sbin,/usr/sbin,/bin,/usr/bin,/usr/local/bin,/usr/local/sbin"
 neutron_rootwrap_conf_overrides: {}
+
 neutron_server_init_overrides: {}
 neutron_sriov_nic_agent_ini_overrides: {}
 neutron_sriov_nic_agent_init_overrides: {}
