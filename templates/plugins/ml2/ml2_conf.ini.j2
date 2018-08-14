@@ -36,6 +36,25 @@ vni_ranges = {{ neutron_provider_networks.network_vxlan_ranges }}
 
 {% endif %}
 
+{% if neutron_provider_networks.network_geneve_ranges is defined %}
+
+[ml2_type_geneve]
+vni_ranges = {{ neutron_provider_networks.network_geneve_ranges }}
+max_header_size = 38
+
+{% endif %}
+
+{% if neutron_plugin_type == 'ml2.ovn' and (neutron_services['neutron-server']['group'] or neutron_services['neutron-ovn-controller']['group'] in group_names) %}
+
+[ovn]
+ovn_native_dhcp = True
+ovn_nb_connection = tcp:{{ neutron_ovn_ip }}:6641
+ovn_sb_connection = tcp:{{ neutron_ovn_ip }}:6642
+ovn_l3_scheduler = {{ neutron_ovn_l3_scheduler }}
+ovn_metadata_enabled = True
+
+{% endif %}
+
 # Security groups
 [securitygroup]
 {% if neutron_plugin_type == 'ml2.ovs' %}

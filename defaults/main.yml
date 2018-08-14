@@ -73,6 +73,8 @@ networking_bgpvpn_git_repo: https://git.openstack.org/openstack/networking-bgpvp
 networking_bgpvpn_git_install_branch: master
 openstack_ceilometer_git_repo: https://git.openstack.org/openstack/ceilometer
 openstack_ceilometer_git_install_branch: master
+networking_ovn_git_repo: https://git.openstack.org/openstack/networking-ovn
+networking_ovn_git_install_branch: master
 
 # Developer mode
 neutron_developer_mode: false
@@ -174,6 +176,8 @@ neutron_sriov_nic_agent_ini_overrides: {}
 neutron_sriov_nic_agent_init_overrides: {}
 neutron_vpn_agent_init_overrides: {}
 neutron_vpnaas_agent_ini_overrides: {}
+neutron_ovn_metadata_agent_ini_overrides: {}
+neutron_ovn_metadata_agent_init_overrides: {}
 
 ###
 ### Quotas
@@ -347,6 +351,7 @@ neutron_local_ip: 127.0.0.1
 #   network_types: "vxlan,flat,vlan"
 #   network_vlan_ranges: "vlan:1:1,vlan:1024:1025"
 #   network_vxlan_ranges: "1:1000"
+#   network_geneve_ranges: "1:1000"
 #   network_sriov_mappings: "vlan:p4p1"
 
 ###
@@ -443,6 +448,12 @@ dragonflow_ex_peer_patch_port: patch-int
 dragonflow_int_peer_patch_port: patch-ex
 dragonflow_external_network_bridge: br-ex
 dragonflow_publisher_bind_address: "*"
+
+# OVN Defaults
+neutron_ovn_northd_service_name: ovn-northd
+neutron_ovn_controller_service_name: ovn-controller
+neutron_ovn_l3_scheduler: leastloaded
+neutron_ovn_ip: "{{ internal_lb_vip_address }}"
 
 # Install Openvswitch without NSH support
 ovs_nsh_support: False

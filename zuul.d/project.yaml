@@ -20,6 +20,8 @@
       jobs:
         - openstack-ansible-upgrade-ubuntu-xenial
         - openstack-ansible-ovs-ubuntu-xenial-nv
+        - openstack-ansible-ovn-ubuntu-xenial-nv
+        - openstack-ansible-ovn-centos-7-nv
         - openstack-ansible-calico-ubuntu-xenial-nv
         - openstack-ansible-dragonflow-ubuntu-xenial-nv
         - openstack-ansible-opendaylight-ubuntu-xenial-nv

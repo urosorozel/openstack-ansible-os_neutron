@@ -1,0 +1,97 @@
+# (c) 2018, James Denton <james.denton@rackspace.com>
+#
+# Copyright 2018, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Install OVN pip packages
+  pip:
+    name: "{{ neutron_optional_ovn_pip_packages }}"
+    state: "{{ neutron_pip_package_state }}"
+    virtualenv: "{{ neutron_bin | dirname }}"
+    virtualenv_site_packages: "no"
+    extra_args: >-
+      {{ neutron_developer_mode | ternary(pip_install_developer_constraints | default('--constraint /opt/developer-pip-constraints.txt'), '') }}
+      {{ (pip_install_upper_constraints is defined) | ternary('--constraint ' + pip_install_upper_constraints | default(''),'') }}
+      {{ pip_install_options | default('') }}
+  register: install_packages
+  until: install_packages|success
+  retries: 5
+  delay: 2
+  when:
+    - neutron_services['neutron-server']['group'] in group_names
+      or neutron_services['neutron-ovn-northd']['group'] in group_names
+      or neutron_services['neutron-ovn-controller']['group'] in group_names
+  notify: Restart neutron services
+  tags:
+    - ovn-install
+    - ovn-pip-packages
+
+- name: Install ovn-northd packages
+  package:
+    name: "{{ neutron_ovn_northd_distro_packages }}"
+    state: "{{ neutron_package_state }}"
+    update_cache: "{{ (ansible_pkg_mgr in ['apt', 'zypper']) | ternary('yes', omit) }}"
+    cache_valid_time: "{{ (ansible_pkg_mgr == 'apt') | ternary(cache_timeout, omit) }}"
+  register: install_packages
+  until: install_packages is success
+  retries: 5
+  delay: 2
+  when:
+    - neutron_services['neutron-ovn-northd']['group'] in group_names
+
+- name: Install ovn-controller packages
+  package:
+    name: "{{ neutron_ovn_controller_distro_packages }}"
+    state: "{{ neutron_package_state }}"
+    update_cache: "{{ (ansible_pkg_mgr in ['apt', 'zypper']) | ternary('yes', omit) }}"
+    cache_valid_time: "{{ (ansible_pkg_mgr == 'apt') | ternary(cache_timeout, omit) }}"
+  register: install_packages
+  until: install_packages is success
+  retries: 5
+  delay: 2
+  when:
+    - neutron_services['neutron-ovn-controller']['group'] in group_names
+
+- name: Ensure Open vSwitch service is started and enabled
+  systemd:
+    name: "{{ neutron_ovs_service_name }}"
+    state: started
+    enabled: yes
+  tags:
+   - ovn-config
+  when:
+    - neutron_services['neutron-ovn-northd']['group'] in group_names
+      or neutron_services['neutron-ovn-controller']['group'] in group_names
+
+- name: Ensure ovn-northd service is started and enabled
+  systemd:
+    name: "{{ neutron_ovn_northd_service_name }}"
+    state: started
+    enabled: yes
+  tags:
+   - ovn-config
+  when:
+    - neutron_services['neutron-ovn-northd']['group'] in group_names
+
+- name: Ensure ovn-controller service is started and enabled
+  systemd:
+    name: "{{ neutron_ovn_controller_service_name }}"
+    state: started
+    enabled: yes
+  tags:
+   - ovn-config
+  when:
+    - neutron_services['neutron-ovn-controller']['group'] in group_names
+
+- include: setup_ovs_ovn.yml

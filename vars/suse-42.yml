@@ -26,6 +26,12 @@ neutron_ovs_distro_packages:
 
 neutron_ovs_service_name: openvswitch
 
+neutron_ovn_northd_service_name: ovn-northd
+
+neutron_ovn_controller_service_name: ovn-controller
+
+neutron_ovs_socket_path: "/usr/local/var/run/openvswitch"
+
 neutron_ovs_nsh_required_packages:
   - openvswitch-switch
 
@@ -49,6 +55,15 @@ neutron_distro_packages:
   - python-keystoneclient
   - radvd
   - which
+
+neutron_ovn_distro_packages:
+   - openvswitch-ovn-common
+
+neutron_ovn_controller_distro_packages:
+  - openvswitch-ovn-host
+
+neutron_ovn_northd_distro_packages:
+  - openvswitch-ovn-central
 
 neutron_devel_distro_packages:
   - python-httplib2
