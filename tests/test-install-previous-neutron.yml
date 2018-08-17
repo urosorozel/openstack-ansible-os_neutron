@@ -62,9 +62,6 @@
         name: iptables
         state: present
 
-    - name: Add iptables rule for communication w/ metadata agent
-      command: /sbin/iptables -t mangle -A POSTROUTING -p tcp --sport 80 -j CHECKSUM --checksum-fill
-
 - name: Deploy neutron
   hosts: neutron_all
   user: root
