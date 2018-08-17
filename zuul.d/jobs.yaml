@@ -21,6 +21,20 @@
       tox_env: func_ovs
 
 - job:
+    name: openstack-ansible-ovn-ubuntu-xenial-nv
+    parent: openstack-ansible-functional-ubuntu-xenial
+    voting: false
+    vars:
+      tox_env: func_ovn
+
+- job:
+    name: openstack-ansible-ovn-centos-7-nv
+    parent: openstack-ansible-functional-centos-7
+    voting: false
+    vars:
+      tox_env: func_ovn
+
+- job:
     name: openstack-ansible-calico-ubuntu-xenial-nv
     parent: openstack-ansible-functional-ubuntu-xenial
     voting: false

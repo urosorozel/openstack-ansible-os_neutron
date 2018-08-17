@@ -43,8 +43,18 @@ neutron_package_list: |-
   {% if neutron_services['neutron-metadata-agent']['group'] in group_names %}
   {% set _ = packages.extend(neutron_metadata_agent_distro_packages) %}
   {% endif %}
+  {% if (neutron_services['neutron-ovn-northd']['group'] in group_names and neutron_plugin_type == 'ml2.ovn')
+     or (neutron_services['neutron-ovn-controller']['group'] in group_names and neutron_plugin_type == 'ml2.ovn') %}
+  {% set _ = packages.extend(neutron_ovn_distro_packages) %}
+  {% endif %}
+  {% if (neutron_services['neutron-ovn-northd']['group'] in group_names and neutron_plugin_type == 'ml2.ovn') %}
+  {% set _ = packages.extend(neutron_ovn_northd_distro_packages) %}
+  {% endif %}
+  {% if (neutron_services['neutron-ovn-controller']['group'] in group_names and neutron_plugin_type == 'ml2.ovn') %}
+  {% set _ = packages.extend(neutron_ovn_controller_distro_packages) %}
+  {% endif %}
   {% if neutron_developer_mode | bool %}
-  {%   set _ = packages.extend(neutron_developer_mode_distro_packages) %}
+  {% set _ = packages.extend(neutron_developer_mode_distro_packages) %}
   {% endif %}
   {% set _ = packages.extend(neutron_devel_distro_packages) %}
   {{ packages }}
@@ -96,6 +106,9 @@ neutron_proprietary_nuage_pip_packages:
   - nuage-openstack-neutronclient
   - nuagenetlib
 
+neutron_optional_ovn_pip_packages:
+  - networking-ovn
+
 neutron_developer_constraints:
   - "git+{{ neutron_git_repo }}@{{ neutron_git_install_branch }}#egg=neutron"
   - "git+{{ neutron_fwaas_git_repo }}@{{ neutron_fwaas_git_install_branch }}#egg=neutron-fwaas"
@@ -108,6 +121,7 @@ neutron_developer_constraints:
   - "git+{{ networking_sfc_git_repo }}@{{ networking_sfc_git_install_branch }}#egg=networking-sfc"
   - "git+{{ networking_bgpvpn_git_repo }}@{{ networking_bgpvpn_git_install_branch }}#egg=networking-bgpvpn"
   - "git+{{ openstack_ceilometer_git_repo }}@{{ openstack_ceilometer_git_install_branch }}#egg=ceilometer"
+  - "git+{{ networking_ovn_git_repo }}@{{ networking_ovn_git_install_branch }}#egg=networking-ovn"
 
 neutron_bin: "/openstack/venvs/neutron-{{ neutron_venv_tag }}/bin"
 
