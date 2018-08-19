@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: test-neutron-resources-upgrade.yml
+- import_playbook: test-neutron-resources-upgrade.yml
 
-- include: common/test-install-neutron.yml
+- import_playbook: common/test-install-neutron.yml
 
-- include: test-neutron-resources-results.yml
+- import_playbook: test-neutron-resources-results.yml
