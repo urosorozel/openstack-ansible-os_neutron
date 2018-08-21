@@ -13,10 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: common/setting-nodepool-variables.yml
+- import_playbook: common/setting-nodepool-variables.yml
 
 # Ensure the repo is setup for previous version
-- include: common/previous/test-repo-setup.yml
+- import_playbook: common/previous/test-repo-setup.yml
 
 - name: Make /lib/modules accessible on neutron_agent containers
   hosts: neutron_agent
@@ -85,11 +85,11 @@
       when:
         - inventory_hostname in groups['neutron_all']
         - ansible_pkg_mgr in ['yum', 'dnf']
-    - include: common/ensure-rabbitmq.yml
+    - include_tasks: common/ensure-rabbitmq.yml
       vhost_name: "{{ neutron_rabbitmq_vhost }}"
       user_name: "{{ neutron_rabbitmq_userid }}"
       user_password: "{{ neutron_rabbitmq_password }}"
-    - include: common/create-grant-db.yml
+    - include_tasks: common/create-grant-db.yml
       db_name: "{{ neutron_galera_database }}"
       db_password: "{{ neutron_container_mysql_password }}"
   roles:

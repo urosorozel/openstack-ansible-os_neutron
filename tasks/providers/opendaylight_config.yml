@@ -40,5 +40,5 @@
     - opendaylight-install
     - opendaylight-pip-packages
 
-- include: setup_ovs_opendaylight.yml
+- include_tasks: setup_ovs_opendaylight.yml
   when: neutron_services['neutron-server']['group'] not in group_names

@@ -14,18 +14,18 @@
 # limitations under the License.
 
 # Setup the user ssh keys, host and containers
-- include: common/test-setup-host.yml
+- import_playbook: common/test-setup-host.yml
 
 # Install haproxy
-- include: common/test-install-haproxy.yml
+- import_playbook: common/test-install-haproxy.yml
 
 # Install RabbitMQ/MariaDB
-- include: common/test-install-infra.yml
+- import_playbook: common/test-install-infra.yml
 
 # Install etcd
-- include: common/test-install-etcd.yml
+- import_playbook: common/test-install-etcd.yml
   when:
     - groups['neutron_calico_dhcp_agent'] | length > 0
 
 # Install Keystone
-- include: common/test-install-keystone.yml
+- import_playbook: common/test-install-keystone.yml

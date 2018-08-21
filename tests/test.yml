@@ -14,26 +14,26 @@
 # limitations under the License.
 
 # Setup the user ssh keys, host and containers
-- include: common/test-setup-host.yml
+- import_playbook: common/test-setup-host.yml
 
 # Install haproxy
-- include: common/test-install-haproxy.yml
+- import_playbook: common/test-install-haproxy.yml
 
 # Install RabbitMQ/MariaDB
-- include: common/test-install-infra.yml
+- import_playbook: common/test-install-infra.yml
 
 # Install etcd
-- include: common/test-install-etcd.yml
+- import_playbook: common/test-install-etcd.yml
 
 # Install Keystone
-- include: common/test-install-keystone.yml
+- import_playbook: common/test-install-keystone.yml
 
 # Install Neutron
-- include: common/test-install-neutron.yml
+- import_playbook: common/test-install-neutron.yml
 
 # Install and execute tempest
-- include: common/test-install-tempest.yml
+- import_playbook: common/test-install-tempest.yml
 
-- include: test-calico-functional.yml
+- import_playbook: test-calico-functional.yml
 
-- include: test-dragonflow-functional.yml
+- import_playbook: test-dragonflow-functional.yml
