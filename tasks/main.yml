@@ -104,8 +104,8 @@
     name: systemd_service
     private: true
   vars:
-    systemd_user_name: "{{ service_var.systemd_user_name | default(neutron_system_user_name) }}"
-    systemd_group_name: "{{ service_var.systemd_group_name | default(neutron_system_group_name) }}"
+    systemd_user_name: "{{ neutron_system_user_name }}"
+    systemd_group_name: "{{ neutron_system_group_name }}"
     systemd_tempd_prefix: openstack
     systemd_slice_name: neutron
     systemd_lock_path: /var/lock/neutron
@@ -113,18 +113,21 @@
     systemd_BlockIOAccounting: true
     systemd_MemoryAccounting: true
     systemd_TasksAccounting: true
-    systemd_PrivateTmp: "{{ service_var.systemd_PrivateTmp | default(True) }}"
-    systemd_services:
-      - service_name: "{{ service_var.service_name }}"
-        enabled: yes
-        state: started
-        service_type: "{{ service_var.service_type | default(systemd_default_service_type) }}"
-        execstarts: "{{ service_var.execstarts }}"
-        execreloads: "{{ service_var.execreloads | default([]) }}"
-        config_overrides: "{{ service_var.init_config_overrides }}"
-  with_items: "{{ filtered_neutron_services }}"
-  loop_control:
-    loop_var: service_var
+    systemd_services: |-
+      {%- set services = [] -%}
+      {%- for service in filtered_neutron_services -%}
+      {%-   set _ = service.update(
+              {
+                'enabled': 'yes',
+                'state': 'started',
+                'config_overrides': service.init_config_overrides
+              }
+            )
+      -%}
+      {%-   set _ = service.pop('init_config_overrides') -%}
+      {%-   set _ = services.append(service) -%}
+      {%- endfor %}
+      {{- services -}}
   tags:
     - neutron-config
     - systemd-service
