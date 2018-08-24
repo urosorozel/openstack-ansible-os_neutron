@@ -39,7 +39,7 @@
   include_role:
     name: opendaylight
   vars:
-    install_method: "{{ opendaylight_install_method }}"
+    odl_install_method: "{{ opendaylight_install_method }}"
     extra_features: "{{ opendaylight_extra_features }}"
     nb_rest_port: "{{ opendaylight_port | default('8180') }}"
   when:
