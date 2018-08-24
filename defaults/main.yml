@@ -380,13 +380,6 @@ neutron_dnsmasq_lease_max: 16777216
 # neutron_metadata_workers: 16
 neutron_metadata_backlog: 4096
 
-# When running in an AIO, we need to implement an iptables rule in any
-# neutron_agent containers to that ensure instances can communicate with
-# the neutron metadata service. This is necessary because in an AIO
-# environment there are no physical interfaces involved in instance ->
-# metadata requests, and this results in the checksums being incorrect.
-neutron_metadata_checksum_fix: False
-
 # The protocol used by neutron to access the nova metadata service.
 nova_metadata_protocol: http
 
