@@ -72,10 +72,6 @@
         ('need_db_expand' not in ansible_local['openstack_ansible']['neutron']) or
         ('need_db_contract' not in ansible_local['openstack_ansible']['neutron'])
 
-- include: neutron_selinux.yml
-  when:
-    - ansible_selinux.status == "enabled"
-
 - name: Ensure Open vSwitch service is started and enabled
   service:
     name: "{{ neutron_ovs_service_name }}"
