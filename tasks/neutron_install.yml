@@ -187,12 +187,6 @@
     option: venv_tag
     value: "{{ neutron_venv_tag }}"
 
-- include: neutron_selinux.yml
-  when:
-    - ansible_pkg_mgr in ['dnf', 'yum']
-    - ansible_selinux.status is defined
-    - ansible_selinux.status == "enabled"
-
 - name: Ensure Open vSwitch service is started and enabled
   service:
     name: "{{ neutron_ovs_service_name }}"
