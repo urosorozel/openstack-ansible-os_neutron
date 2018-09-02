@@ -24,7 +24,9 @@
   until: _stop is success
   retries: 5
   delay: 2
-  listen: "Restart neutron services"
+  listen:
+    - "Restart neutron services"
+    - "venv changed"
 
 # NOTE(cloudnull):
 # When installing or upgrading it is possible that an old metadata proxy process will not
@@ -43,7 +45,9 @@
       fi
     done
   when: "'neutron-metadata-agent' in (filtered_neutron_services | map(attribute='service_key') | list)"
-  listen: "Restart neutron services"
+  listen:
+    - "Restart neutron services"
+    - "venv changed"
 
 - name: Perform a DB contract
   command: "{{ neutron_bin }}/neutron-db-manage upgrade --contract"
@@ -54,7 +58,9 @@
     - "ansible_local['openstack_ansible']['neutron']['need_db_contract'] | bool"
     - "neutron_services['neutron-server']['group'] in group_names"
     - "inventory_hostname == ((groups[neutron_services['neutron-server']['group']] | intersect(ansible_play_hosts)) | list)[0]"
-  listen: "Restart neutron services"
+  listen:
+    - "Restart neutron services"
+    - "venv changed"
 
 - name: Start services
   service:
@@ -67,4 +73,6 @@
   until: _start is success
   retries: 5
   delay: 2
-  listen: "Restart neutron services"
+  listen:
+    - "Restart neutron services"
+    - "venv changed"

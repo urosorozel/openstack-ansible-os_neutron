@@ -79,8 +79,19 @@ networking_ovn_git_install_branch: master
 # Developer mode
 neutron_developer_mode: false
 
+# TODO(odyssey4me):
+# This can be simplified once all the roles are using
+# python_venv_build. We can then switch to using a
+# set of constraints in pip.conf inside the venv,
+# perhaps prepared by giving a giving a list of
+# constraints to the role.
+neutron_pip_install_args: >-
+  {{ neutron_developer_mode | ternary(pip_install_developer_constraints | default('--constraint /opt/developer-pip-constraints.txt'), '') }}
+  {{ (pip_install_upper_constraints is defined) | ternary('--constraint ' + pip_install_upper_constraints | default(''), '') }}
+  {{ pip_install_options | default('') }}
+
 # Name of the virtual env to deploy into
-neutron_venv_tag: untagged
+neutron_venv_tag: "{{ venv_tag | default('untagged') }}"
 
 # venv_download, even when true, will use the fallback method of building the
 # venv from scratch if the venv download fails.

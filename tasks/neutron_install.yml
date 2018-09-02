@@ -61,11 +61,7 @@
       state: "True"
     - name: "need_db_contract"
       state: "True"
-  when: (neutron_install_method == 'source' and
-         ((neutron_get_venv | changed) or
-          (neutron_venv_dir | changed) or
-          (install_optional_packages | changed))) or
-        (install_packages | changed) or
+  when: (install_packages | changed) or
         (ansible_local is not defined) or
         ('openstack_ansible' not in ansible_local) or
         ('neutron' not in ansible_local['openstack_ansible']) or
