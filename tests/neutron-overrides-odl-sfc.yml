@@ -36,10 +36,10 @@ tempest_run: yes
 tempest_plugins:
   - name: neutron
     repo: https://git.openstack.org/openstack/neutron
-    branch: master
+    branch: 'stable/rocky'
   - name: neutron-plugins
     repo: https://git.openstack.org/openstack/neutron-tempest-plugin
-    branch: master
+    branch: '0.2.0'
 
 tempest_test_whitelist:
   - "neutron_tempest_plugin.api.test_networks*"
