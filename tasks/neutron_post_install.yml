@@ -63,6 +63,16 @@
   notify:
     - Restart neutron services
 
+- name: Place api-paste.ini to the correct path in RedHat
+  file:
+    src: "/usr/share/neutron/api-paste.ini"
+    dest: "{{ neutron_conf_dir }}/api-paste.ini"
+    owner: "root"
+    group: "{{ neutron_system_group_name }}"
+    mode: "0640"
+    state: link
+  when: neutron_install_method == 'distro' and ansible_os_family == 'RedHat'
+
 - name: Preserve original configuration file(s)
   command: "cp {{ item.target_f }} {{ item.target_f }}.original"
   args:
