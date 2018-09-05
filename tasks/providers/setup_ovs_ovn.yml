@@ -18,6 +18,9 @@
   command: "ovs-vsctl set open_vswitch . external-ids:hostname='{{ inventory_hostname }}'"
   tags:
    - ovn-config
+  when:
+    - (neutron_services['neutron-ovn-northd']['group'] in group_names) or
+      (neutron_services['neutron-ovn-controller']['group'] in group_names)
 
 - name: Create ovsdb-server Listener
   command: "ovs-vsctl set-manager ptcp:6640"
