@@ -20,17 +20,18 @@
       - release-notes-jobs
     check:
       jobs:
-        - openstack-ansible-upgrade-ubuntu-xenial
-        - openstack-ansible-ovs-ubuntu-xenial-nv
-        - openstack-ansible-ovn-ubuntu-xenial-nv
-        - openstack-ansible-ovn-centos-7-nv
-        - openstack-ansible-calico-ubuntu-xenial-nv
-        - openstack-ansible-dragonflow-ubuntu-xenial-nv
-        - openstack-ansible-opendaylight-ubuntu-xenial-nv
+        - openstack-ansible-ovs-ubuntu-xenial
+        - openstack-ansible-ovn-ubuntu-xenial
+        - openstack-ansible-ovn-centos-7
+        - openstack-ansible-calico-ubuntu-xenial:
+            voting: false
+        - openstack-ansible-dragonflow-ubuntu-xenial:
+            voting: false
+        - openstack-ansible-opendaylight-ubuntu-xenial
         - openstack-ansible-ovs-nsh-ubuntu-xenial
-        - openstack-ansible-neutron-ssl-nv
         - openstack-ansible-odl-sfc-ubuntu-xenial
-        - openstack-ansible-opendaylight-bgpvpn-ubuntu-xenial
+        - openstack-ansible-opendaylight-bgpvpn-ubuntu-xenial:
+            voting: false
         - openstack-ansible-functional-distro_install-ubuntu-xenial
           # NOTE(hwoarang) Centos7 is having some troubles with repo dependencies
           # so disabling until it's investigated.
@@ -39,6 +40,11 @@
         - openstack-ansible-functional-distro_install-opensuse-423
     gate:
       jobs:
-        - openstack-ansible-upgrade-ubuntu-xenial
+        - openstack-ansible-ovs-ubuntu-xenial
+        - openstack-ansible-ovn-ubuntu-xenial
+        - openstack-ansible-ovn-centos-7
+        - openstack-ansible-opendaylight-ubuntu-xenial
+        - openstack-ansible-ovs-nsh-ubuntu-xenial
+        - openstack-ansible-odl-sfc-ubuntu-xenial
         - openstack-ansible-functional-distro_install-ubuntu-xenial
         - openstack-ansible-functional-distro_install-opensuse-423
