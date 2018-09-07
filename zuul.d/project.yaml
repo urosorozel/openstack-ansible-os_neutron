@@ -23,22 +23,26 @@
         - openstack-ansible-functional-centos-7
         - openstack-ansible-functional-opensuse-423
         - openstack-ansible-functional-ubuntu-xenial
-        - openstack-ansible-upgrade-ubuntu-xenial
-        - openstack-ansible-ovs-ubuntu-xenial-nv
-        - openstack-ansible-calico-ubuntu-xenial-nv
-        - openstack-ansible-dragonflow-ubuntu-xenial-nv
-        - openstack-ansible-opendaylight-ubuntu-xenial-nv
+        - openstack-ansible-ovs-ubuntu-xenial
+        - openstack-ansible-calico-ubuntu-xenial:
+            voting: false
+        - openstack-ansible-dragonflow-ubuntu-xenial:
+            voting: false
+        - openstack-ansible-opendaylight-ubuntu-xenial
         - openstack-ansible-ovs-nsh-ubuntu-xenial
-        - openstack-ansible-neutron-ssl-nv
         - openstack-ansible-odl-sfc-ubuntu-xenial
-        - openstack-ansible-opendaylight-bgpvpn-ubuntu-xenial
+        - openstack-ansible-opendaylight-bgpvpn-ubuntu-xenial:
+            voting: false
     experimental:
       jobs:
         - openstack-ansible-integrated-deploy-aio
     gate:
       jobs:
         - openstack-ansible-linters
+        - openstack-ansible-ovs-ubuntu-xenial
+        - openstack-ansible-opendaylight-ubuntu-xenial
+        - openstack-ansible-ovs-nsh-ubuntu-xenial
+        - openstack-ansible-odl-sfc-ubuntu-xenial
         - openstack-ansible-functional-centos-7
         - openstack-ansible-functional-opensuse-423
         - openstack-ansible-functional-ubuntu-xenial
-        - openstack-ansible-upgrade-ubuntu-xenial
