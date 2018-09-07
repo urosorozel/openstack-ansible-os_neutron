@@ -14,29 +14,25 @@
 # limitations under the License.
 
 - job:
-    name: openstack-ansible-ovs-ubuntu-xenial-nv
+    name: openstack-ansible-ovs-ubuntu-xenial
     parent: openstack-ansible-functional-ubuntu-xenial
-    voting: false
     vars:
-      tox_env: func_ovs
+      tox_env: ovs
 
 - job:
-    name: openstack-ansible-calico-ubuntu-xenial-nv
+    name: openstack-ansible-calico-ubuntu-xenial
     parent: openstack-ansible-functional-ubuntu-xenial
-    voting: false
     vars:
       tox_env: calico
 
 - job:
-    name: openstack-ansible-dragonflow-ubuntu-xenial-nv
+    name: openstack-ansible-dragonflow-ubuntu-xenial
     parent: openstack-ansible-functional-ubuntu-xenial
-    voting: false
     vars:
       tox_env: dragonflow
 
 - job:
-    name: openstack-ansible-opendaylight-ubuntu-xenial-nv
+    name: openstack-ansible-opendaylight-ubuntu-xenial
     parent: openstack-ansible-functional-ubuntu-xenial
-    voting: false
     vars:
       tox_env: opendaylight
