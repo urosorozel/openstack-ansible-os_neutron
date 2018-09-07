@@ -20,15 +20,14 @@
     check:
       jobs:
         - openstack-ansible-linters
-        - openstack-ansible-functional-centos-7-nv
+        - openstack-ansible-functional-centos-7:
+            voting: false
         - openstack-ansible-functional-ubuntu-xenial
-        # TODO(odyssey4me):
-        # Return this once the non-voting standard
-        # test is established in the tests repo.
-        #- openstack-ansible-upgrade-ubuntu-xenial-nv
-        - openstack-ansible-ovs-ubuntu-xenial-nv
-        - openstack-ansible-calico-ubuntu-xenial-nv
-        - openstack-ansible-dragonflow-ubuntu-xenial-nv
+        - openstack-ansible-ovs-ubuntu-xenial
+        - openstack-ansible-calico-ubuntu-xenial:
+            voting: false
+        - openstack-ansible-dragonflow-ubuntu-xenial:
+            voting: false
     gate:
       jobs:
         - openstack-ansible-linters
