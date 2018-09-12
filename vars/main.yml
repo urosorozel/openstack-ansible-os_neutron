@@ -46,6 +46,9 @@ neutron_pip_packages:
   - python-novaclient
   - repoze.lru
 
+neutron_optional_oslomsg_amqp1_pip_packages:
+  - oslo.messaging[amqp1]
+
 neutron_optional_bgp_pip_packages:
   - neutron_dynamic_routing
 
