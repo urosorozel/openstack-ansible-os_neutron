@@ -40,7 +40,6 @@ galaxy_info:
 dependencies:
   - pip_install
   - apt_package_pinning
-  - galera_client
   - openstack_openrc
   - role: etcd
     etcd_install_type: proxy
