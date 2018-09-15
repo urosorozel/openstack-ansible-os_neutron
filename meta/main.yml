@@ -37,5 +37,4 @@ galaxy_info:
     - neutron
     - development
     - openstack
-dependencies:
-  - galera_client
+dependencies: []
