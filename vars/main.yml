@@ -71,6 +71,7 @@ neutron_optional_dragonflow_pip_packages:
 
 neutron_optional_opendaylight_pip_packages:
   - networking-odl
+  - ceilometer
   - networking-bgpvpn
 
 neutron_optional_opendaylight_sfc_pip_packages:
