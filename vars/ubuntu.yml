@@ -72,7 +72,6 @@ neutron_devel_distro_packages:
 
 neutron_service_distro_packages:
   - python-cliff
-  - python-keystonemiddleware
   - neutron-server
   - neutron-dhcp-agent
   - neutron-l2gateway-agent

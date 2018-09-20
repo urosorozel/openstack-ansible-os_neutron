@@ -59,7 +59,6 @@ neutron_devel_distro_packages:
 
 neutron_service_distro_packages:
   - python-cliff
-  - python-keystonemiddleware
   - openstack-neutron
   - openstack-neutron-ml2
   - openstack-neutron-macvtap-agent
