@@ -42,7 +42,6 @@ dependencies:
     apt_pinned_packages: "{{ ovs_nsh_support | ternary(ovs_nsh_apt_pinned_packages, omit) }}"
     when:
       - ansible_pkg_mgr == 'apt'
-  - galera_client
   - openstack_openrc
   - role: etcd
     etcd_install_type: proxy
