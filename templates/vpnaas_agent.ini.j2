@@ -1,9 +1,0 @@
-# {{ ansible_managed }}
-
-[DEFAULT]
-external_network_bridge = {{ neutron_external_network_bridge }}
-
-interface_driver = {{ neutron_plugins[neutron_plugin_type].driver_interface }}
-
-[vpnagent]
-vpn_device_driver = {{ neutron_driver_vpnaas }}
