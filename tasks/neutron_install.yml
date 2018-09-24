@@ -74,3 +74,31 @@
     state: started
     enabled: yes
   when: neutron_needs_openvswitch | bool
+
+# NOTE(hwoarang) contains may share the same physical host so we only
+# need to execute the apparmor configuration once per physical host.
+- name: Record the first container on each physical host
+  delegate_to: 'localhost'
+  run_once: True
+  set_fact:
+    neutron_apparmor_hosts: |
+      {%- set apparmor_hosts = [] -%}
+      {%- set physical_hosts = [] -%}
+      {%- for host in groups['all'] -%}
+      {%-   if hostvars[host]['physical_host'] is defined -%}
+      {%-     set phost = hostvars[host]['physical_host'] -%}
+      {%-     if phost not in physical_hosts -%}
+      {%-       set _ = apparmor_hosts.append(host) -%}
+      {%-       set _ = physical_hosts.append(phost) -%}
+      {%-     endif -%}
+      {%-   else -%}
+      {%-     set _ = apparmor_hosts.append('localhost') -%}
+      {%-   endif -%}
+      {%- endfor -%}
+      {{ apparmor_hosts | unique }}
+  when: ansible_pkg_mgr in ['apt', 'zypper']
+
+- include_tasks: neutron_apparmor.yml
+  when:
+    - ansible_pkg_mgr in ['apt', 'zypper']
+    - inventory_hostname in neutron_apparmor_hosts

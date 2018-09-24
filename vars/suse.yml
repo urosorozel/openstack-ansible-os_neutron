@@ -42,6 +42,11 @@ neutron_repos:
     auto_import_keys: yes
     priority: 98
 
+neutron_apparmor_distro_packages:
+  - apparmor-parser
+  - apparmor-profiles
+  - apparmor-utils
+
 neutron_distro_packages:
   - conntrack-tools
   - dnsmasq
