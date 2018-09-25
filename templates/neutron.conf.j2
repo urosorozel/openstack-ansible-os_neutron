@@ -275,8 +275,8 @@ lock_path = {{ neutron_lock_path }}
 {% if neutron_services['neutron-server']['group'] in group_names and 'networking_sfc.services.sfc.plugin.SfcPlugin' in neutron_plugin_base %}
 # ODL-SFC
 [sfc]
-drivers = odl
+drivers = odl_v2
 
 [flowclassifier]
-drivers = odl
+drivers = odl_v2
 {% endif %}
