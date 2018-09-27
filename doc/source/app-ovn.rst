@@ -36,12 +36,13 @@ Prerequisites
 
 * Open vSwitch >= 2.9.0
 
-* Networking-ovn at time of writing requires neutron-lib>=1.17.0. The overrides
-described here will ensure that version is installed.
+* Networking-ovn at time of writing requires neutron-lib>=1.17.0. The
+  overrides described here will ensure that version is installed.
 
-* A successful deployment of OVN requires a dedicated network interface be
-attached to the OVS provider bridge. This is not handled automatially and
-may require changes to the network interface configuration file.
+* A successful deployment of OVN requires a dedicated network
+  interface be attached to the OVS provider bridge. This is not
+  handled automatially and may require changes to the network
+  interface configuration file.
 
 OpenStack-Ansible user variables
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
