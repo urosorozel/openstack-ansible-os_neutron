@@ -22,6 +22,7 @@
     state: "present"
   delegate_to: "{{ neutron_db_setup_host }}"
   no_log: True
+  when: "inventory_hostname == ((groups[neutron_services['neutron-server']['group']]| intersect(ansible_play_hosts)) | list)[0]"
 
 - name: Grant access to the DB for the service
   mysql_user:
@@ -38,6 +39,7 @@
     - "localhost"
     - "%"
   no_log: True
+  when: "inventory_hostname == ((groups[neutron_services['neutron-server']['group']]| intersect(ansible_play_hosts)) | list)[0]"
 
 - name: Perform a DB expand
   command: "{{ neutron_bin }}/neutron-db-manage upgrade --expand"
