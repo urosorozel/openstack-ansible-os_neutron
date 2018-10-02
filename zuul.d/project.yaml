@@ -38,6 +38,7 @@
         - openstack-ansible-functional-distro_install-centos-7:
             voting: false
         - openstack-ansible-functional-distro_install-opensuse-423
+        - openstack-ansible-functional-distro_install-opensuse-150
     gate:
       jobs:
         - openstack-ansible-ovs-ubuntu-xenial
@@ -48,3 +49,4 @@
         - openstack-ansible-odl-sfc-ubuntu-xenial
         - openstack-ansible-functional-distro_install-ubuntu-bionic
         - openstack-ansible-functional-distro_install-opensuse-423
+        - openstack-ansible-functional-distro_install-opensuse-150
