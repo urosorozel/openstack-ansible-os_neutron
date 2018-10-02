@@ -40,6 +40,11 @@ neutron_ovs_nsh_required_packages:
 ## APT Cache options
 cache_timeout: 600
 
+neutron_apparmor_distro_packages:
+  - apparmor
+  - apparmor-profiles
+  - apparmor-utils
+
 neutron_distro_packages:
   - conntrack
   - dnsmasq-base
