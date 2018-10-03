@@ -402,6 +402,9 @@ neutron_dnsmasq_dns_servers: ""
 # Limit number of leases to prevent a denial-of-service.
 neutron_dnsmasq_lease_max: 16777216
 
+# Specify if dnsmasq should send a route to metadata server through DHCP 121 message to VM
+neutron_dnsmasq_force_metadata: False
+
 ###
 ### Metadata Agent Plugin Configuration
 ###
