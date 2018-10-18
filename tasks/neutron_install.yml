@@ -84,7 +84,7 @@
     neutron_apparmor_hosts: |
       {%- set apparmor_hosts = [] -%}
       {%- set physical_hosts = [] -%}
-      {%- for host in groups['all'] -%}
+      {%- for host in groups[neutron_role_project_group] -%}
       {%-   if hostvars[host]['physical_host'] is defined -%}
       {%-     set phost = hostvars[host]['physical_host'] -%}
       {%-     if phost not in physical_hosts -%}
