@@ -68,11 +68,9 @@ neutron_service_distro_packages:
 
 neutron_optional_ovs_distro_packages:
   - neutron-openvswitch-agent
-  - neutron-plugin-openvswitch-agent
 
 neutron_optional_lxb_distro_packages:
   - neutron-linuxbridge-agent
-  - neutron-plugin-linuxbridge-agent
 
 neutron_optional_fwaas_distro_packages:
   - python-neutron-fwaas
