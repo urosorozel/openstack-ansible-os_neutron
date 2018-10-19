@@ -17,6 +17,7 @@
 - name: Setup External Network Provider Bridge
   openvswitch_bridge:
     bridge: "{{ neutron_provider_networks.network_mappings.split(':')[1] }}"
+    fail_mode: secure
     state: present
   when:
     - neutron_services['neutron-l3-agent']['group'] in group_names
