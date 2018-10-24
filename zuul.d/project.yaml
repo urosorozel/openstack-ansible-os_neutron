@@ -18,6 +18,7 @@
       - check-requirements
       - publish-openstack-docs-pti
       - release-notes-jobs-python3
+      - openstack-ansible-role-distro_install-jobs
     check:
       jobs:
         - openstack-ansible-ovs-ubuntu-xenial
@@ -32,13 +33,6 @@
         - openstack-ansible-odl-sfc-ubuntu-xenial
         - openstack-ansible-opendaylight-bgpvpn-ubuntu-xenial:
             voting: false
-        - openstack-ansible-functional-distro_install-ubuntu-bionic
-          # NOTE(hwoarang) Centos7 is having some troubles with repo dependencies
-          # so disabling until it's investigated.
-        - openstack-ansible-functional-distro_install-centos-7:
-            voting: false
-        - openstack-ansible-functional-distro_install-opensuse-423
-        - openstack-ansible-functional-distro_install-opensuse-150
     gate:
       jobs:
         - openstack-ansible-ovs-ubuntu-xenial
@@ -47,6 +41,3 @@
         - openstack-ansible-opendaylight-ubuntu-xenial
         - openstack-ansible-ovs-nsh-ubuntu-xenial
         - openstack-ansible-odl-sfc-ubuntu-xenial
-        - openstack-ansible-functional-distro_install-ubuntu-bionic
-        - openstack-ansible-functional-distro_install-opensuse-423
-        - openstack-ansible-functional-distro_install-opensuse-150
