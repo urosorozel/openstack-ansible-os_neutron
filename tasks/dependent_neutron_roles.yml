@@ -27,11 +27,10 @@
   vars:
     etcd_install_type: proxy
   when:
-    - "neutron_plugin_type in ['ml2.calico', 'ml2.dragonflow']"
+    - "neutron_plugin_type in ['ml2.calico']"
     - "group_names | intersect([
          neutron_services['calico-dhcp-agent']['group'],
          neutron_services['calico-felix']['group'],
-         neutron_services['dragonflow-controller-agent']['group'],
          neutron_services['neutron-server']['group']
        ]) | length > 0"
 

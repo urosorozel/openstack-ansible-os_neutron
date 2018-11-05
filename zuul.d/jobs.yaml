@@ -38,12 +38,6 @@
       tox_env: calico
 
 - job:
-    name: openstack-ansible-dragonflow-ubuntu-xenial
-    parent: openstack-ansible-functional-ubuntu-xenial
-    vars:
-      tox_env: dragonflow
-
-- job:
     name: openstack-ansible-opendaylight-ubuntu-xenial
     parent: openstack-ansible-functional-ubuntu-xenial
     vars:

@@ -63,8 +63,6 @@ neutron_dynamic_routing_git_repo: https://git.openstack.org/openstack/neutron-dy
 neutron_dynamic_routing_git_install_branch: master
 networking_calico_git_repo: https://git.openstack.org/openstack/networking-calico
 networking_calico_git_install_branch: master
-dragonflow_git_repo: https://git.openstack.org/openstack/dragonflow
-dragonflow_git_install_branch: master
 networking_odl_git_repo: https://git.openstack.org/openstack/networking-odl
 networking_odl_git_install_branch: master
 networking_sfc_git_repo: https://git.openstack.org/openstack/networking-sfc
@@ -116,7 +114,7 @@ neutron_agent_down_time: 120
 neutron_agent_polling_interval: 5
 neutron_report_interval: "{{ neutron_agent_down_time | int / 2 | int }}"
 
-# TODO(evrardjp): Remove this when vpnaas/Dragonflow don't use it anymore.
+# TODO(evrardjp): Remove this when vpnaas does not use it anymore.
 # This was deprecated in Pike cycle.
 neutron_external_network_bridge: ""
 
@@ -159,10 +157,6 @@ neutron_calico_felix_ini_overrides: {}
 neutron_calico_felix_init_overrides: {}
 neutron_dhcp_agent_ini_overrides: {}
 neutron_dhcp_agent_init_overrides: {}
-neutron_dragonflow_controller_agent_init_overrides: {}
-neutron_dragonflow_ini_overrides: {}
-neutron_dragonflow_l3_agent_init_overrides: {}
-neutron_dragonflow_pubsub_agent_init_overrides: {}
 neutron_l3_agent_ini_overrides: {}
 neutron_l3_agent_init_overrides: {}
 neutron_lbaas_agent_ini_overrides: {}
@@ -441,10 +435,6 @@ neutron_octavia_proxy_plugin: False
 neutron_driver_vpnaas: neutron_vpnaas.services.vpn.device_drivers.strongswan_ipsec.StrongSwanDriver
 neutron_vpnaas_service_provider: VPN:strongswan:neutron_vpnaas.services.vpn.service_drivers.ipsec.IPsecVPNDriver:default
 
-###
-### Dragonflow Configuration
-###
-
 # neutron_management_ip is used to configure the location (IP) of the
 # neutron-server
 neutron_management_ip: 127.0.0.1
@@ -454,22 +444,6 @@ calico_felix_url: "https://github.com/projectcalico/felix/releases/download/{{ c
 calico_felix_version: 2.3.0
 calico_felix_sha256: 6cc538d6d93d2b5e732841769f427ce61a4e7d9a6eedf4ca8d33c4df42cf6419
 calico_felix_validate_certs: yes
-
-# Database specific configuration
-dragonflow_remote_db_ip: 127.0.0.1 # etcd has local proxy installed
-dragonflow_remote_db_port: 4001
-dragonflow_port_status_notifier:
-dragonflow_apps:
-    - l2_app.L2App
-    - l3_proactive_app.L3ProactiveApp
-    - dhcp_app.DHCPApp
-    - dnat_app.DNATApp
-    - sg_app.SGApp
-    - portsec_app.PortSecApp
-dragonflow_ex_peer_patch_port: patch-int
-dragonflow_int_peer_patch_port: patch-ex
-dragonflow_external_network_bridge: br-ex
-dragonflow_publisher_bind_address: "*"
 
 # OVN Defaults
 neutron_ovn_northd_service_name: ovn-northd

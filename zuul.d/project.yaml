@@ -26,8 +26,6 @@
         - openstack-ansible-ovn-centos-7
         - openstack-ansible-calico-ubuntu-xenial:
             voting: false
-        - openstack-ansible-dragonflow-ubuntu-xenial:
-            voting: false
         - openstack-ansible-opendaylight-ubuntu-xenial
         - openstack-ansible-ovs-nsh-ubuntu-xenial
         - openstack-ansible-odl-sfc-ubuntu-xenial
