@@ -379,7 +379,10 @@ neutron_local_ip: 127.0.0.1
 ###
 
 # Set this option to "true" to enable legacy neutron L3HA tool support
-# TODO(cloudnull): Remove this in the Ocata cycle
+# This tool is useful to ensure any non-HA neutron entities
+# are re-scheduled if the agent managing them goes down.
+# It is also useful if the built-in HA capabilities cannot
+# be used in the environment for whatever reason.
 neutron_legacy_ha_tool_enabled: false
 
 # L3HA configuration options
