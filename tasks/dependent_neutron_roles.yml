@@ -25,7 +25,7 @@
   include_role:
     name: etcd
   vars:
-    etcd_install_type: proxy
+    etcd_install_type: gateway
   when:
     - "neutron_plugin_type in ['ml2.calico', 'ml2.dragonflow']"
     - "group_names | intersect([
@@ -34,6 +34,7 @@
          neutron_services['dragonflow-controller-agent']['group'],
          neutron_services['neutron-server']['group']
        ]) | length > 0"
+    - "'etcd' not in group_names"
 
 - name: Include ODL role
   include_role:

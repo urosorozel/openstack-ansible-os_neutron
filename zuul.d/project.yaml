@@ -21,8 +21,7 @@
     check:
       jobs:
         - openstack-ansible-ovs-ubuntu-xenial
-        - openstack-ansible-calico-ubuntu-xenial:
-            voting: false
+        - openstack-ansible-deploy-aio_metal_calico-ubuntu-xenial
         - openstack-ansible-dragonflow-ubuntu-xenial:
             voting: false
         - openstack-ansible-opendaylight-ubuntu-xenial
@@ -38,6 +37,7 @@
         - openstack-ansible-functional-distro_install-opensuse-423
     gate:
       jobs:
+        - openstack-ansible-deploy-aio_metal_calico-ubuntu-xenial
         - openstack-ansible-ovs-ubuntu-xenial
         - openstack-ansible-ovn-ubuntu-xenial
         - openstack-ansible-ovn-centos-7
