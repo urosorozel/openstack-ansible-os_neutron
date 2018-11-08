@@ -44,8 +44,9 @@ dependencies:
       - ansible_pkg_mgr == 'apt'
   - openstack_openrc
   - role: etcd
-    etcd_install_type: proxy
+    etcd_install_type: gateway
     when:
+      - "'etcd' not in group_names"
       - "neutron_plugin_type in ['ml2.calico', 'ml2.dragonflow']"
       - "group_names | intersect([
            neutron_services['calico-dhcp-agent']['group'],

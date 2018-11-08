@@ -21,11 +21,9 @@
       jobs:
         - openstack-ansible-linters
         - openstack-ansible-functional-centos-7
-        - openstack-ansible-functional-opensuse-423
         - openstack-ansible-functional-ubuntu-xenial
         - openstack-ansible-ovs-ubuntu-xenial
-        - openstack-ansible-calico-ubuntu-xenial:
-            voting: false
+        - openstack-ansible-deploy-aio_metal_calico-ubuntu-xenial
         - openstack-ansible-dragonflow-ubuntu-xenial:
             voting: false
         - openstack-ansible-opendaylight-ubuntu-xenial
@@ -39,10 +37,10 @@
     gate:
       jobs:
         - openstack-ansible-linters
+        - openstack-ansible-deploy-aio_metal_calico-ubuntu-xenial
         - openstack-ansible-ovs-ubuntu-xenial
         - openstack-ansible-opendaylight-ubuntu-xenial
         - openstack-ansible-ovs-nsh-ubuntu-xenial
         - openstack-ansible-odl-sfc-ubuntu-xenial
         - openstack-ansible-functional-centos-7
-        - openstack-ansible-functional-opensuse-423
         - openstack-ansible-functional-ubuntu-xenial

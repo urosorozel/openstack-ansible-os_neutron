@@ -20,10 +20,10 @@
       tox_env: ovs
 
 - job:
-    name: openstack-ansible-calico-ubuntu-xenial
-    parent: openstack-ansible-functional-ubuntu-xenial
+    name: openstack-ansible-deploy-aio_metal_calico-ubuntu-xenial
+    parent: openstack-ansible-deploy-aio_metal-ubuntu-xenial
     vars:
-      tox_env: calico
+      scenario: aio_metal_calico
 
 - job:
     name: openstack-ansible-dragonflow-ubuntu-xenial
