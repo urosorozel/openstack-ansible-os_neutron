@@ -20,7 +20,7 @@
     fail_mode: secure
     state: present
   when:
-    - neutron_services['neutron-l3-agent']['group'] in group_names
+    - neutron_services['neutron-openvswitch-agent']['group'] in group_names
     - neutron_plugin_type == 'ml2.ovs'
     - neutron_provider_networks.network_mappings is defined
 
@@ -30,7 +30,7 @@
     port: "{{ neutron_provider_networks.network_interface }}"
     state: present
   when:
-    - neutron_services['neutron-l3-agent']['group'] in group_names
+    - neutron_services['neutron-openvswitch-agent']['group'] in group_names
     - neutron_plugin_type == 'ml2.ovs'
     - neutron_provider_networks.network_mappings is defined
     - neutron_provider_networks.network_interface is defined
