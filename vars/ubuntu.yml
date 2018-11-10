@@ -99,6 +99,10 @@ neutron_metadata_agent_distro_packages:
 neutron_remove_distro_packages:
   - conntrackd
 
+neutron_oslomsg_amqp1_distro_packages:
+  - libsasl2-modules
+  - sasl2-bin
+
 neutron_lbaasv2_initscript_path: "/etc/init/neutron-lbaasv2-agent.conf"
 neutron_lbaasv2_agent_servicename: "neutron-lbaasv2-agent"
 _neutron_lbaasv2_user_group: nogroup
