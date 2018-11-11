@@ -131,8 +131,8 @@ here: `<http://www.opencloudblog.com/?p=240>`_
 OpenStack-Ansible user variables
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Set the following user variables in your
-``/etc/openstack_deploy/user_variables.yml``: *
+Create a group var file for your network hosts
+``/etc/openstack_deploy/group_vars/network_hosts``. It has to include:
 
 .. code-block:: yaml
 
@@ -140,7 +140,12 @@ Set the following user variables in your
   openstack_host_specific_kernel_modules:
     - name: "openvswitch"
       pattern: "CONFIG_OPENVSWITCH"
-      group: "network_hosts"
+
+
+Set the following user variables in your
+``/etc/openstack_deploy/user_variables.yml``: *
+
+.. code-block:: yaml
 
   ### neutron specific config
   neutron_plugin_type: ml2.ovs
