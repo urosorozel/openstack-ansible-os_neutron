@@ -49,6 +49,11 @@ agent_version = v2
 vpn_device_driver = {{ neutron_driver_vpnaas }}
 {% endif %}
 
+{% if neutron_port_forwarding|bool %}
+# Port Fowarding
+{% set _ = l3_agent_plugins.append("port_forwarding") %}
+{% endif %}
+
 {% if l3_agent_plugins|length > 0 %}
 [AGENT]
 extensions = {{ l3_agent_plugins | join(',') }}

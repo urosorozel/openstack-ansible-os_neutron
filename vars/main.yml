@@ -298,6 +298,12 @@ neutron_bgp_speaker_driver: neutron_dynamic_routing.services.bgp.agent.driver.ry
 neutron_bgp_router_id: "{{ neutron_local_ip }}"
 
 ###
+### port_forwarding
+###
+
+neutron_port_forwarding: "{{ ('port_forwarding' in neutron_plugin_base) | ternary('True', 'False') }}"
+
+###
 ### Services info
 ###
 
