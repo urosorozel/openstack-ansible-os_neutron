@@ -311,6 +311,7 @@ neutron_notifications_designate: notifications_designate
 #   - metering
 #   - qos
 #   - dns
+#   - port_forwarding
 neutron_plugin_base:
   - router
   - metering

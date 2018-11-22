@@ -310,6 +310,12 @@ dragonflow_pub_sub_multiproc_driver: zmq_pubsub_multiproc_driver
 dragonflow_pub_sub_multiproc_enabled: "{{ (dragonflow_pub_sub_multiproc_driver | default('', True)) | length > 0 }}"
 
 ###
+### port_forwarding
+###
+
+neutron_port_forwarding: "{{ ('port_forwarding' in neutron_plugin_base) | ternary('True', 'False') }}"
+
+###
 ### Services info
 ###
 
