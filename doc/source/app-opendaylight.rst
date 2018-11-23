@@ -18,7 +18,7 @@ reading that scenario to get some background. It is also recommended to be
 familiar with OpenDaylight and networking-odl projects and their configuration.
 
 * `Scenario: Open vSwitch <app-openvswitch.html>`_
-* `OpenDaylight SDN Controller <http://docs.opendaylight.org/en/latest/>`_
+* `OpenDaylight SDN Controller <https://docs.opendaylight.org/en/latest/>`_
 * `Networking-odl <https://github.com/openstack/networking-odl>`_
 
 Prerequisites
