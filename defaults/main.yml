@@ -92,6 +92,15 @@ neutron_dns_domain: "openstacklocal."
 # neutron_num_sync_threads: 4
 
 ###
+### DNSMasq configuration
+###
+# Disable dnsmasq to resolve DNS via local resolv.conf.
+# When dnsmasq_dns_servers are not set,
+# and neutron_dnsmasq_noresolv is set to True, dnsmasq will reply with
+# empty respose on DNS requests.
+neutron_dnsmasq_noresolv: False
+
+###
 ### Tunable Overrides (Sorted alphabetically)
 ###
 
