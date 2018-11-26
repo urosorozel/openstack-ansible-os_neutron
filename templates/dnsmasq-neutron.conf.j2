@@ -4,3 +4,6 @@
 {{ key }}={{ value }}
 {% endfor %}
 user={{ neutron_system_user_name }}
+{% if neutron_dnsmasq_noresolv %}
+no-resolv
+{% endif %}
