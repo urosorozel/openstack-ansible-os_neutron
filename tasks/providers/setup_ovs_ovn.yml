@@ -15,7 +15,7 @@
 # limitations under the License.
 
 - name: Set openvswitch hostname
-  command: "ovs-vsctl set open_vswitch . external-ids:hostname='{{ inventory_hostname }}'"
+  command: "ovs-vsctl set open_vswitch . external-ids:hostname='{{ ansible_hostname }}'"
   tags:
    - ovn-config
   when:
