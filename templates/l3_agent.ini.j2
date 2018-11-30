@@ -50,7 +50,6 @@ vpn_device_driver = {{ neutron_driver_vpnaas }}
 {% endif %}
 
 {% if neutron_port_forwarding|bool %}
-# Port Fowarding
 {% set _ = l3_agent_plugins.append("port_forwarding") %}
 {% endif %}
 
