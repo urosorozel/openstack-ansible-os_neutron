@@ -115,7 +115,7 @@ VCS environment:
 #. On the Deployment host, add the following lines to the
    ``/etc/openstack_deploy/user_variables.yml`` file, replacing the
    *Local PyPi Mirror URL* with the link to the PyPi server hosting
-   the Nuage OpenStack Python packages in “.whl” format:
+   the Nuage OpenStack Python packages in ".whl" format:
 
    .. code-block:: yaml
 
