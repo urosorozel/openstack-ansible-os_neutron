@@ -29,6 +29,8 @@
         - openstack-ansible-opendaylight-ubuntu-xenial
         - openstack-ansible-ovs-nsh-ubuntu-xenial
         - openstack-ansible-odl-sfc-ubuntu-xenial
+        - openstack-ansible-ovs-sfc-ubuntu-xenial:
+            voting: false
         - openstack-ansible-opendaylight-bgpvpn-ubuntu-xenial:
             voting: false
     gate:

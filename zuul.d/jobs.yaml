@@ -56,6 +56,12 @@
       tox_env: odl-sfc
 
 - job:
+    name: openstack-ansible-ovs-sfc-ubuntu-xenial
+    parent: openstack-ansible-functional-ubuntu-xenial
+    vars:
+      tox_env: ovs-sfc
+
+- job:
     name: openstack-ansible-opendaylight-bgpvpn-ubuntu-xenial
     parent: openstack-ansible-functional-ubuntu-xenial
     vars:

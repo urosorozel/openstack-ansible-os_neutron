@@ -68,7 +68,7 @@ neutron_optional_opendaylight_pip_packages:
   - ceilometer
   - networking-bgpvpn
 
-neutron_optional_opendaylight_sfc_pip_packages:
+neutron_optional_sfc_pip_packages:
   - networking-sfc
 
 neutron_proprietary_nuage_pip_packages:
@@ -302,6 +302,12 @@ neutron_bgp_router_id: "{{ neutron_local_ip }}"
 ###
 
 neutron_port_forwarding: "{{ ('port_forwarding' in neutron_plugin_base) | ternary('True', 'False') }}"
+
+###
+### Service Function Chaining
+###
+
+neutron_sfc: "{{ ('networking_sfc.services.sfc.plugin.SfcPlugin' in neutron_plugin_base) | ternary('True', 'False') }}"
 
 ###
 ### Services info
