@@ -30,10 +30,10 @@ enable_vxlan = False
 {% if 'nova_compute' in group_names                                         %}
 {%   set _extensions = []                                                   %}
 {%   if 'ml2.sriov' in neutron_plugin_types                                 %}
-{%     set _ = _extensions.append['fdb']                                    %}
+{%     set _ = _extensions.append('fdb')                                    %}
 {%   endif                                                                  %}
 {%   if 'qos' in neutron_plugin_base                                        %}
-{%     set _ = _extensions.append['qos']                                    %}
+{%     set _ = _extensions.append('qos')                                    %}
 {%   endif                                                                  %}
 extensions = {{ _extensions | join(',') }}
 
