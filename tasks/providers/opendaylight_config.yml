@@ -17,7 +17,7 @@
   set_fact:
     neutron_optional_combined_pip_packages: |-
       {% set packages = neutron_optional_opendaylight_pip_packages %}
-      {% if 'networking_sfc.services.sfc.plugin.SfcPlugin' in neutron_plugin_base %}
+      {% if 'sfc' in neutron_plugin_base %}
       {% set _ = packages.extend(neutron_optional_sfc_pip_packages) %}
       {% endif %}
       {{ packages }}

@@ -115,8 +115,8 @@ The following config needs to be added to the above described
  neutron_plugin_base:
   - router
   - metering
-  - networking_sfc.services.flowclassifier.plugin.FlowClassifierPlugin
-  - networking_sfc.services.sfc.plugin.SfcPlugin
+  - flow_classifier
+  - sfc
 
 When using this configuration, networking-sfc will be deployed and SFC features
 will be activated in ODL. A SFC topology could be then set up through the

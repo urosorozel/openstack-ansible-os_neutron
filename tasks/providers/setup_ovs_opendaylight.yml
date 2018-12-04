@@ -48,5 +48,5 @@
 - name: Set the of-tunnel to true
   command: "ovs-vsctl set Open_vSwitch . external_ids:of-tunnel=true"
   when:
-    - neutron_plugin_base == 'networking_sfc.services.sfc.plugin.SfcPlugin'
+    - neutron_plugin_base == 'sfc'
 

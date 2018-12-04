@@ -55,8 +55,8 @@ Set the following user variables in your
   neutron_plugin_base:
    - router
    - metering
-   - networking_sfc.services.flowclassifier.plugin.FlowClassifierPlugin
-   - networking_sfc.services.sfc.plugin.SfcPlugin
+   - flow_classifier
+   - sfc
 
   # Typically this would be defined by the os-neutron-install
   # playbook. The provider_networks library would parse the
