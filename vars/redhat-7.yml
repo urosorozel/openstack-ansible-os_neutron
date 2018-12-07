@@ -50,6 +50,7 @@ neutron_ovn_distro_packages:
 
 neutron_ovn_controller_distro_packages:
   - openvswitch-ovn-host
+  - haproxy
 
 neutron_ovn_northd_distro_packages:
   - openvswitch-ovn-central
