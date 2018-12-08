@@ -12,13 +12,19 @@ using OVN with Open vSwitch, which replaces the agent-based model used by
 the aforementioned architectures. This document outlines how to set it up in
 your environment.
 
-The current implementation of OVN in OpenStack-Ansible should not be considered
-production-ready and makes the following architectural assumptions:
+.. warning::
+
+  The current implementation of OVN in OpenStack-Ansible is experimental
+  and not production ready.
+
+The following architectural assumptions have been made:
 
 * Each compute node will act as an OVN controller
 * Each compute node is eligible to serve as an OVN gateway node
 
-NOTE: Physical VTEP integration is not yet supported.
+.. note::
+
+  Physical VTEP integration is not supported.
 
 Recommended reading
 ~~~~~~~~~~~~~~~~~~~
@@ -28,16 +34,13 @@ reading that scenario to get some background. It is also recommended to be
 familiar with OVN and networking-ovn projects and their configuration.
 
 * `Scenario: Open vSwitch <app-openvswitch.html>`_
-* `OVN Architecture <http://www.openvswitch.org//support/dist-docs/ovn-architecture.7.html>`_
+* `OVN Architecture <http://www.openvswitch.org/support/dist-docs/ovn-architecture.7.html>`_
 * `Networking-ovn <https://github.com/openstack/networking-ovn>`_
 
 Prerequisites
 ~~~~~~~~~~~~~
 
-* Open vSwitch >= 2.9.0
-
-* Networking-ovn at time of writing requires neutron-lib>=1.17.0. The
-  overrides described here will ensure that version is installed.
+* Open vSwitch >= 2.10.0
 
 * A successful deployment of OVN requires a dedicated network
   interface be attached to the OVS provider bridge. This is not
@@ -57,6 +60,98 @@ Create a group var file for your network hosts
     - name: "openvswitch"
       pattern: "CONFIG_OPENVSWITCH"
 
+Copy the neutron environment overrides to
+/etc/openstack_deploy/env.d/neutron.yml to disable the creation of the
+neutron agents container and implement the neutron_ovn_northd_container
+hosts group containing all network nodes:
+
+.. code-block:: yaml
+
+  component_skel:
+    neutron_ovn_controller:
+      belongs_to:
+        - neutron_all
+    neutron_ovn_northd:
+      belongs_to:
+        - neutron_all
+
+  container_skel:
+    neutron_agents_container:
+      contains: {}
+    neutron_ovn_northd_container:
+      belongs_to:
+        - network_containers
+      contains:
+        - neutron_ovn_northd
+
+Copy the nova environment overrides to
+/etc/openstack_deploy/env.d/nova.yml to implement the
+neutron_ovn_controller hosts group containing all compute nodes:
+
+.. code-block:: yaml
+
+  nova_compute_container:
+    belongs_to:
+      - compute_containers
+      - kvm-compute_containers
+      - lxd-compute_containers
+      - qemu-compute_containers
+      - powervm-compute_containers
+    contains:
+      - neutron_ovn_controller
+      - nova_compute
+    properties:
+      is_metal: true
+
+Specify provider network definitions in your
+``/etc/openstack_deploy/openstack_user_config.yml`` that define
+one or more Neutron provider bridges and related configuration:
+
+.. note::
+
+  Bridges specified here will be created automatically. Only VLAN
+  network types are supported at this time.
+
+.. code-block:: yaml
+
+  - network:
+      container_bridge: "br-privatenet"
+      container_type: "veth"
+      type: "vlan"
+      range: "101:200,301:400"
+      net_name: "private"
+      group_binds:
+        - neutron_ovn_controller
+  - network:
+      container_bridge: "br-publicnet"
+      container_type: "veth"
+      type: "vlan"
+      range: "203:203,467:500"
+      net_name: "public"
+      group_binds:
+        - neutron_ovn_controller
+
+Specify an overlay network definition in your
+``/etc/openstack_deploy/openstack_user_config.yml`` that defines
+overlay network-related configuration:
+
+.. note::
+
+  The bridge name should correspond to a pre-created Linux bridge.
+  Only GENEVE overlay network types are supported at this time.
+
+.. code-block:: yaml
+
+  - network:
+      container_bridge: "br-vxlan"
+      container_type: "veth"
+      container_interface: "eth10"
+      ip_from_q: "tunnel"
+      type: "geneve"
+      range: "1:1000"
+      net_name: "geneve"
+      group_binds:
+        - neutron_ovn_controller
 
 Set the following user variables in your
 ``/etc/openstack_deploy/user_variables.yml``:
@@ -70,37 +165,6 @@ Set the following user variables in your
 
   neutron_ml2_drivers_type: "vlan,local,geneve"
 
-  # Typically this would be defined by the os-neutron-install
-  # playbook. The provider_networks library would parse the
-  # provider_networks list in openstack_user_config.yml and
-  # generate the values of network_types, network_vlan_ranges
-  # and network_mappings. network_mappings would have a
-  # different value for each host in the inventory based on
-  # whether or not the host was metal (typically a compute host)
-  # or a container (typically a neutron agent container)
-  #
-  # When using OVN w/ Open vSwitch, we override it to take into account
-  # the Open vSwitch bridge we are going to define outside of
-  # OpenStack-Ansible plays. All segmentation id ranges can be tweaked
-  # to suit the environment. VXLAN networks are not directly supported.
-
-  # When configuring Neutron to support only geneve tenant networks and
-  # vlan provider networks the configuration may resemble the following:
-  neutron_provider_networks:
-    network_types: "geneve"
-    network_geneve_ranges: "1:1000"
-    network_vlan_ranges: "vlan"
-    network_mappings: "vlan:br-provider"
-
-  # When configuring Neutron to support only vlan tenant networks and
-  # vlan provider networks the configuration may resemble the following:
-  neutron_provider_networks:
-    network_types: "vlan"
-    network_vlan_ranges: "vlan:102:199"
-    network_mappings: "vlan:br-provider"
-
-  repo_build_upper_constraints_overrides: [neutron-lib>=1.17.0]
-
 The overrides are instructing Ansible to deploy the OVN mechanism driver and
 associated OVN components. This is done by setting ``neutron_plugin_type``
 to ``ml2.ovn``.
@@ -110,6 +174,38 @@ routing functions rather than the standard L3 agent model.
 
 The ``neutron_ml2_drivers_type`` override provides support for all type
 drivers supported by OVN.
+
+If provider network overrides are needed on a global or per-host basis,
+the following format can be used in ``user_variables.yml`` or per-host
+in ``openstack_user_config.yml``.
+
+.. note::
+
+  These overrides are not normally required.
+
+.. code-block:: yaml
+
+  # When configuring Neutron to support only geneve tenant networks and
+  # vlan provider networks the configuration may resemble the following:
+  neutron_provider_networks:
+    network_types: "geneve"
+    network_geneve_ranges: "1:1000"
+    network_vlan_ranges: "public"
+    network_mappings: "public:br-publicnet"
+
+  # When configuring Neutron to support only vlan tenant networks and
+  # vlan provider networks the configuration may resemble the following:
+  neutron_provider_networks:
+    network_types: "vlan"
+    network_vlan_ranges: "public:203:203,467:500"
+    network_mappings: "public:br-publicnet"
+
+  # When configuring Neutron to support multiple vlan provider networks
+  # the configuration may resemble the following:
+  neutron_provider_networks:
+    network_types: "vlan"
+    network_vlan_ranges: "public:203:203,467:500,private:101:200,301:400"
+    network_mappings: "public:br-publicnet,private:br-privatenet"
 
 Open Virtual Network (OVN) commands
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -227,10 +323,3 @@ The HAproxy client and server timeout values have been increased from
 The HAproxy implementation in use may not properly handle active/backup
 failover for ovsdb-server with OVN. Work may be done to implement
 pacemaker/corosync or wait for active/active support.
-
-Warranty
-~~~~~~~~
-
-This implementation of OVN is not supported and should be considered
-only for development purposes. The architecture within OSA is subject
-to change. Reviews and suggestions are welcome.
