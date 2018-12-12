@@ -133,6 +133,12 @@ neutron_dns_domain: "openstacklocal."
 neutron_dhcp_config:
   log-facility: "{{ neutron_log_dir }}/neutron-dnsmasq.log"
 
+# Disable dnsmasq to resolve DNS via local resolv.conf.
+# When dnsmasq_dns_servers are not set,
+# and neutron_dnsmasq_noresolv is set to True, dnsmasq will reply with
+# empty respose on DNS requests.
+neutron_dnsmasq_noresolv: False
+
 # Set the neutron lbaasv2 user group, defaults from os specific vars
 neutron_lbaasv2_user_group: "{{ _neutron_lbaasv2_user_group }}"
 
