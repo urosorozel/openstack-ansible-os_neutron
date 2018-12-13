@@ -134,6 +134,7 @@ ipv6_ptr_zone_prefix_size = {{ neutron_ipv6_ptr_zone_prefix_size }}
 {% endif %}
 
 [nova]
+insecure = {{ keystone_service_adminuri_insecure | bool }}
 auth_type = {{ nova_keystone_auth_plugin }}
 auth_url = {{ keystone_service_adminurl }}
 region_name = {{ nova_service_region }}
