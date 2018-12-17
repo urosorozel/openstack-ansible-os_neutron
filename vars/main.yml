@@ -547,7 +547,3 @@ neutron_core_files:
     owner: "root"
     group: "{{ neutron_system_group_name }}"
     mode: "0640"
-  - tmp_f: "/tmp/policy.json.original"
-    target_f: "{{ neutron_conf_dir }}/policy.json"
-    config_overrides: "{{ neutron_policy_overrides }}"
-    config_type: "json"
