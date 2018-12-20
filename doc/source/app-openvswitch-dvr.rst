@@ -14,6 +14,11 @@ outlines how to set it up in your environment.
 Recommended reading
 ~~~~~~~~~~~~~~~~~~~
 
+This guide is a variation of the standard Open vSwitch deployment guide
+available at:
+
+`<https://docs.openstack.org/openstack-ansible-os_neutron/latest/app-openvswitch.html>`_
+
 We recommend that you read the following documents before proceeding:
 
  * Neutron documentation on Open vSwitch DVR OpenStack deployments:
@@ -42,39 +47,94 @@ Create a group var file for your network hosts
     - name: "openvswitch"
       pattern: "CONFIG_OPENVSWITCH"
 
+Specify provider network definitions in your
+``/etc/openstack_deploy/openstack_user_config.yml`` that define
+one or more Neutron provider bridges and related configuration:
+
+.. note::
+
+  Bridges specified here will be created automatically. If
+  ``network_interface`` is defined, the interface will be placed into
+  the bridge automatically.
+
+.. code-block:: yaml
+
+  - network:
+      container_bridge: "br-provider"
+      container_type: "veth"
+      type: "vlan"
+      range: "101:200,301:400"
+      net_name: "physnet1"
+      network_interface: "bond1"
+      group_binds:
+        - neutron_openvswitch_agent
+  - network:
+      container_bridge: "br-provider2"
+      container_type: "veth"
+      type: "vlan"
+      range: "203:203,467:500"
+      net_name: "physnet2"
+      network_interface: "bond2"
+      group_binds:
+        - neutron_openvswitch_agent
+
+When using ``flat`` provider networks, modify the network type accordingly:
+
+.. code-block:: yaml
+
+  - network:
+      container_bridge: "br-provider"
+      container_type: "veth"
+      type: "flat"
+      net_name: "flat"
+      group_binds:
+        - neutron_openvswitch_agent
+
+Specify an overlay network definition in your
+``/etc/openstack_deploy/openstack_user_config.yml`` that defines
+overlay network-related configuration:
+
+.. note::
+
+  The bridge name should correspond to a pre-created Linux bridge or
+  OVS bridge.
+
+.. code-block:: yaml
+
+  - network:
+      container_bridge: "br-vxlan"
+      container_type: "veth"
+      container_interface: "eth10"
+      ip_from_q: "tunnel"
+      type: "vxlan"
+      range: "1:1000"
+      net_name: "vxlan"
+      group_binds:
+        - neutron_openvswitch_agent
 
 Set the following user variables in your
 ``/etc/openstack_deploy/user_variables.yml``:
 
+.. note::
+
+  The only difference a DVR deployment and the standard Open vSwitch
+  deployment is the setting of the respective ``neutron_plugin_type``.
+
 .. code-block:: yaml
 
-  ### neutron specific config
   neutron_plugin_type: ml2.ovs.dvr
 
-  neutron_ml2_drivers_type: "flat,vlan"
+  neutron_ml2_drivers_type: "flat,vlan,vxlan"
 
-  # Typically this would be defined by the os-neutron-install
-  # playbook. The provider_networks library would parse the
-  # provider_networks list in openstack_user_config.yml and
-  # generate the values of network_types, network_vlan_ranges
-  # and network_mappings. network_mappings would have a
-  # different value for each host in the inventory based on
-  # whether or not the host was metal (typically a compute host)
-  # or a container (typically a neutron agent container)
-  #
-  # When using Open vSwitch, we override it to take into account
-  # the Open vSwitch bridge we are going to define outside of
-  # OpenStack-Ansible plays
-  neutron_provider_networks:
-    network_flat_networks: "*"
-    network_types: "vlan"
-    network_vlan_ranges: "physnet1:102:199"
-    network_mappings: "physnet1:br-provider"
+The overrides are instructing Ansible to deploy the OVS mechanism driver and
+associated OVS and DVR components. This is done by setting ``neutron_plugin_type``
+to ``ml2.ovs.dvr``.
 
-**Note:** The only difference to the Standard Open vSwitch configuration
-is the setting of the ``ml2_plugin_type``.
+The ``neutron_ml2_drivers_type`` override provides support for all common type
+drivers supported by OVS.
 
-Customization is needed to support additional network types such as vxlan,
-GRE or Geneve. Refer to the `neutron agent configuration
-<https://docs.openstack.org/neutron/latest/configuration/#configuration-reference>`_ for
-more information on these attributes.
+For additional information regarding provider network overrides and other
+configuration options, please refer to the standard Open vSwitch deployment
+available at:
+
+`<https://docs.openstack.org/openstack-ansible-os_neutron/latest/app-openvswitch.html>`_

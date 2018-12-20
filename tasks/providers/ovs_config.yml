@@ -13,24 +13,28 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# This file is responsible for the L3 configuration
-- name: Setup External Network Provider Bridge
+- name: Setup Network Provider Bridges
   openvswitch_bridge:
-    bridge: "{{ neutron_provider_networks.network_mappings.split(':')[1] }}"
+    bridge: "{{ bridge_mapping.split(':')[1] }}"
     fail_mode: secure
     state: present
+  with_items: "{{ neutron_provider_networks.network_mappings.split(',') }}"
+  loop_control:
+    loop_var: bridge_mapping
   when:
     - neutron_services['neutron-openvswitch-agent']['group'] in group_names
     - neutron_plugin_type in ['ml2.ovs', 'ml2.ovs.dvr']
     - neutron_provider_networks.network_mappings is defined
 
-- name: Add port to External Network Provider Bridge
+- name: Add ports to Network Provider Bridges
   openvswitch_port:
-    bridge: "{{ neutron_provider_networks.network_mappings.split(':')[1] }}"
-    port: "{{ neutron_provider_networks.network_interface }}"
+    bridge: "{{ interface_mapping.split(':')[0] }}"
+    port: "{{ interface_mapping.split(':')[1] }}"
     state: present
+  with_items: "{{ neutron_provider_networks.network_interface_mappings.split(',') }}"
+  loop_control:
+    loop_var: interface_mapping
   when:
     - neutron_services['neutron-openvswitch-agent']['group'] in group_names
     - neutron_plugin_type in ['ml2.ovs', 'ml2.ovs.dvr']
-    - neutron_provider_networks.network_mappings is defined
-    - neutron_provider_networks.network_interface is defined
+    - neutron_provider_networks.network_interface_mappings is defined and (neutron_provider_networks.network_interface_mappings|length > 0)
