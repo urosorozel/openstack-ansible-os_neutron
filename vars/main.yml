@@ -30,19 +30,10 @@ calico_felix_bin: /usr/local/bin/calico-felix
 ###
 
 neutron_pip_packages:
-  - cliff
-  - configobj
-  - cryptography
-  - keystonemiddleware
   - neutron
   - osprofiler
   - PyMySQL
-  - python-glanceclient
-  - python-keystoneclient
   - python-memcached
-  - python-neutronclient
-  - python-novaclient
-  - repoze.lru
 
 neutron_optional_oslomsg_amqp1_pip_packages:
   - oslo.messaging[amqp1]
