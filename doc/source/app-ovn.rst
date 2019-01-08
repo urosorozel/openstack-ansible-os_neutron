@@ -61,8 +61,8 @@ Create a group var file for your network hosts
       pattern: "CONFIG_OPENVSWITCH"
 
 Copy the neutron environment overrides to
-/etc/openstack_deploy/env.d/neutron.yml to disable the creation of the
-neutron agents container and implement the neutron_ovn_northd_container
+``/etc/openstack_deploy/env.d/neutron.yml`` to disable the creation of the
+neutron agents container and implement the ``neutron_ovn_northd_container``
 hosts group containing all network nodes:
 
 .. code-block:: yaml
@@ -85,8 +85,8 @@ hosts group containing all network nodes:
         - neutron_ovn_northd
 
 Copy the nova environment overrides to
-/etc/openstack_deploy/env.d/nova.yml to implement the
-neutron_ovn_controller hosts group containing all compute nodes:
+``/etc/openstack_deploy/env.d/nova.yml`` to implement the
+``neutron_ovn_controller`` hosts group containing all compute nodes:
 
 .. code-block:: yaml
 
@@ -109,8 +109,10 @@ one or more Neutron provider bridges and related configuration:
 
 .. note::
 
-  Bridges specified here will be created automatically. Only VLAN
-  network types are supported at this time.
+  Bridges specified here will be created automatically. If
+  ``network_interface`` is defined, the interface will be placed into
+  the bridge automatically. Only VLAN network types are supported at
+  this time.
 
 .. code-block:: yaml
 
@@ -120,6 +122,7 @@ one or more Neutron provider bridges and related configuration:
       type: "vlan"
       range: "101:200,301:400"
       net_name: "private"
+      network_interface: "bond2"
       group_binds:
         - neutron_ovn_controller
   - network:
@@ -128,6 +131,7 @@ one or more Neutron provider bridges and related configuration:
       type: "vlan"
       range: "203:203,467:500"
       net_name: "public"
+      network_interface: "bond1"
       group_binds:
         - neutron_ovn_controller
 
@@ -185,13 +189,14 @@ in ``openstack_user_config.yml``.
 
 .. code-block:: yaml
 
-  # When configuring Neutron to support only geneve tenant networks and
+  # When configuring Neutron to support geneve tenant networks and
   # vlan provider networks the configuration may resemble the following:
   neutron_provider_networks:
     network_types: "geneve"
     network_geneve_ranges: "1:1000"
     network_vlan_ranges: "public"
     network_mappings: "public:br-publicnet"
+    network_interface_mappings: "br-publicnet:bond1"
 
   # When configuring Neutron to support only vlan tenant networks and
   # vlan provider networks the configuration may resemble the following:
@@ -199,6 +204,7 @@ in ``openstack_user_config.yml``.
     network_types: "vlan"
     network_vlan_ranges: "public:203:203,467:500"
     network_mappings: "public:br-publicnet"
+    network_interface_mappings: "br-publicnet:bond1"
 
   # When configuring Neutron to support multiple vlan provider networks
   # the configuration may resemble the following:
@@ -206,16 +212,18 @@ in ``openstack_user_config.yml``.
     network_types: "vlan"
     network_vlan_ranges: "public:203:203,467:500,private:101:200,301:400"
     network_mappings: "public:br-publicnet,private:br-privatenet"
+    network_interface_mappings: "br-publicnet:bond1,br-privatenet:bond2"
 
 Open Virtual Network (OVN) commands
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The following commands can be used to provide useful information about...
+The following commands can be used to provide useful information about the
+state of Open vSwitch networking and configurations.
 
 The ``ovs-vsctl list open_vswitch`` command provides information about the
 ``open_vswitch`` table in the local Open vSwitch database:
 
-.. code-block::
+.. code-block:: console
 
   root@aio1:~# ovs-vsctl list open_vswitch
   _uuid               : 855c820b-c082-4d8f-9828-8cab01c6c9a0
@@ -238,7 +246,7 @@ The ``ovn-sbctl show`` command provides information related to southbound
 connections. If used outside the ovn_northd container, specify the
 connection details:
 
-.. code-block::
+.. code-block:: console
 
   root@aio1-neutron-ovn-northd-container-57a6f1a9:~# ovn-sbctl show
   Chassis "11af26c6-9ec1-4cf7-bf41-2af45bd59b03"
@@ -264,7 +272,7 @@ The ``ovn-nbctl show`` command provides information about networks known
 to OVN and demonstrates connectivity between the northbound database
 and neutron-server.
 
-.. code-block::
+.. code-block:: console
 
   root@aio1-neutron-ovn-northd-container-57a6f1a9:~# ovn-nbctl show
   switch 5e77f29e-5dd3-4875-984f-94bd30a12dc3 (neutron-87ec5a05-9abe-4c93-89bd-c6d40320db87) (aka testnet)
@@ -276,7 +284,7 @@ The ``ovn-nbctl list Address_Set`` command provides information related to
 security groups. If used outside the ovn_northd container, specify the
 connection details:
 
-.. code-block::
+.. code-block:: console
 
   root@aio1-neutron-ovn-northd-container-57a6f1a9:~# ovn-nbctl list Address_Set
   _uuid               : 575b3015-f83f-4bd6-a698-3fe67e43bec6
@@ -308,7 +316,7 @@ Notes
 The ``ovn-controller`` service on compute nodes will check in as an agent
 and can be observed using the ``openstack network agent list`` command:
 
-.. code-block::
+.. code-block:: console
 
   root@aio1-utility-container-35bebd2a:~# openstack network agent list
   +--------------------------------------+------------------------------+------+-------------------+-------+-------+----------------+
@@ -317,9 +325,6 @@ and can be observed using the ``openstack network agent list`` command:
   | 4db288a6-8f8a-4153-b4b7-7eaf44f9e881 | OVN Controller Gateway agent | aio1 | n/a               | :-)   | UP    | ovn-controller |
   +--------------------------------------+------------------------------+------+-------------------+-------+-------+----------------+
 
-The HAproxy client and server timeout values have been increased from
-50 seconds to 90 minutes for all load-balanced OVN-related services.
-
 The HAproxy implementation in use may not properly handle active/backup
 failover for ovsdb-server with OVN. Work may be done to implement
-pacemaker/corosync or wait for active/active support.
+pacemaker/corosync or wait for upstream active/active support.
