@@ -90,18 +90,19 @@ Copy the nova environment overrides to
 
 .. code-block:: yaml
 
-  nova_compute_container:
-    belongs_to:
-      - compute_containers
-      - kvm-compute_containers
-      - lxd-compute_containers
-      - qemu-compute_containers
-      - powervm-compute_containers
-    contains:
-      - neutron_ovn_controller
-      - nova_compute
-    properties:
-      is_metal: true
+  container_skel:
+    nova_compute_container:
+      belongs_to:
+        - compute_containers
+        - kvm-compute_containers
+        - lxd-compute_containers
+        - qemu-compute_containers
+        - powervm-compute_containers
+      contains:
+        - neutron_ovn_controller
+        - nova_compute
+      properties:
+        is_metal: true
 
 Specify provider network definitions in your
 ``/etc/openstack_deploy/openstack_user_config.yml`` that define
