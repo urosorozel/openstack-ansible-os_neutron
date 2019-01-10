@@ -70,19 +70,6 @@ neutron_proprietary_nuage_pip_packages:
 neutron_optional_ovn_pip_packages:
   - networking-ovn
 
-neutron_developer_constraints:
-  - "git+{{ neutron_git_repo }}@{{ neutron_git_install_branch }}#egg=neutron"
-  - "git+{{ neutron_fwaas_git_repo }}@{{ neutron_fwaas_git_install_branch }}#egg=neutron-fwaas"
-  - "git+{{ neutron_lbaas_git_repo }}@{{ neutron_lbaas_git_install_branch }}#egg=neutron-lbaas"
-  - "git+{{ neutron_vpnaas_git_repo }}@{{ neutron_vpnaas_git_install_branch }}#egg=neutron-vpnaas"
-  - "git+{{ neutron_dynamic_routing_git_repo }}@{{ neutron_dynamic_routing_git_install_branch }}#egg=neutron-dynamic-routing"
-  - "git+{{ networking_calico_git_repo }}@{{ networking_calico_git_install_branch }}#egg=networking-calico"
-  - "git+{{ networking_odl_git_repo }}@{{ networking_odl_git_install_branch }}#egg=networking-odl"
-  - "git+{{ networking_sfc_git_repo }}@{{ networking_sfc_git_install_branch }}#egg=networking-sfc"
-  - "git+{{ networking_bgpvpn_git_repo }}@{{ networking_bgpvpn_git_install_branch }}#egg=networking-bgpvpn"
-  - "git+{{ openstack_ceilometer_git_repo }}@{{ openstack_ceilometer_git_install_branch }}#egg=ceilometer"
-  - "git+{{ networking_ovn_git_repo }}@{{ networking_ovn_git_install_branch }}#egg=networking-ovn"
-
 ###
 ### Generic Neutron Config
 ###
