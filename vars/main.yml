@@ -380,6 +380,8 @@ neutron_services:
     service_conf_path: "{{ neutron_conf_dir }}"
     service_conf: l3_agent.ini
     service_rootwrap: rootwrap.d/l3.filters
+    environment:
+      PATH: "{{ neutron_bin }}:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
     execstarts: "{{ neutron_bin }}/neutron-l3-agent --config-file {{ neutron_conf_dir }}/neutron.conf --config-file {{ neutron_conf_dir }}/l3_agent.ini --log-file={{ neutron_log_dir }}/neutron-l3-agent.log"
     config_overrides: "{{ neutron_l3_agent_ini_overrides }}"
     config_type: "ini"
