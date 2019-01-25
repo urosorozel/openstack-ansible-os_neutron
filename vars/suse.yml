@@ -68,12 +68,20 @@ neutron_devel_distro_packages:
 
 neutron_service_distro_packages:
   - openstack-neutron
-  - openstack-neutron-dhcp-agent
-  - openstack-neutron-l3-agent
   - openstack-neutron-metadata-agent
-  - openstack-neutron-metering-agent
-  - openstack-neutron-server
   - python-memcached
+
+neutron_server_distro_packages:
+  - openstack-neutron-server
+
+neutron_dhcp_agent_distro_packages:
+  - openstack-neutron-dhcp-agent
+
+neutron_l3_agent_distro_packages:
+  - openstack-neutron-l3-agent
+
+neutron_metering_agent_distro_packages:
+  - openstack-neutron-metering-agent
 
 neutron_optional_ovs_distro_packages:
   - openstack-neutron-openvswitch-agent
