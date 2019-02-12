@@ -58,3 +58,5 @@ tempest_test_whitelist:
   - "neutron_tempest_plugin.api.test_networks*"
   - "networking_bgpvpn_tempest.tests.api.test_bgpvpn"
   - "networking_bgpvpn_tempest.tests.scenario.test_bgpvpn_basic"
+
+tempest_network_ping_gateway: False

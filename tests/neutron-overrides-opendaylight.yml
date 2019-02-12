@@ -41,3 +41,5 @@ tempest_plugins:
 
 tempest_test_whitelist:
   - "neutron_tempest_plugin.api.test_networks*"
+
+tempest_network_ping_gateway: False
