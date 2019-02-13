@@ -32,6 +32,11 @@ The following procedure describes how to modify the
 Deploying FWaaS v1
 ------------------
 
+.. note::
+
+  The FWaaS v1 API is deprecated upstream. While FWaaS v1.0 is still
+  maintained, new features will be implemented in FWaaS v2.0 API.
+
 #. Override the default list of neutron plugins to include
    ``firewall``:
 
@@ -80,7 +85,16 @@ active development.
 
 Refer to the `FWaaS 2.0 API specification
 <https://specs.openstack.org/openstack/neutron-specs/specs/newton/fwaas-api-2.0.html>`_
-for more information on these FWaaS v2 features
+for more information on these FWaaS v2 features.
+
+FWaaS v2 requires the use of Open vSwitch. To deploy an environment using
+Open vSwitch for virtual networking, please refer to the following
+documentation:
+
+* `Scenario - Using Open vSwitch <app-openvswitch.html>`_
+
+* `Scenario - Using Open vSwitch with DVR
+  <app-openvswitch-dvr.html>`_
 
 Follow the steps below to deploy FWaaS v2:
 
