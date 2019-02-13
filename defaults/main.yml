@@ -227,6 +227,9 @@ neutron_quota_security_group: 10
 neutron_quota_security_group_rule: 100
 neutron_quota_subnet: 100
 neutron_quota_vip: 10
+neutron_quota_firewall: 10
+neutron_quota_firewall_policy: 10
+neutron_quota_firewall_rule: 100
 
 ###
 ### DB (Galera) integration
@@ -444,6 +447,13 @@ neutron_octavia_request_poll_timeout: 100
 
 # Use the Octavia proxy
 neutron_octavia_proxy_plugin: False
+
+###
+### FWaaS Configuration
+###
+
+neutron_driver_fwaasv2: iptables_v2
+neutron_fwaasv2_service_provider: FIREWALL_V2:fwaas_db:neutron_fwaas.services.firewall.service_drivers.agents.agents.FirewallAgentDriver:default
 
 ###
 ### VPNaaS Configuration

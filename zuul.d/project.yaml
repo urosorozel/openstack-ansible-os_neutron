@@ -33,6 +33,8 @@
             voting: false
         - openstack-ansible-opendaylight-bgpvpn-ubuntu-xenial:
             voting: false
+        - openstack-ansible-ovs-fwaasv2-ubuntu-bionic:
+            voting: false
     gate:
       jobs:
         - openstack-ansible-ovs-ubuntu-xenial
