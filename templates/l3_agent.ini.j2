@@ -38,8 +38,9 @@ agent_version = v1
 {% set _ = l3_agent_plugins.append("fwaas_v2") %}
 [fwaas]
 enabled = true
-driver = iptables_v2
+driver = {{ neutron_driver_fwaasv2 }}
 agent_version = v2
+firewall_l2_driver = noop
 {% endif %}
 
 {% if neutron_vpnaas | bool %}

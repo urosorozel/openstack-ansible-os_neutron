@@ -1,0 +1,30 @@
+---
+openstack_host_specific_kernel_modules:
+  - name: "openvswitch"
+    pattern: "CONFIG_OPENVSWITCH"
+
+tempest_run: yes
+
+tempest_plugins:
+  - name: neutron
+    repo: https://git.openstack.org/openstack/neutron
+    branch: master
+  - name: neutron-plugins
+    repo: https://git.openstack.org/openstack/neutron-tempest-plugin
+    branch: master
+  - name: neutron-fwaas
+    repo: https://git.openstack.org/openstack/neutron-fwaas
+    branch: master
+
+tempest_test_whitelist:
+  - "neutron_tempest_plugin.api.test_networks*"
+  - "neutron_fwaas.tests.tempest_plugin.tests.api.test_fwaasv2_extensions*"
+  - "neutron_fwaas.tests.tempest_plugin.tests.api.v2_base*"
+
+tempest_network_ping_gateway: False
+
+neutron_plugin_type: ml2.ovs
+neutron_local_ip: "{{ ansible_host }}"
+neutron_plugin_base:
+  - router
+  - firewall_v2

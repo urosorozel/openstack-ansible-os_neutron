@@ -163,6 +163,9 @@ quota_security_group = {{ neutron_quota_security_group }}
 quota_security_group_rule = {{ neutron_quota_security_group_rule }}
 quota_subnet = {{ neutron_quota_subnet }}
 quota_vip = {{ neutron_quota_vip }}
+quota_firewall = {{ neutron_quota_firewall }}
+quota_firewall_policy = {{ neutron_quota_firewall_policy }}
+quota_firewall_rule = {{ neutron_quota_firewall_rule }}
 
 # Keystone authentication
 [keystone_authtoken]
@@ -200,8 +203,11 @@ pool_timeout = {{ neutron_db_pool_timeout }}
 service_provider = {{ service_provider }}
 {% endfor %}
 {% endif %}
-{% if neutron_vpnaas| bool %}
+{% if neutron_vpnaas | bool %}
 service_provider = {{ neutron_vpnaas_service_provider }}
+{% endif %}
+{% if neutron_fwaas_v2 | bool %}
+service_provider = {{ neutron_fwaasv2_service_provider }}
 {% endif %}
 
 {% if neutron_lbaasv2 | bool %}
