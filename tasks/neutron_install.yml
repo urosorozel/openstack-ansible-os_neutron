@@ -47,7 +47,7 @@
   with_items: "{{ neutron_remove_distro_packages }}"
 
 - name: Install neutron packages from PIP
-  include_tasks: neutron_install_source.yml
+  import_tasks: neutron_install_source.yml
   when: neutron_install_method == 'source'
 
 - name: Initialise the upgrade facts
@@ -98,7 +98,7 @@
       {{ apparmor_hosts | unique }}
   when: ansible_pkg_mgr in ['apt', 'zypper']
 
-- include_tasks: neutron_apparmor.yml
+- import_tasks: neutron_apparmor.yml
   when:
     - ansible_pkg_mgr in ['apt', 'zypper']
     - inventory_hostname in neutron_apparmor_hosts
