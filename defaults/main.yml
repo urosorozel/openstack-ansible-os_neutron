@@ -375,6 +375,9 @@ neutron_vxlan_enabled: true
 ## The neutron multicast group address. This should be set as a host variable if used.
 neutron_vxlan_group: "239.1.1.1"
 
+# The neutron multicast time-to-live. Number of L3 hops before routers will drop the traffic
+neutron_vxlan_ttl: 32
+
 neutron_sriov_excluded_devices: ""
 
 # neutron_local_ip is used for the VXLAN local tunnel endpoint

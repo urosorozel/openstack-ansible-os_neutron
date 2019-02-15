@@ -16,6 +16,7 @@ vxlan_group = {{ neutron_vxlan_group }}
 # VXLAN local tunnel endpoint
 local_ip = {{ neutron_local_ip }}
 l2_population = {{ neutron_plugins[neutron_plugin_type].l2_population }}
+ttl = {{ neutron_vxlan_ttl }}
 
 {% else %}
 
