@@ -191,7 +191,7 @@ neutron_tunnel_types: "{{ neutron_ml2_drivers_type.split(',') | difference(_neut
 # OpenDaylight
 opendaylight_extra_features: |-
   {%- set features = ['odl-netvirt-openstack'] -%}
-  {%- if 'networking_sfc.services.sfc.plugin.SfcPlugin' in neutron_plugin_base -%}
+  {%- if 'sfc' in neutron_plugin_base -%}
     {%- set features = ['odl-netvirt-sfc'] -%}
   {%- endif -%}
   {{ features }}
@@ -285,7 +285,7 @@ neutron_port_forwarding: "{{ ('port_forwarding' in neutron_plugin_base) | ternar
 ### Service Function Chaining
 ###
 
-neutron_sfc: "{{ ('networking_sfc.services.sfc.plugin.SfcPlugin' in neutron_plugin_base) | ternary('True', 'False') }}"
+neutron_sfc: "{{ ('sfc' in neutron_plugin_base) | ternary('True', 'False') }}"
 
 ###
 ### Services info

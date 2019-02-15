@@ -19,7 +19,7 @@ enable_distributed_routing = {{ neutron_plugins[neutron_plugin_type].router_dist
 {% if 'qos' in neutron_plugin_base                                          %}
 {% set _ = ovs_agent_extensions.append("qos")                               %}
 {% endif                                                                    %}
-{% if 'networking_sfc.services.sfc.plugin.SfcPlugin' in neutron_plugin_base %}
+{% if 'sfc' in neutron_plugin_base %}
 {% set _ = ovs_agent_extensions.append("sfc")                               %}
 {% endif                                                                    %}
 extensions = {{ ovs_agent_extensions | join(',') }}

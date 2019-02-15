@@ -28,8 +28,8 @@ neutron_opendaylight_conf_ini_overrides:
 neutron_plugin_base:
   - router
   - metering
-  - networking_sfc.services.flowclassifier.plugin.FlowClassifierPlugin
-  - networking_sfc.services.sfc.plugin.SfcPlugin
+  - sfc
+  - flow_classifier
 
 tempest_run: yes
 
