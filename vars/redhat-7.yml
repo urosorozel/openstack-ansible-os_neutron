@@ -53,10 +53,16 @@ neutron_devel_distro_packages:
 neutron_service_distro_packages:
   - openstack-neutron
   - openstack-neutron-ml2
-  - openstack-neutron-macvtap-agent
-  - openstack-neutron-metering-agent
-  - openstack-neutron-l2gw-agent
   - python-memcached
+
+neutron_server_distro_packages: []
+
+neutron_dhcp_agent_distro_packages: []
+
+neutron_l3_agent_distro_packages: []
+
+neutron_metering_agent_distro_packages:
+  - openstack-neutron-metering-agent
 
 neutron_optional_ovs_distro_packages:
   - openstack-neutron-openvswitch

@@ -64,15 +64,20 @@ neutron_devel_distro_packages:
   - python-httplib2
 
 neutron_service_distro_packages:
-  - neutron-server
-  - neutron-dhcp-agent
-  - neutron-l2gateway-agent
-  - neutron-l3-agent
-  - neutron-macvtap-agent
-  - neutron-metadata-agent
-  - neutron-metering-agent
   - neutron-plugin-ml2
   - python-memcache
+
+neutron_server_distro_packages:
+  - neutron-server
+
+neutron_dhcp_agent_distro_packages:
+  - neutron-dhcp-agent
+
+neutron_l3_agent_distro_packages:
+  - neutron-l3-agent
+
+neutron_metering_agent_distro_packages:
+  - neutron-metering-agent
 
 neutron_optional_ovs_distro_packages:
   - neutron-openvswitch-agent
@@ -102,6 +107,7 @@ neutron_vpnaas_distro_packages:
   - strongswan
 
 neutron_metadata_agent_distro_packages:
+  - neutron-metadata-agent
   - haproxy
 
 neutron_remove_distro_packages:

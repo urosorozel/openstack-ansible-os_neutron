@@ -44,6 +44,18 @@ neutron_package_list: |-
   {% set _ = packages.extend(neutron_vpnaas_distro_packages) %}
   {% set _ = packages.extend(neutron_optional_vpnaas_distro_packages) %}
   {% endif %}
+  {% if neutron_services['neutron-server']['group'] in group_names %}
+  {%   set _ = packages.extend(neutron_server_distro_packages) %}
+  {% endif %}
+  {% if neutron_services['neutron-dhcp-agent']['group'] in group_names %}
+  {%   set _ = packages.extend(neutron_dhcp_agent_distro_packages) %}
+  {% endif %}
+  {% if neutron_services['neutron-l3-agent']['group'] in group_names %}
+  {%   set _ = packages.extend(neutron_l3_agent_distro_packages) %}
+  {% endif %}
+  {% if neutron_services['neutron-metering-agent']['group'] in group_names %}
+  {%   set _ = packages.extend(neutron_metering_agent_distro_packages) %}
+  {% endif %}
   {% if neutron_services['neutron-metadata-agent']['group'] in group_names %}
   {% set _ = packages.extend(neutron_metadata_agent_distro_packages) %}
   {% endif %}
