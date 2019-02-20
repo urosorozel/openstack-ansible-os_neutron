@@ -43,7 +43,7 @@
     venv_install_distro_package_list: "{{ neutron_package_list }}"
     venv_pip_install_args: "{{ neutron_pip_install_args }}"
     venv_pip_packages: >-
-      {{ neutron_pip_packages +
+      {{ neutron_pip_packages | union(neutron_user_pip_packages) +
          (neutron_bgp | bool) | ternary(neutron_optional_bgp_pip_packages, []) +
          (neutron_fwaas | bool) | ternary(neutron_optional_fwaas_pip_packages, []) +
          (neutron_fwaas_v2 | bool) | ternary(neutron_optional_fwaas_pip_packages, []) +

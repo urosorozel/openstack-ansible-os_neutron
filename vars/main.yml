@@ -35,6 +35,9 @@ neutron_pip_packages:
   - PyMySQL
   - python-memcached
 
+# Specific pip packages provided by the user
+neutron_user_pip_packages: []
+
 neutron_optional_oslomsg_amqp1_pip_packages:
   - oslo.messaging[amqp1]
 
