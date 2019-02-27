@@ -249,6 +249,7 @@ auth_version = 3
 polling_interval = {{ neutron_agent_polling_interval|default(5) }}
 report_interval = {{ neutron_report_interval|int }}
 root_helper = sudo {{ neutron_bin }}/neutron-rootwrap {{ neutron_conf_dir }}/rootwrap.conf
+root_helper_daemon = sudo {{ neutron_bin }}/neutron-rootwrap-daemon {{ neutron_conf_dir }}/rootwrap.conf
 
 # Messaging
 [oslo_messaging_rabbit]
