@@ -32,10 +32,8 @@
       tox_env: ovn
 
 - job:
-    name: openstack-ansible-calico-ubuntu-bionic
-    parent: openstack-ansible-functional-ubuntu-bionic
-    vars:
-      tox_env: calico
+    name: openstack-ansible-deploy-aio_metal_calico-ubuntu-bionic
+    parent: openstack-ansible-deploy-aio_metal-ubuntu-bionic
 
 - job:
     name: openstack-ansible-opendaylight-ubuntu-bionic
