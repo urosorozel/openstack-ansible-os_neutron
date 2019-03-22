@@ -25,8 +25,7 @@
         - openstack-ansible-ovs-ubuntu-xenial
         - openstack-ansible-ovn-ubuntu-xenial
         - openstack-ansible-ovn-centos-7
-        - openstack-ansible-calico-ubuntu-xenial:
-            voting: false
+        - openstack-ansible-deploy-aio_metal_calico-ubuntu-bionic
         - openstack-ansible-opendaylight-ubuntu-xenial
         - openstack-ansible-ovs-nsh-ubuntu-xenial
         - openstack-ansible-odl-sfc-ubuntu-xenial
@@ -41,6 +40,7 @@
         - openstack-ansible-ovs-ubuntu-xenial
         - openstack-ansible-ovn-ubuntu-xenial
         - openstack-ansible-ovn-centos-7
+        - openstack-ansible-deploy-aio_metal_calico-ubuntu-bionic
         - openstack-ansible-opendaylight-ubuntu-xenial
         - openstack-ansible-ovs-nsh-ubuntu-xenial
         - openstack-ansible-odl-sfc-ubuntu-xenial

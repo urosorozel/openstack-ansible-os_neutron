@@ -32,10 +32,10 @@
       tox_env: ovn
 
 - job:
-    name: openstack-ansible-calico-ubuntu-xenial
-    parent: openstack-ansible-functional-ubuntu-xenial
+    name: openstack-ansible-deploy-aio_metal_calico-ubuntu-bionic
+    parent: openstack-ansible-deploy-aio_metal-ubuntu-bionic
     vars:
-      tox_env: calico
+      scenario: aio_metal_calico
 
 - job:
     name: openstack-ansible-opendaylight-ubuntu-xenial
