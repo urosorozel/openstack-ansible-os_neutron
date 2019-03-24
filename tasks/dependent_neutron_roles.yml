@@ -33,6 +33,7 @@
          neutron_services['calico-felix']['group'],
          neutron_services['neutron-server']['group']
        ]) | length > 0"
+    - "'etcd' not in group_names"
 
 - name: Include ODL role
   include_role:
