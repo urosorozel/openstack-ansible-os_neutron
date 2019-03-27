@@ -90,7 +90,7 @@
     - neutron-config
 
 - name: Run the systemd service role
-  include_role:
+  import_role:
     name: systemd_service
   vars:
     systemd_user_name: "{{ neutron_system_user_name }}"

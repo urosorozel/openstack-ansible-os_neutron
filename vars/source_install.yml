@@ -63,5 +63,3 @@ neutron_package_list: |-
   {{ packages }}
 
 neutron_bin: "/openstack/venvs/neutron-{{ neutron_venv_tag }}/bin"
-
-neutron_venv_download: "{{ not neutron_developer_mode | bool }}"

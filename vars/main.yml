@@ -73,6 +73,51 @@ neutron_proprietary_nuage_pip_packages:
 neutron_optional_ovn_pip_packages:
   - networking-ovn
 
+neutron_venv_packages: >-
+  {%- set pkg_list = neutron_pip_packages | union(neutron_user_pip_packages) %}
+  {%- if neutron_bgp | bool %}
+  {%-   set _ = pkg_list.extend(neutron_optional_bgp_pip_packages) %}
+  {%- endif %}
+  {%- if (neutron_fwaas | bool) or (neutron_fwaas_v2 | bool) %}
+  {%-   set _ = pkg_list.extend(neutron_optional_fwaas_pip_packages) %}
+  {%- endif %}
+  {%- if neutron_lbaasv2 | bool %}
+  {%-   set _ = pkg_list.extend(neutron_optional_lbaas_pip_packages) %}
+  {%- endif %}
+  {%- if neutron_vpnaas | bool %}
+  {%-   set _ = pkg_list.extend(neutron_optional_vpnaas_pip_packages) %}
+  {%- endif %}
+  {%- if neutron_sfc | bool %}
+  {%-   set _ = pkg_list.extend(neutron_optional_sfc_pip_packages) %}
+  {%- endif %}
+  {%- if neutron_oslomsg_amqp1_enabled | bool %}
+  {%-   set _ = pkg_list.extend(neutron_optional_oslomsg_amqp1_pip_packages) %}
+  {%- endif %}
+  {%- if (neutron_plugin_type.split('.')[-1] == 'calico') and
+         ((neutron_services['neutron-server']['group'] in group_names) or
+          (neutron_services['calico-felix']['group'] in group_names) or
+          (neutron_services['calico-dhcp-agent']['group'] in group_names)) %}
+  {%-     set _ = pkg_list.extend(neutron_optional_calico_pip_packages) %}
+  {%- endif %}
+  {%- if (neutron_plugin_type.split('.')[-1] == 'nuage') and
+         (neutron_services['neutron-server']['group'] in group_names) %}
+  {%-     set _ = pkg_list.extend(neutron_optional_nuage_pip_packages) %}
+  {%- endif %}
+  {%- if neutron_plugin_type.split('.')[-1] == 'opendaylight' %}
+  {%-   set _ = pkg_list.extend(neutron_optional_opendaylight_pip_packages) %}
+  {%-   if 'sfc' in neutron_plugin_base %}
+  {%-     set _ = pkg_list.extend(neutron_optional_sfc_pip_packages) %}
+  {%-   endif %}
+  {%- endif %}
+  {%- if (neutron_plugin_type.split('.')[-1] == 'ovn') and
+         ((neutron_services['neutron-server']['group'] in group_names) or
+          (neutron_services['neutron-ovn-northd']['group'] in group_names) or
+          (neutron_services['neutron-ovn-controller']['group'] in group_names)) %}
+  {%-     set _ = pkg_list.extend(neutron_optional_ovn_pip_packages) %}
+  {%- endif %}
+  {{- pkg_list | unique }}
+
+
 ###
 ### Generic Neutron Config
 ###

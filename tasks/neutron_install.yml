@@ -46,8 +46,25 @@
   delay: 2
   with_items: "{{ neutron_remove_distro_packages }}"
 
-- name: Install neutron packages from PIP
-  import_tasks: neutron_install_source.yml
+- name: Install the python venv
+  import_role:
+    name: "python_venv_build"
+  vars:
+    venv_build_constraints: "{{ neutron_git_constraints }}"
+    venv_install_destination_path: "{{ neutron_bin | dirname }}"
+    venv_install_distro_package_list: "{{ neutron_package_list }}"
+    venv_pip_install_args: "{{ neutron_pip_install_args }}"
+    venv_pip_packages: "{{ neutron_venv_packages }}"
+    venv_facts_when_changed:
+      - section: "neutron"
+        option: "need_db_expand"
+        value: "True"
+      - section: "neutron"
+        option: "need_db_contract"
+        value: "True"
+      - section: "neutron"
+        option: "venv_tag"
+        value: "{{ neutron_venv_tag }}"
   when: neutron_install_method == 'source'
 
 - name: Initialise the upgrade facts

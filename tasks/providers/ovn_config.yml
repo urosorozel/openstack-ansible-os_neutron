@@ -14,29 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Install OVN pip packages
-  pip:
-    name: "{{ neutron_optional_ovn_pip_packages }}"
-    state: "{{ neutron_pip_package_state }}"
-    virtualenv: "{{ neutron_bin | dirname }}"
-    virtualenv_site_packages: "no"
-    extra_args: >-
-      {{ neutron_developer_mode | ternary(pip_install_developer_constraints | default('--constraint /opt/developer-pip-constraints.txt'), '') }}
-      {{ (pip_install_upper_constraints is defined) | ternary('--constraint ' + pip_install_upper_constraints | default(''),'') }}
-      {{ pip_install_options | default('') }}
-  register: install_packages
-  until: install_packages|success
-  retries: 5
-  delay: 2
-  when:
-    - neutron_services['neutron-server']['group'] in group_names
-      or neutron_services['neutron-ovn-northd']['group'] in group_names
-      or neutron_services['neutron-ovn-controller']['group'] in group_names
-  notify: Restart neutron services
-  tags:
-    - ovn-install
-    - ovn-pip-packages
-
 - name: Install ovn-northd packages
   package:
     name: "{{ neutron_ovn_northd_distro_packages }}"
