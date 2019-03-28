@@ -48,6 +48,7 @@ neutron_ovn_northd_distro_packages:
   - openvswitch-ovn-central
 
 neutron_devel_distro_packages:
+  - git
   - python-httplib2
 
 neutron_service_distro_packages:
@@ -73,9 +74,6 @@ neutron_optional_lbaas_distro_packages:
 
 neutron_optional_vpnaas_distro_packages:
   - openstack-neutron-vpnaas
-
-neutron_developer_mode_distro_packages:
-  - git
 
 neutron_lxb_distro_packages:
   - bridge-utils
