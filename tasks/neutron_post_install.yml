@@ -80,6 +80,13 @@
     state: link
   when: neutron_install_method == 'distro' and ansible_os_family == 'RedHat'
 
+- name: Create symlink to neutron-keepalived-state-change
+  file:
+    src: "{{ neutron_bin }}/neutron-keepalived-state-change"
+    dest: "/usr/local/bin/neutron-keepalived-state-change"
+    state: link
+  when: neutron_install_method == 'source'
+
 - name: Preserve original configuration file(s)
   command: "cp {{ item.target_f }} {{ item.target_f }}.original"
   args:
