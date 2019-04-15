@@ -14,14 +14,14 @@
 # limitations under the License.
 
 - job:
-    name: openstack-ansible-ovs-ubuntu-xenial
-    parent: openstack-ansible-functional-ubuntu-xenial
+    name: openstack-ansible-ovs-ubuntu-bionic
+    parent: openstack-ansible-functional-ubuntu-bionic
     vars:
       tox_env: ovs
 
 - job:
-    name: openstack-ansible-ovn-ubuntu-xenial
-    parent: openstack-ansible-functional-ubuntu-xenial
+    name: openstack-ansible-ovn-ubuntu-bionic
+    parent: openstack-ansible-functional-ubuntu-bionic
     vars:
       tox_env: ovn
 
@@ -32,38 +32,38 @@
       tox_env: ovn
 
 - job:
-    name: openstack-ansible-calico-ubuntu-xenial
-    parent: openstack-ansible-functional-ubuntu-xenial
+    name: openstack-ansible-calico-ubuntu-bionic
+    parent: openstack-ansible-functional-ubuntu-bionic
     vars:
       tox_env: calico
 
 - job:
-    name: openstack-ansible-opendaylight-ubuntu-xenial
-    parent: openstack-ansible-functional-ubuntu-xenial
+    name: openstack-ansible-opendaylight-ubuntu-bionic
+    parent: openstack-ansible-functional-ubuntu-bionic
     vars:
       tox_env: opendaylight
 
 - job:
-    name: openstack-ansible-ovs-nsh-ubuntu-xenial
-    parent: openstack-ansible-functional-ubuntu-xenial
+    name: openstack-ansible-ovs-nsh-ubuntu-bionic
+    parent: openstack-ansible-functional-ubuntu-bionic
     vars:
       tox_env: ovs-nsh
 
 - job:
-    name: openstack-ansible-odl-sfc-ubuntu-xenial
-    parent: openstack-ansible-functional-ubuntu-xenial
+    name: openstack-ansible-odl-sfc-ubuntu-bionic
+    parent: openstack-ansible-functional-ubuntu-bionic
     vars:
       tox_env: odl-sfc
 
 - job:
-    name: openstack-ansible-ovs-sfc-ubuntu-xenial
-    parent: openstack-ansible-functional-ubuntu-xenial
+    name: openstack-ansible-ovs-sfc-ubuntu-bionic
+    parent: openstack-ansible-functional-ubuntu-bionic
     vars:
       tox_env: ovs-sfc
 
 - job:
-    name: openstack-ansible-opendaylight-bgpvpn-ubuntu-xenial
-    parent: openstack-ansible-functional-ubuntu-xenial
+    name: openstack-ansible-opendaylight-bgpvpn-ubuntu-bionic
+    parent: openstack-ansible-functional-ubuntu-bionic
     vars:
       tox_env: opendaylight-bgpvpn
 
