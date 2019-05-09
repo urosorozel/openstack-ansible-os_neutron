@@ -74,6 +74,23 @@
   tags:
     - always
 
+- name: Create the neutron provider networks fact
+  provider_networks:
+    provider_networks: "{{ provider_networks }}"
+    bind_prefix: "{{ provider_network_bind_prefix | default('') }}"
+    is_metal: "{{ is_metal }}"
+    group_names: "{{ group_names }}"
+  register: pndata
+  when: neutron_provider_networks is not defined
+  tags:
+    - always
+
+- name: Set provider network fact(s)
+  set_fact:
+    neutron_provider_networks: "{{ neutron_provider_networks | default(pndata) }}"
+  tags:
+    - always
+
 - name: Set neutron target platform type
   set_fact:
     neutron_os_type: "powervm"
