@@ -7,10 +7,6 @@ The OpenStack Networking service (neutron) includes the following services:
 Firewall as a Service (FWaaS)
   Provides a software-based firewall that filters traffic from the router.
 
-Load Balancer as a Service (LBaaS)
-  Provides load balancers that direct traffic to OpenStack instances or other
-  servers outside the OpenStack deployment.
-
 VPN as a Service (VPNaaS)
   Provides a method for extending a private network across a public network.
 
@@ -53,7 +49,6 @@ Deploying FWaaS v1
       neutron_plugin_base:
          - router
          - firewall
-         - neutron_lbaas.services.loadbalancer.plugin.LoadBalancerPluginv2
          - vpnaas
          - metering
          - qos
@@ -121,118 +116,6 @@ Follow the steps below to deploy FWaaS v2:
        # cd /opt/openstack-ansible/playbooks
        # openstack-ansible os-neutron-install.yml
 
-
-Load balancing service (optional)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-The `neutron-lbaas`_ plugin for neutron provides a software load balancer
-service and can direct traffic to multiple servers. The service runs as an
-agent and it manages `HAProxy`_ configuration files and daemons.
-
-The Newton release contains only the LBaaS v2 API. For more details about
-transitioning from LBaaS v1 to v2, review the :ref:`lbaas-special-notes`
-section below.
-
-Deployers can make changes to the LBaaS default configuration options via the
-``neutron_lbaas_agent_ini_overrides`` dictionary. Review the documentation on
-the  `conf override`_ mechanism for more details.
-
-.. _neutron-lbaas: https://wiki.openstack.org/wiki/Neutron/LBaaS
-.. _HAProxy: http://www.haproxy.org/
-
-Deploying LBaaS v2 namespace driver
------------------------------------
-
-#. Add the LBaaS v2 plugin to the ``neutron_plugin_base`` variable
-   in ``/etc/openstack_deploy/user_variables.yml``:
-
-   .. code-block:: yaml
-
-      neutron_plugin_base:
-        - router
-        - metering
-        - neutron_lbaas.services.loadbalancer.plugin.LoadBalancerPluginv2
-
-   Ensure that ``neutron_plugin_base`` includes all of the plugins that you
-   want to deploy with neutron in addition to the LBaaS plugin.
-
-   Adding the LBaaS v2 plugin to ``neutron_plugin_base`` automatically enables
-   the Dashboard panels for LBaaS v2 when the ``os_horizon`` role is
-   redeployed (see the following step).
-
-   Alternatively you can set the ``neutron_lbaasv2`` flag to ``True`` which
-   will add the LBaaS v2 plugin by itself.
-
-#. Run the neutron playbook to deploy the LBaaS v2 agent and enable the
-   Dashboard panels for LBaaSv2:
-
-   .. code-block:: console
-
-       # cd /opt/openstack-ansible/playbooks
-       # openstack-ansible os-neutron-install.yml
-       # openstack-ansible os-horizon-install.yml
-
-Deploying LBaaS v2 with Octavia
--------------------------------
-
-The namespace driver and Octavia can both run at the same time and the
-end user can choose which type of load balancer to create with the
-``--provider`` flag on load balanceer create.
-
-#. Activate the LBaaS v2 plugin together with the Octavia driver by setting
-   ``neutron_lbaas_octavia`` to ``True``. This will automatically be
-   triggered if Octavia is installed.
-
-#. (optional) To make sure the namespace driver is available set
-   ``neutron_lbaas_namespace`` to ``True`` or if you want
-   Octavia installed stand-alone to ``False``.
-
-#. Run the neutron playbook to deploy the LBaaS v2 agent and enable the
-   Dashboard panels for LBaaSv2:
-
-   .. code-block:: console
-
-       # cd /opt/openstack-ansible/playbooks
-       # openstack-ansible os-neutron-install.yml
-       # openstack-ansible os-horizon-install.yml
-
-Deploying LBaaS v2 with Octavia proxy plugin
---------------------------------------------
-
-Beginning Queens as part of the transition to the Octavia API endpoint
-LBaaS V2 supports the Octavia proxy driver which will send all LBaaS V2
-requests straight to Octavia and bypass the Neutron database and any
-installed third party LBaaS V2 drivers.
-
-#. Set ``neutron_lbaas_octavia`` to ``True`` to get the Octavia settings
-   along with LBaaS V2 being enabled.
-
-#. Set ``neutron_octavia_proxy_plugin`` to ``True`` to activate the
-   byapssing proxy.
-
-#. Run the neutron playbook to deploy the LBaaS v2 agent and enable the
-   Dashboard panels for LBaaSv2:
-
-   .. code-block:: console
-
-       # cd /opt/openstack-ansible/playbooks
-       # openstack-ansible os-neutron-install.yml
-       # openstack-ansible os-horizon-install.yml
-
-Special notes about LBaaS
--------------------------
-
-**LBaaS v1 was deprecated in the Mitaka release and is not available in the
-Newton release.**
-
-LBaaS v1 and v2 agents are unable to run at the same time. If you switch
-LBaaS v1 to v2, the v2 agent is the only agent running. The LBaaS v1 agent
-stops along with any load balancers provisioned under the v1 agent.
-
-Load balancers are not migrated between LBaaS v1 and v2 automatically. Each
-implementation has different code paths and database tables. You need
-to manually delete load balancers, pools, and members before switching LBaaS
-versions. Recreate these objects afterwards.
 
 Virtual private network service (optional)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

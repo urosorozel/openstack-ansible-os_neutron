@@ -84,17 +84,11 @@ neutron_optional_lxb_distro_packages:
 neutron_optional_fwaas_distro_packages:
   - python-neutron-fwaas
 
-neutron_optional_lbaas_distro_packages:
-  - neutron-lbaasv2-agent
-
 neutron_optional_vpnaas_distro_packages:
   - neutron-vpnaas-agent
 
 neutron_lxb_distro_packages:
   - bridge-utils
-
-neutron_lbaas_distro_packages:
-  - haproxy
 
 neutron_vpnaas_distro_packages:
   - strongswan
@@ -108,7 +102,3 @@ neutron_remove_distro_packages:
 neutron_oslomsg_amqp1_distro_packages:
   - libsasl2-modules
   - sasl2-bin
-
-neutron_lbaasv2_initscript_path: "/etc/init/neutron-lbaasv2-agent.conf"
-neutron_lbaasv2_agent_servicename: "neutron-lbaasv2-agent"
-_neutron_lbaasv2_user_group: nogroup

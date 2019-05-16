@@ -51,9 +51,6 @@ neutron_optional_calico_pip_packages:
 neutron_optional_fwaas_pip_packages:
   - neutron_fwaas
 
-neutron_optional_lbaas_pip_packages:
-  - neutron_lbaas
-
 neutron_optional_vpnaas_pip_packages:
   - neutron_vpnaas
 
@@ -80,9 +77,6 @@ neutron_venv_packages: >-
   {%- endif %}
   {%- if (neutron_fwaas | bool) or (neutron_fwaas_v2 | bool) %}
   {%-   set _ = pkg_list.extend(neutron_optional_fwaas_pip_packages) %}
-  {%- endif %}
-  {%- if neutron_lbaasv2 | bool %}
-  {%-   set _ = pkg_list.extend(neutron_optional_lbaas_pip_packages) %}
   {%- endif %}
   {%- if neutron_vpnaas | bool %}
   {%-   set _ = pkg_list.extend(neutron_optional_vpnaas_pip_packages) %}
@@ -282,28 +276,6 @@ neutron_fwaas: "{{ ('firewall' in neutron_plugin_base) | ternary('True', 'False'
 neutron_fwaas_v2: "{{ ('firewall_v2' in neutron_plugin_base) | ternary('True', 'False') }}"
 
 ###
-### LBaaS Plugin Configuration
-###
-
-# Deprecated: instead of triggering lbaas through neutron_plugin_core it will be triggered when Octavia is installed, neutron_lbaas_namespace var is set to True, or both:
-#   - neutron_lbaas.services.loadbalancer.plugin.LoadBalancerPluginv2 or lbaasv2
-neutron_lbaas_namespace: "{% if 'neutron_lbaas.services.loadbalancer.plugin.LoadBalancerPluginv2' in neutron_plugin_base %}True{% else %}False{% endif %}"
-
-neutron_lbaas_octavia: False
-
-neutron_lbaasv2: "{% if (neutron_lbaas_namespace|bool) or (neutron_lbaas_octavia | bool) %}True{% else %}False{% endif %}"
-
-# This complex logic activates either Namespace or Octavia or both or none; if
-# Octavia is included it will be the default
-neutron_lbaasv2_plugin_drivers:
-  - "{% if neutron_lbaas_namespace | bool %}LOADBALANCERV2:Haproxy:neutron_lbaas.drivers.haproxy.plugin_driver.HaproxyOnHostPluginDriver{% else %}none{% endif %}"
-  - "{% if neutron_lbaas_octavia | bool %}LOADBALANCERV2:Octavia:neutron_lbaas.drivers.octavia.driver.OctaviaDriver{% else %}none{% endif %}"
-
-neutron_lbaasv2_service_provider: "{{ neutron_lbaasv2_plugin_drivers | reject('equalto','none') | join(',') }}{% if neutron_lbaasv2 %}:default{% endif %}"
-
-neutron_lbaasv2_device_driver: neutron_lbaas.drivers.haproxy.namespace_driver.HaproxyNSDriver
-
-###
 ### VPNaaS Plugin Configuration
 ###
 
@@ -441,18 +413,6 @@ neutron_services:
     config_type: "ini"
     init_config_overrides: "{{ neutron_l3_agent_init_overrides }}"
     start_order: 3
-  neutron-lbaasv2-agent:
-    group: neutron_lbaas_agent
-    service_name: neutron-lbaasv2-agent
-    service_en: "{{ neutron_lbaas_namespace | bool }}"
-    service_conf_path: "{{ neutron_conf_dir }}"
-    service_conf: lbaas_agent.ini
-    service_rootwrap: rootwrap.d/lbaas-haproxy.filters
-    execstarts: "{{ neutron_bin }}/neutron-lbaasv2-agent --config-file {{ neutron_conf_dir }}/neutron.conf --config-file {{ neutron_conf_dir }}/lbaas_agent.ini --log-file={{ neutron_log_dir }}/neutron-lbaasv2-agent.log"
-    config_overrides: "{{ neutron_lbaas_agent_ini_overrides }}"
-    config_type: "ini"
-    init_config_overrides: "{{ neutron_lbaas_agent_init_overrides }}"
-    start_order: 3
   neutron-bgp-dragent:
     group: neutron_bgp_dragent
     service_name: neutron-bgp-dragent
@@ -550,7 +510,6 @@ neutron_services:
 
 neutron_driver_network_scheduler: neutron.scheduler.dhcp_agent_scheduler.WeightScheduler
 neutron_driver_router_scheduler: neutron.scheduler.l3_agent_scheduler.LeastRoutersScheduler
-neutron_driver_loadbalancer_pool_scheduler: neutron_lbaas.services.loadbalancer.agent_scheduler.ChanceScheduler
 neutron_driver_metering: neutron.services.metering.drivers.iptables.iptables_driver.IptablesMeteringDriver
 neutron_driver_dhcp: neutron.agent.linux.dhcp.Dnsmasq
 neutron_driver_quota: neutron.db.quota.driver.DbQuotaDriver

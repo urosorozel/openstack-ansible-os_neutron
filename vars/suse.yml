@@ -85,18 +85,11 @@ neutron_optional_lxb_distro_packages:
 neutron_optional_fwaas_distro_packages:
   - openstack-neutron-fwaas
 
-neutron_optional_lbaas_distro_packages:
-  - openstack-neutron-lbaas
-  - openstack-neutron-lbaas-agent
-
 neutron_option_vpnaas_distro_packages:
   - openstack-neutron-vpnaas
 
 neutron_lxb_distro_packages:
   - bridge-utils
-
-neutron_lbaas_distro_packages:
-  - haproxy
 
 neutron_vpnaas_distro_packages:
   - openswan
@@ -110,7 +103,3 @@ neutron_oslomsg_amqp1_distro_packages:
   - cyrus-sasl
   - cyrus-sasl-plain
   - cyrus-sasl-digestmd5
-
-neutron_lbaasv2_initscript_path: "/etc/init/neutron-lbaasv2-agent.conf"
-neutron_lbaasv2_agent_servicename: "neutron-lbaasv2-agent"
-_neutron_lbaasv2_user_group: nogroup

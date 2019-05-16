@@ -56,8 +56,6 @@ neutron_git_repo: https://git.openstack.org/openstack/neutron
 neutron_git_install_branch: master
 neutron_fwaas_git_repo: https://git.openstack.org/openstack/neutron-fwaas
 neutron_fwaas_git_install_branch: master
-neutron_lbaas_git_repo: https://git.openstack.org/openstack/neutron-lbaas
-neutron_lbaas_git_install_branch: master
 neutron_vpnaas_git_repo: https://git.openstack.org/openstack/neutron-vpnaas
 neutron_vpnaas_git_install_branch: master
 neutron_dynamic_routing_git_repo: https://git.openstack.org/openstack/neutron-dynamic-routing
@@ -79,7 +77,6 @@ neutron_upper_constraints_url: "{{ requirements_git_url | default('https://git.o
 neutron_git_constraints:
   - "git+{{ neutron_git_repo }}@{{ neutron_git_install_branch }}#egg=neutron"
   - "git+{{ neutron_fwaas_git_repo }}@{{ neutron_fwaas_git_install_branch }}#egg=neutron-fwaas"
-  - "git+{{ neutron_lbaas_git_repo }}@{{ neutron_lbaas_git_install_branch }}#egg=neutron-lbaas"
   - "git+{{ neutron_vpnaas_git_repo }}@{{ neutron_vpnaas_git_install_branch }}#egg=neutron-vpnaas"
   - "git+{{ neutron_dynamic_routing_git_repo }}@{{ neutron_dynamic_routing_git_install_branch }}#egg=neutron-dynamic-routing"
   - "git+{{ networking_calico_git_repo }}@{{ networking_calico_git_install_branch }}#egg=networking-calico"
@@ -134,9 +131,6 @@ neutron_dhcp_config:
 # empty respose on DNS requests.
 neutron_dnsmasq_noresolv: False
 
-# Set the neutron lbaasv2 user group, defaults from os specific vars
-neutron_lbaasv2_user_group: "{{ _neutron_lbaasv2_user_group }}"
-
 ###
 ### Tunable Overrides (Sorted alphabetically)
 ###
@@ -161,8 +155,6 @@ neutron_dhcp_agent_ini_overrides: {}
 neutron_dhcp_agent_init_overrides: {}
 neutron_l3_agent_ini_overrides: {}
 neutron_l3_agent_init_overrides: {}
-neutron_lbaas_agent_ini_overrides: {}
-neutron_lbaas_agent_init_overrides: {}
 neutron_linuxbridge_agent_ini_overrides: {}
 neutron_linuxbridge_agent_init_overrides: {}
 neutron_metadata_agent_ini_overrides: {}
@@ -328,8 +320,6 @@ neutron_notifications_designate: notifications_designate
 # neutron_plugin_base:
 #   - router
 #   - firewall/firewall_v2 either one or the other, not both
-#   - lbaas
-#   - neutron_lbaas.services.loadbalancer.plugin.LoadBalancerPluginv2
 #   - neutron_dynamic_routing.services.bgp.bgp_plugin.BgpPlugin
 #   - vpnaas
 #   - metering
@@ -426,17 +416,6 @@ nova_metadata_protocol: http
 # If the nova_metadata_protocol is using a self-signed cert, then
 # this flag should be set to a boolean True.
 nova_metadata_insecure: False
-
-###
-### LBaaS Configuration
-###
-
-# See documentation section titled "Configuring the Network Load Balancing
-# Service (Optional)" for more details.
-neutron_octavia_request_poll_timeout: 100
-
-# Use the Octavia proxy
-neutron_octavia_proxy_plugin: False
 
 ###
 ### FWaaS Configuration

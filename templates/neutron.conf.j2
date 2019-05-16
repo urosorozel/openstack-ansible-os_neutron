@@ -7,14 +7,6 @@
   {% endif %}
 {% endfor %}
 
-{% if (neutron_lbaasv2|bool) and ('neutron_lbaas.services.loadbalancer.plugin.LoadBalancerPluginv2' not in neutron_plugin_base) -%}
-  {% if neutron_octavia_proxy_plugin|bool %}
-    {% set _ = neutron_plugin_loaded_base.append("lbaasv2-proxy") %}
-  {% else %}
-    {% set _ = neutron_plugin_loaded_base.append("lbaasv2") %}
-  {% endif %}
-{% endif %}
-
 # General, applies to all host groups
 [DEFAULT]
 # Disable stderr logging
@@ -53,7 +45,6 @@ auth_strategy = keystone
 # Drivers
 network_scheduler_driver = {{ neutron_driver_network_scheduler }}
 router_scheduler_driver = {{ neutron_driver_router_scheduler }}
-loadbalancer_pool_scheduler_driver = {{ neutron_driver_loadbalancer_pool_scheduler }}
 
 # Schedulers
 network_auto_schedule = True
@@ -198,48 +189,11 @@ pool_timeout = {{ neutron_db_pool_timeout }}
 
 # Service providers
 [service_providers]
-{% if neutron_lbaasv2 | bool %}
-{% for service_provider in neutron_lbaasv2_service_provider.split(',') %}
-service_provider = {{ service_provider }}
-{% endfor %}
-{% endif %}
 {% if neutron_vpnaas | bool %}
 service_provider = {{ neutron_vpnaas_service_provider }}
 {% endif %}
 {% if neutron_fwaas_v2 | bool %}
 service_provider = {{ neutron_fwaasv2_service_provider }}
-{% endif %}
-
-{% if neutron_lbaasv2 | bool %}
-{% if neutron_lbaas_octavia | bool %}
-[octavia]
-base_url= {{ octavia_service_internaluri }}
-request_poll_timeout = {{ neutron_octavia_request_poll_timeout }}
-{% endif %}
-
-# Configure Barbican - TLS will not work if Barbican is misisng
-[certificates]
-
-# Certificate Manager plugin. Defaults to barbican. (string value)
-cert_manager_type = barbican
-
-# Name of the Barbican authentication method to use (string value)
-#barbican_auth = barbican_acl_auth
-
-[service_auth]
-insecure = {{ keystone_service_internaluri_insecure | bool }}
-auth_plugin = {{ neutron_keystone_auth_plugin }}
-# this needs to have a v3 added manually :-(
-auth_url = {{ keystone_service_internaluri }}/v3
-admin_project_domain = {{ neutron_service_project_domain_id }}
-admin_user_domain = {{ neutron_service_user_domain_id }}
-admin_tenant_name = {{ neutron_service_project_name }}
-admin_user = {{ neutron_service_user_name }}
-admin_password = {{ neutron_service_password }}
-region = {{ keystone_service_region }}
-endpoint_type = internalURL
-service_name = neutron
-auth_version = 3
 {% endif %}
 
 {% endif %}

@@ -24,7 +24,8 @@
       jobs:
         - openstack-ansible-ovs-ubuntu-bionic
         - openstack-ansible-ovn-ubuntu-bionic
-        - openstack-ansible-ovn-centos-7
+        - openstack-ansible-ovn-centos-7:
+            voting: false
         - openstack-ansible-calico-ubuntu-bionic:
             voting: false
         - openstack-ansible-opendaylight-ubuntu-bionic
@@ -40,7 +41,6 @@
       jobs:
         - openstack-ansible-ovs-ubuntu-bionic
         - openstack-ansible-ovn-ubuntu-bionic
-        - openstack-ansible-ovn-centos-7
         - openstack-ansible-opendaylight-ubuntu-bionic
         - openstack-ansible-ovs-nsh-ubuntu-bionic
         - openstack-ansible-odl-sfc-ubuntu-bionic
