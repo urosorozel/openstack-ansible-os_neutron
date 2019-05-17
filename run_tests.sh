@@ -43,7 +43,7 @@ ZUUL_TESTS_CLONE_LOCATION="/home/zuul/src/opendev.org/openstack/openstack-ansibl
 # branch to clone for tests.
 TESTING_BRANCH=$(awk -F'=' '/defaultbranch/ {print $2}' "${WORKING_DIR}/.gitreview")
 if [[ "${TESTING_BRANCH}" == "" ]]; then
-  TESTING_BRANCH="master"
+  TESTING_BRANCH="stable/stein"
 fi
 
 ## Main ----------------------------------------------------------------------
