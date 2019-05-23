@@ -49,7 +49,6 @@ neutron_ovn_northd_distro_packages:
 
 neutron_devel_distro_packages:
   - git
-  - python-httplib2
 
 neutron_service_distro_packages:
   - openstack-neutron
