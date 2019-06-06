@@ -80,9 +80,11 @@ neutron_developer_mode: false
 
 # Name of the virtual env to deploy into
 neutron_venv_tag: untagged
+neutron_bin: "{{ _neutron_bin }}"
 
 # venv_download, even when true, will use the fallback method of building the
 # venv from scratch if the venv download fails.
+neutron_venv_download: "{{ not neutron_developer_mode | bool }}"
 neutron_venv_download_url: http://127.0.0.1/venvs/untagged/ubuntu/neutron.tgz
 
 ###

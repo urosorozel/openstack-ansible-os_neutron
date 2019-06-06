@@ -52,6 +52,4 @@ neutron_package_list: |-
   {% set _ = packages.extend(neutron_devel_distro_packages) %}
   {{ packages }}
 
-neutron_bin: "/openstack/venvs/neutron-{{ neutron_venv_tag }}/bin"
-
-neutron_venv_download: "{{ not neutron_developer_mode | bool }}"
+_neutron_bin: "/openstack/venvs/neutron-{{ neutron_venv_tag }}/bin"

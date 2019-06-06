@@ -56,4 +56,4 @@ neutron_package_list: |-
   {% set _ = packages.extend(neutron_service_distro_packages) %}
   {{ packages }}
 
-neutron_bin: "/usr/bin"
+_neutron_bin: "/usr/bin"
