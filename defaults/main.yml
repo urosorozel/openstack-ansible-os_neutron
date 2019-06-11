@@ -346,7 +346,8 @@ neutron_plugin_types: []
 neutron_ml2_drivers_type: "flat,vlan,vxlan,local"
 
 # Enable or disable L2 Population.
-neutron_l2_population: "False"
+# When using ovs dvr it must be enabled
+neutron_l2_population: "{{ neutron_plugin_type == 'ml2.ovs.dvr' }}"
 
 neutron_vxlan_enabled: true
 
