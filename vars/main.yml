@@ -34,6 +34,7 @@ neutron_pip_packages:
   - osprofiler
   - PyMySQL
   - python-memcached
+  - systemd-python
 
 # Specific pip packages provided by the user
 neutron_user_pip_packages: []
