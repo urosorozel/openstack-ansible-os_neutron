@@ -57,6 +57,7 @@ neutron_service_distro_packages:
   - openstack-neutron-metering-agent
   - openstack-neutron-l2gw-agent
   - python-memcached
+  - systemd-python
 
 neutron_optional_ovs_distro_packages:
   - openstack-neutron-openvswitch

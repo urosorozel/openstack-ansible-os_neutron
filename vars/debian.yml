@@ -67,6 +67,7 @@ neutron_devel_distro_packages:
 neutron_service_distro_packages:
   - python3-memcache
   - python3-neutron
+  - python3-systemd
   - neutron-plugin-ml2
 
 neutron_optional_ovs_distro_packages:
