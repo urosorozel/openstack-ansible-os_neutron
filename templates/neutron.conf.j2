@@ -110,15 +110,14 @@ send_events_interval = 2
 # required by current dns integration implementation
 url = {{ designate_service_adminurl }}
 
-auth_type = {{ designate_keystone_auth_plugin }}
-auth_uri = {{ keystone_service_adminuri }}
+auth_type = password
+username = {{ neutron_service_user_name }}
+password = {{ neutron_service_password }}
+project_name = {{ neutron_service_project_name }}
+user_domain_id = {{ neutron_service_user_domain_id }}
+project_domain_id = {{ neutron_service_project_domain_id }}
 auth_url = {{ keystone_service_adminurl }}
-region_name = {{ designate_service_region }}
-project_domain_id = {{ designate_service_project_domain_id }}
-user_domain_id = {{ designate_service_user_domain_id }}
-project_name = {{ designate_service_project_name }}
-username = {{ designate_service_user_name }}
-password = {{ designate_service_password }}
+insecure = {{ keystone_service_adminuri_insecure | bool }}
 
 allow_reverse_dns_lookup = {{ neutron_allow_reverse_dns_lookup }}
 ipv4_ptr_zone_prefix_size = {{ neutron_ipv4_ptr_zone_prefix_size }}
@@ -126,16 +125,14 @@ ipv6_ptr_zone_prefix_size = {{ neutron_ipv6_ptr_zone_prefix_size }}
 {% endif %}
 
 [nova]
-insecure = {{ keystone_service_adminuri_insecure | bool }}
-auth_type = {{ nova_keystone_auth_plugin }}
+auth_type = password
+username = {{ neutron_service_user_name }}
+password = {{ neutron_service_password }}
+project_name = {{ neutron_service_project_name }}
+user_domain_id = {{ neutron_service_user_domain_id }}
+project_domain_id = {{ neutron_service_project_domain_id }}
 auth_url = {{ keystone_service_adminurl }}
-region_name = {{ nova_service_region }}
-project_domain_id = {{ nova_service_project_domain_id }}
-user_domain_id = {{ nova_service_user_domain_id }}
-project_name = {{ nova_service_project_name }}
-username = {{ nova_service_user_name }}
-password = {{ nova_service_password }}
-endpoint_type = internal
+insecure = {{ keystone_service_adminuri_insecure | bool }}
 
 # Quotas
 [quotas]
