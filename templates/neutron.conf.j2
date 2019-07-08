@@ -132,6 +132,7 @@ project_name = {{ neutron_service_project_name }}
 user_domain_id = {{ neutron_service_user_domain_id }}
 project_domain_id = {{ neutron_service_project_domain_id }}
 auth_url = {{ keystone_service_adminurl }}
+endpoint_type = internal
 insecure = {{ keystone_service_adminuri_insecure | bool }}
 
 # Quotas
