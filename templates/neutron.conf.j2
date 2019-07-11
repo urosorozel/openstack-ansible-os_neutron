@@ -78,7 +78,7 @@ ha_network_physical_name = {{ neutron_provider_networks.network_mappings_list[0]
 
 # API
 bind_port = 9696
-bind_host = 0.0.0.0
+bind_host = {{ neutron_api_bind_address }}
 
 # Workers
 api_workers = {{ neutron_api_workers | default(neutron_api_threads) }}
