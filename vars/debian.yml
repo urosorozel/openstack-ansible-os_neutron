@@ -65,15 +65,9 @@ neutron_devel_distro_packages:
   - python-httplib2
 
 neutron_service_distro_packages:
-  - neutron-server
-  - neutron-dhcp-agent
-  - neutron-l2gateway-agent
-  - neutron-l3-agent
-  - neutron-macvtap-agent
-  - neutron-metadata-agent
-  - neutron-metering-agent
+  - python3-memcache
+  - python3-neutron
   - neutron-plugin-ml2
-  - python-memcache
 
 neutron_optional_ovs_distro_packages:
   - neutron-openvswitch-agent
