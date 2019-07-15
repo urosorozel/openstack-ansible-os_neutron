@@ -45,7 +45,9 @@ neutron_install_method: "source"
 ### Python code details
 ###
 
-neutron_log_dir: "/var/log/neutron"
+# Neutron logs are collected with systemd-journald by default
+# neutron_log_dir may be used for complience with old ha-tool
+#neutron_log_dir: "/var/log/neutron"
 
 # Set the package install state for pip_package
 # Options are 'present' and 'latest'
@@ -121,9 +123,10 @@ neutron_dns_domain: "openstacklocal."
 ### DNSMasq configuration
 ###
 # Dnsmasq doesn't work with config_template override, a deployer
-# should instead configure its own neutron_dhcp_config key/values
-neutron_dhcp_config:
-  log-facility: "{{ neutron_log_dir }}/neutron-dnsmasq.log"
+# should instead configure its own neutron_dhcp_config key/values like this:
+#neutron_dhcp_config:
+#  log-facility: "{{ neutron_log_dir }}/neutron-dnsmasq.log"
+neutron_dhcp_config: {}
 
 # Disable dnsmasq to resolve DNS via local resolv.conf.
 # When dnsmasq_dns_servers are not set,
