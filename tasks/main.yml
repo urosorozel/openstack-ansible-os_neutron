@@ -168,11 +168,5 @@
   tags:
     - neutron-config
 
-- import_tasks: neutron_l3_ha.yml
-  when:
-    - "neutron_services['neutron-l3-agent']['group'] in group_names"
-  tags:
-    - neutron-config
-
 - name: Flush handlers
   meta: flush_handlers

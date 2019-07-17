@@ -87,24 +87,6 @@
       mode: "0755"
     - path: "{{ neutron_system_home_folder }}/ha_confs"
 
-- name: Create log directory
-  block:
-  - name: Test for log directory
-    stat:
-      path: "{{ neutron_log_dir }}"
-    register: log_dir
-  - name: Create neutron log dir
-    file:
-      path: "{{ item.path }}"
-      state: directory
-      owner: "{{ item.owner|default(neutron_system_user_name) }}"
-      group: "{{ item.group|default(neutron_system_group_name) }}"
-      mode: "{{ item.mode|default('0755') }}"
-    with_items:
-      - { path: "{{ neutron_log_dir }}" }
-    when: log_dir.stat.exists and file_details.stat.isdir
-  when: neutron_log_dir is defined
-
 - name: Drop sudoers file
   template:
     src: "sudoers.j2"
