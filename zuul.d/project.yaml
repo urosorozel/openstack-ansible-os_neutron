@@ -34,7 +34,6 @@
         # so disabling until it's investigated.
         - openstack-ansible-functional-distro_install-centos-7:
             voting: false
-        - openstack-ansible-functional-distro_install-opensuse-423
     gate:
       jobs:
         - openstack-ansible-deploy-aio_metal_calico-ubuntu-xenial
@@ -43,4 +42,3 @@
         - openstack-ansible-ovs-nsh-ubuntu-xenial
         - openstack-ansible-odl-sfc-ubuntu-xenial
         - openstack-ansible-functional-distro_install-ubuntu-bionic
-        - openstack-ansible-functional-distro_install-opensuse-423
