@@ -30,8 +30,8 @@
         - openstack-ansible-opendaylight-bgpvpn-ubuntu-xenial:
             voting: false
         - openstack-ansible-functional-distro_install-ubuntu-bionic
-          # NOTE(hwoarang) Centos7 is having some troubles with repo dependencies
-          # so disabling until it's investigated.
+        # NOTE(hwoarang) Centos7 is having some troubles with repo dependencies
+        # so disabling until it's investigated.
         - openstack-ansible-functional-distro_install-centos-7:
             voting: false
         - openstack-ansible-functional-distro_install-opensuse-423
@@ -39,8 +39,6 @@
       jobs:
         - openstack-ansible-deploy-aio_metal_calico-ubuntu-xenial
         - openstack-ansible-ovs-ubuntu-xenial
-        - openstack-ansible-ovn-ubuntu-xenial
-        - openstack-ansible-ovn-centos-7
         - openstack-ansible-opendaylight-ubuntu-xenial
         - openstack-ansible-ovs-nsh-ubuntu-xenial
         - openstack-ansible-odl-sfc-ubuntu-xenial
