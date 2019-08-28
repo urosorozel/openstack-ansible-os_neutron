@@ -4,18 +4,6 @@
 [DEFAULT]
 debug = {{ debug }}
 
-# Neutron credentials for API access
-auth_type = {{ neutron_keystone_auth_plugin }}
-auth_url = {{ keystone_service_adminurl }}
-auth_uri = {{ keystone_service_internaluri }}
-auth_region = {{ keystone_service_region }}
-project_domain_id = {{ neutron_service_project_domain_id }}
-user_domain_id = {{ neutron_service_user_domain_id }}
-project_name = {{ neutron_service_project_name }}
-username = {{ neutron_service_user_name }}
-password = {{ neutron_service_password }}
-endpoint_type = adminURL
-
 # Nova metadata service IP and port
 nova_metadata_host = {{ internal_lb_vip_address }}
 nova_metadata_port = {{ nova_metadata_port }}
@@ -28,6 +16,3 @@ metadata_proxy_shared_secret = {{ nova_metadata_proxy_secret }}
 # Workers and backlog requests
 metadata_workers = {{ neutron_metadata_workers | default(neutron_api_threads) }}
 metadata_backlog = {{ neutron_metadata_backlog }}
-
-# Caching
-cache_url = memory://?default_ttl=5
