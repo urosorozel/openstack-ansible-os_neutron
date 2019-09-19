@@ -279,7 +279,7 @@ neutron_service_user_name: neutron
 neutron_service_name: neutron
 neutron_service_type: network
 neutron_service_description: "OpenStack Networking"
-neutron_api_bind_address: 0.0.0.0
+neutron_api_bind_address: "{{ openstack_service_bind_address | default('0.0.0.0') }}"
 neutron_service_port: 9696
 neutron_service_proto: http
 neutron_service_publicuri_proto: "{{ openstack_service_publicuri_proto | default(neutron_service_proto) }}"
