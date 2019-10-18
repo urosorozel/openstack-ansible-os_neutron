@@ -8,6 +8,8 @@ Neutron role for OpenStack-Ansible
    configure-network-services.rst
    app-openvswitch.rst
    app-openvswitch-asap.rst
+   app-openvswitch-dvr.rst
+   app-openvswitch-sfc.rst
    app-ovn.rst
    app-nuage.rst
    app-calico.rst

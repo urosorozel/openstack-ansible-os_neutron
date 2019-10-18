@@ -38,6 +38,7 @@
 extensions = [
     'openstackdocstheme',
     'sphinx.ext.autodoc',
+    'sphinxcontrib.rsvgconverter',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -61,7 +62,7 @@ copyright = '2014-2016, OpenStack-Ansible Contributors'
 description = 'OpenStack-Ansible deploys OpenStack environments using Ansible.'
 role_name = 'os_neutron'
 target_name = 'openstack-ansible-' + role_name
-title = 'OpenStack-Ansible Documentation: ' + role_name + 'role'
+title = 'OpenStack-Ansible Documentation: ' + role_name + ' role'
 
 # The link to the browsable source code (for the left hand menu)
 oslosphinx_cgit_link = (
@@ -217,9 +218,11 @@ htmlhelp_basename = target_name + '-docs'
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, target_name + '.tex',
-     title, author, 'manual'),
+    (master_doc, 'doc-' + target_name + '.tex',
+     title.replace("_", "\_"), author, 'manual'),
 ]
+
+latex_use_xindy = False
 
 # The name of an image file (relative to this directory) to place at the top of
 # the title page.
@@ -277,3 +280,11 @@ texinfo_documents = [
 
 # If true, do not generate a @detailmenu in the "Top" node's menu.
 # texinfo_no_detailmenu = False
+# -- Options for PDF output --------------------------------------------------
+
+pdf_documents = [
+    (master_doc, target_name,
+     title, author)
+]
+
+locale_dirs = ['locale/']
