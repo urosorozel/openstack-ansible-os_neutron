@@ -17,10 +17,10 @@ tempest_run: yes
 
 tempest_plugins:
   - name: neutron
-    repo: https://git.openstack.org/openstack/neutron
+    repo: https://opendev.org/openstack/neutron
     branch: master
   - name: neutron-plugins
-    repo: https://git.openstack.org/openstack/neutron-tempest-plugin
+    repo: https://opendev.org/openstack/neutron-tempest-plugin
     branch: master
 
 tempest_test_whitelist:

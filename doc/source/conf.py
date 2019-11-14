@@ -66,7 +66,7 @@ title = 'OpenStack-Ansible Documentation: ' + role_name + ' role'
 
 # The link to the browsable source code (for the left hand menu)
 oslosphinx_cgit_link = (
-    'https://opendev.org/cgit/openstack/{}'.format(target_name)
+    'https://opendev.org/openstack/{}'.format(target_name)
 )
 
 # openstackdocstheme options
