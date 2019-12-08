@@ -28,6 +28,8 @@ neutron_package_list: |-
   {% set _ = packages.extend(neutron_optional_ovs_distro_packages) %}
   {% if (ovs_nsh_support and ansible_pkg_mgr in ['apt', 'zypper']) %}
   {% set _ = packages.extend(neutron_ovs_nsh_required_packages) %}
+  {% elif (ovs_dpdk_support and ansible_pkg_mgr in ['apt', 'zypper']) %}
+  {% set _ = packages.extend(neutron_ovs_dpdk_required_packages) %}
   {% else %}
   {% set _ = packages.extend(neutron_ovs_distro_packages) %}
   {% endif %}

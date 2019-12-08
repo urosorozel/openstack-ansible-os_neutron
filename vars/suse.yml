@@ -28,6 +28,9 @@ neutron_ovs_socket_path: "/usr/local/var/run/openvswitch"
 neutron_ovs_nsh_required_packages:
   - openvswitch-switch
 
+neutron_ovs_dpdk_required_packages:
+  - openvswitch-dpdk
+
 neutron_repos:
   - repo: https://download.opensuse.org/repositories/home:/mosquetero/openSUSE_Leap_{{ ansible_distribution_version }}/
     name: ovs-nsh

@@ -10,6 +10,10 @@ bridge_mappings = {{ neutron_provider_networks.network_mappings }}
 {% if neutron_services['neutron-openvswitch-agent']['group'] in group_names and neutron_plugin_type == 'ml2.ovs' and neutron_provider_networks.network_mappings is defined and ((neutron_provider_networks.network_mappings | length) > 0) %}
 bridge_mappings = {{ neutron_provider_networks.network_mappings }}
 {% endif %}
+{% if ovs_dpdk_support %}
+datapath_type = {{ ovs_datapath }}
+vhostuser_socket_dir = /var/lib/vhost_socket
+{% endif %}
 
 [agent]
 l2_population = {{ neutron_plugins[neutron_plugin_type].l2_population }}
@@ -26,6 +30,10 @@ extensions = {{ ovs_agent_extensions | join(',') }}
 
 # Security groups
 [securitygroup]
+{% if ovs_dpdk_support %}
+firewall_driver = openvswitch
+{% else %}
 firewall_driver = {{ neutron_plugins[neutron_plugin_type].driver_firewall }}
+{% endif %}
 enable_security_group = True
 enable_ipset = True
