@@ -426,8 +426,8 @@ neutron_fwaasv2_service_provider: FIREWALL_V2:fwaas_db:neutron_fwaas.services.fi
 
 # See VPNaaS documentation for driver/service provider selection
 # in case you want to override it.
-neutron_driver_vpnaas: neutron_vpnaas.services.vpn.device_drivers.strongswan_ipsec.StrongSwanDriver
-neutron_vpnaas_service_provider: VPN:strongswan:neutron_vpnaas.services.vpn.service_drivers.ipsec.IPsecVPNDriver:default
+neutron_driver_vpnaas: "{{ _neutron_driver_vpnaas }}"
+neutron_vpnaas_service_provider: "{{ _neutron_vpnaas_service_provider }}"
 
 # neutron_management_ip is used to configure the location (IP) of the
 # neutron-server
