@@ -1,0 +1,7 @@
+# NOTE(mnaser): This file exists because we use `python2` for our binaries
+#               and there is no filter upstream for this which means that
+#               killing the keepalived monitors fails on OpenStack-Ansible
+#               environments that run Python2.
+
+[Filters]
+kill_keepalived_monitor_py2: KillFilter, root, python2, -15
