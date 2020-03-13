@@ -333,6 +333,11 @@ neutron_plugin_base:
   - metering
 
 ###
+### Memcache override
+###
+neutron_memcached_servers: "{{ memcached_servers }}"
+
+###
 ### ML2 Plugin Configuration
 ###
 

@@ -33,6 +33,7 @@ neutron_pip_packages:
   - neutron
   - osprofiler
   - PyMySQL
+  - pymemcache
   - python-memcached
   - systemd-python
 
