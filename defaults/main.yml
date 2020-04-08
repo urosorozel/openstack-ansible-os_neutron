@@ -167,6 +167,8 @@ neutron_nuage_conf_ini_overrides: {}
 neutron_opendaylight_conf_ini_overrides: {}
 neutron_openvswitch_agent_ini_overrides: {}
 neutron_openvswitch_agent_init_overrides: {}
+ironic_neutron_agent_ini_overrides: {}
+ironic_neutron_agent_init_overrides: {}
 # Provide a list of access controls to update the default policy.json with.
 # These changes will be merged
 # with the access controls in the default policy.json. E.g.

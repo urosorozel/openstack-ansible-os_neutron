@@ -71,10 +71,16 @@ neutron_proprietary_nuage_pip_packages:
 neutron_optional_ovn_pip_packages:
   - networking-ovn
 
+neutron_optional_baremetal_pip_packages:
+  - networking-baremetal
+
 neutron_venv_packages: >-
   {%- set pkg_list = neutron_pip_packages | union(neutron_user_pip_packages) %}
   {%- if neutron_bgp | bool %}
   {%-   set _ = pkg_list.extend(neutron_optional_bgp_pip_packages) %}
+  {%- endif %}
+  {%- if neutron_baremetal | bool %}
+  {%-   set _ = pkg_list.extend(neutron_optional_baremetal_pip_packages) %}
   {%- endif %}
   {%- if (neutron_fwaas | bool) or (neutron_fwaas_v2 | bool) %}
   {%-   set _ = pkg_list.extend(neutron_optional_fwaas_pip_packages) %}
@@ -178,6 +184,12 @@ neutron_plugins:
     plugin_conf_ini_overrides: "{{ neutron_ml2_conf_ini_overrides }}"
     plugin_core: ml2
     plugin_ini: plugins/ml2/ml2_conf.ini
+  ml2.baremetal:
+    drivers_type: "flat, local"
+    mechanisms: "baremetal"
+    plugin_core: ml2
+    plugin_conf_ini_overrides: "{{ ironic_neutron_agent_ini_overrides }}"
+    plugin_ini: plugins/ml2/ironic_neutron_agent.ini
   ml2.calico:
     drivers_type: "flat, local"
     mechanisms: "calico"
@@ -309,6 +321,10 @@ neutron_port_forwarding: "{{ ('port_forwarding' in neutron_plugin_base) | ternar
 neutron_sfc: "{{ ('sfc' in neutron_plugin_base) | ternary('True', 'False') }}"
 
 ###
+### neutron_baremetal
+####
+neutron_baremetal: "{{ ('ml2.baremetal' in neutron_plugin_types) | ternary('True', 'False') }}"
+### 
 ### Services info
 ###
 
@@ -503,6 +519,17 @@ neutron_services:
     config_overrides: "{{ neutron_ovn_metadata_agent_ini_overrides }}"
     config_type: "ini"
     init_config_overrides: "{{ neutron_ovn_metadata_agent_init_overrides }}"
+    start_order: 3
+  ironic-neutron-agent:
+    group: neutron_openvswitch_agent
+    service_name: ironic-neutron-agent
+    service_en: "{{ 'ml2.baremetal' in neutron_plugin_types }}"
+    service_conf_path: "{{ neutron_conf_dir }}"
+    service_conf: plugins/ml2/ironic_neutron_agent.ini
+    execstarts: "{{ neutron_bin }}/ironic-neutron-agent --config-dir /etc/neutron  --config-file {{ neutron_conf_dir }}/plugins/ml2/ironic_neutron_agent.ini"
+    config_overrides: "{{ ironic_neutron_agent_ini_overrides }}"
+    config_type: "ini"
+    init_config_overrides: "{{ ironic_neutron_agent_init_overrides }}"
     start_order: 3
 
 ###

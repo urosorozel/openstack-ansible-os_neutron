@@ -1,0 +1,12 @@
+# {{ ansible_managed }}
+
+[ironic]
+auth_type = password
+username = {{ neutron_service_user_name }}
+password = {{ neutron_service_password }}
+project_name = {{ neutron_service_project_name }}
+user_domain_id = {{ neutron_service_user_domain_id }}
+project_domain_id = {{ neutron_service_project_domain_id }}
+auth_url = {{ keystone_service_adminurl }}
+#insecure = {{ keystone_service_adminuri_insecure | bool }}
+insecure = True
